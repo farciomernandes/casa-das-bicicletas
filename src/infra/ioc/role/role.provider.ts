@@ -10,11 +10,14 @@ import { IDbDeleteRoleRepository } from '@/core/domain/protocols/db/role/delete-
 import { RoleRepository } from '@/core/domain/protocols/db/repositories/role';
 import { IDbAddRoleRepository } from '@/core/domain/protocols/db/role/add-role-repository';
 import { IDbListRoleRepository } from '@/core/domain/protocols/db/role/list-role-respository';
+import { DbUpdateRole } from '@/core/application/role/db-update-role';
+import { IDbUpdateRoleRepository } from '@/core/domain/protocols/db/role/update-role-repository';
 
 export const roleProvider: Provider[] = [
   DbAddRole,
   DbListRole,
   DbDeleteRole,
+  DbUpdateRole,
   {
     provide: RoleTypeOrmRepository,
     useFactory: (dataSource: DataSource) => {
@@ -41,6 +44,13 @@ export const roleProvider: Provider[] = [
     provide: IDbListRoleRepository,
     useFactory: (roleRepository: RoleRepository): DbListRole => {
       return new DbListRole(roleRepository);
+    },
+    inject: [RoleTypeOrmRepository],
+  },
+  {
+    provide: IDbUpdateRoleRepository,
+    useFactory: (roleRepository: RoleRepository): DbUpdateRole => {
+      return new DbUpdateRole(roleRepository);
     },
     inject: [RoleTypeOrmRepository],
   },

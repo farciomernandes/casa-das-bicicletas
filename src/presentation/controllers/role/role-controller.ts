@@ -9,6 +9,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -23,13 +24,16 @@ import { IDbListRoleRepository } from '@/core/domain/protocols/db/role/list-role
 import { AddRole } from '@/presentation/dtos/role/add-role.dto';
 import { RoleModel } from '@/presentation/dtos/role/role-model.dto';
 import { IDbDeleteRoleRepository } from '@/core/domain/protocols/db/role/delete-role-repository';
-
+import { IDbUpdateRoleRepository } from '@/core/domain/protocols/db/role/update-role-repository';
+import { Role } from '@/core/domain/models/role.entity';
+import { UpdateRoleDto } from '@/presentation/dtos/role/update-role.dto';
 @ApiTags('Role')
 @Controller('api/v1/role')
 export class RoleController {
   constructor(
     private readonly dbAddRole: IDbAddRoleRepository,
     private readonly dbListRole: IDbListRoleRepository,
+    private readonly dbUpdateRole: IDbUpdateRoleRepository,
     private readonly dbDeleteRole: IDbDeleteRoleRepository,
   ) {}
 
@@ -56,6 +60,27 @@ export class RoleController {
   async getAll(): Promise<RoleModel[]> {
     try {
       return await this.dbListRole.getAll();
+    } catch (error) {
+      throw new HttpException(error.response, error.status);
+    }
+  }
+
+  @Put(':id')
+  @ApiBody({
+    type: UpdateRoleDto,
+  })
+  @ApiOkResponse({
+    description: 'Delete success.',
+    status: HttpStatus.OK,
+    type: RoleModel,
+  })
+  @ApiBearerAuth()
+  async update(
+    @Param('id') id: string,
+    @Body() payload: Omit<RoleModel, 'id'>,
+  ): Promise<Role> {
+    try {
+      return await this.dbUpdateRole.update(payload, id);
     } catch (error) {
       throw new HttpException(error.response, error.status);
     }
