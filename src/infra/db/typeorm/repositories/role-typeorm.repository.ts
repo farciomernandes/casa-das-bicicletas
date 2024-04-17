@@ -5,6 +5,14 @@ import { RoleRepository } from '@/core/domain/protocols/db/repositories/role';
 export class RoleTypeOrmRepository implements RoleRepository {
   constructor(private readonly roleRepository: Repository<Role>) {}
 
+  async findById(id: string): Promise<Role> {
+    return this.roleRepository.findOne({ where: { id } });
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.roleRepository.delete(id);
+  }
+
   async findByValue(value: string): Promise<Role> {
     return this.roleRepository.findOne({ where: { value } });
   }

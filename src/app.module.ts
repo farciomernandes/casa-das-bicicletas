@@ -11,7 +11,7 @@ import { RolesGuard } from './infra/guards/roles.guard';
 import { AuthMiddleware } from './infra/middleware/auth.middleware';
 import { JwtAdapter } from './infra/adapters/jwt-adapter';
 import { Decrypter } from './core/domain/protocols/cryptography/decrypter';
-import { RoleModule } from './infra/ioc/role.module';
+import { RoleModule } from './infra/ioc/role/role.module';
 import { DataSource } from 'typeorm';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmDataSource } from './infra/db/database.provider';
@@ -50,7 +50,7 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware)
-      .forRoutes({ path: 'api/v1/role', method: RequestMethod.DELETE });
+      .forRoutes({ path: 'api/v1/role', method: RequestMethod.PATCH });
   }
   constructor(private dataSource: DataSource) {}
 }
