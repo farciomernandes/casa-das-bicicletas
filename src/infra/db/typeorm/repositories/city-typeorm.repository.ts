@@ -31,11 +31,13 @@ export class CityTypeOrmRepository implements CityRepository {
   }
 
   async getAll(): Promise<City[]> {
-    return this.cityRepository.find();
+    return this.cityRepository.find({
+      relations: ['state'],
+    });
   }
 
   async create(payload: Omit<City, 'id'>): Promise<City> {
-    const City = this.cityRepository.create(payload);
-    return this.cityRepository.save(City);
+    const city = this.cityRepository.create(payload);
+    return this.cityRepository.save(city);
   }
 }

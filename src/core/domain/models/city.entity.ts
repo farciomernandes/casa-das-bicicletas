@@ -1,11 +1,13 @@
-import { SchemasEnum } from '@/infra/db/schema.enum';
 import {
-  Column,
-  CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne, // Certifique-se de importar ManyToOne
 } from 'typeorm';
+import { SchemasEnum } from '@/infra/db/schema.enum';
+import { State } from './state.entity'; // Importe a entidade State
 
 @Entity({ name: 'cities', schema: SchemasEnum.users })
 export class City {
@@ -15,9 +17,15 @@ export class City {
   @Column()
   name: string;
 
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
+  @Column()
+  state_id: string;
 
-  @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt?: Date;
+  @ManyToOne(() => State, (state) => state.cities)
+  state: State;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at?: Date;
 }

@@ -8,7 +8,7 @@ export class CreateRelationStatesAndCitiesInAddresses1713466579041
     await queryRunner.createForeignKey(
       `${SchemasEnum.users}.addresses`,
       new TableForeignKey({
-        columnNames: ['stateId'],
+        columnNames: ['state_id'],
         referencedColumnNames: ['id'],
         referencedTableName: `${SchemasEnum.users}.states`,
         onDelete: 'SET NULL',
@@ -29,7 +29,7 @@ export class CreateRelationStatesAndCitiesInAddresses1713466579041
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropForeignKey(
       `${SchemasEnum.users}.addresses`,
-      'stateId',
+      'state_id',
     );
     await queryRunner.dropForeignKey(
       `${SchemasEnum.users}.addresses`,

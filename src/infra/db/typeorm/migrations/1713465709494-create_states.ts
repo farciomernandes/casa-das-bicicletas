@@ -20,6 +20,10 @@ export class CreateStates1713465709494 implements MigrationInterface {
             type: 'varchar',
           },
           {
+            name: 'uf',
+            type: 'varchar',
+          },
+          {
             name: 'created_at',
             type: 'timestamp',
             default: 'now()',

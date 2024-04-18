@@ -41,7 +41,7 @@ export class CreateAddresses1713465814699 implements MigrationInterface {
             type: 'uuid',
           },
           {
-            name: 'stateId',
+            name: 'state_id',
             type: 'uuid',
           },
           {

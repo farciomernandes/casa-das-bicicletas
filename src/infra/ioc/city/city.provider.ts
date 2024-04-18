@@ -12,6 +12,9 @@ import { DbListCity } from '@/core/application/city/db-list-city';
 import { DbDeleteCity } from '@/core/application/city/db-delete-city';
 import { DbUpdateCity } from '@/core/application/city/db-update-city';
 import { City } from '@/core/domain/models/city.entity';
+import { StateRepository } from '@/core/domain/protocols/db/repositories/state';
+import { StateTypeOrmRepository } from '@/infra/db/typeorm/repositories/state-typeorm.repository';
+import { State } from '@/core/domain/models/state.entity';
 
 export const cityProvider: Provider[] = [
   DbAddCity,
@@ -30,15 +33,25 @@ export const cityProvider: Provider[] = [
     useClass: CityTypeOrmRepository,
   },
   {
-    provide: IDbAddCityRepository,
-    useClass: DbAddCity,
+    provide: StateTypeOrmRepository,
+    useFactory: (dataSource: DataSource) => {
+      return new StateTypeOrmRepository(dataSource.getRepository(State));
+    },
+    inject: [getDataSourceToken()],
+  },
+  {
+    provide: StateRepository,
+    useClass: StateTypeOrmRepository,
   },
   {
     provide: IDbAddCityRepository,
-    useFactory: (cityRepository: CityRepository): DbAddCity => {
-      return new DbAddCity(cityRepository);
+    useFactory: (
+      cityRepository: CityRepository,
+      stateRepository: StateRepository,
+    ): DbAddCity => {
+      return new DbAddCity(cityRepository, stateRepository);
     },
-    inject: [CityTypeOrmRepository],
+    inject: [CityTypeOrmRepository, StateTypeOrmRepository],
   },
   {
     provide: IDbListCityRepository,

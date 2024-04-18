@@ -14,5 +14,9 @@ export const StateSchema = new EntitySchema<State>({
       type: 'varchar',
       nullable: false,
     },
+    uf: {
+      type: 'varchar',
+      nullable: false,
+    },
   },
 });

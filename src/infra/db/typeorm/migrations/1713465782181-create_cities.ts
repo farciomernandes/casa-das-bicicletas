@@ -20,7 +20,7 @@ export class CreateCities1713465782181 implements MigrationInterface {
             type: 'varchar',
           },
           {
-            name: 'stateId',
+            name: 'state_id',
             type: 'uuid',
           },
           {

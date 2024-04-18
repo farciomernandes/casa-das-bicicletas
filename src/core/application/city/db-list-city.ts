@@ -8,6 +8,6 @@ export class DbListCity implements IDbListCityRepository {
   constructor(private readonly cityRepository: CityRepository) {}
 
   async getAll(): Promise<City[]> {
-    return this.cityRepository.getAll();
+    return await this.cityRepository.getAll();
   }
 }

@@ -1,11 +1,13 @@
-import { SchemasEnum } from '@/infra/db/schema.enum';
 import {
-  Column,
-  CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
+import { SchemasEnum } from '@/infra/db/schema.enum';
+import { City } from './city.entity';
 
 @Entity({ name: 'states', schema: SchemasEnum.users })
 export class State {
@@ -15,9 +17,15 @@ export class State {
   @Column()
   name: string;
 
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
+  @Column()
+  uf: string;
 
-  @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt?: Date;
+  @OneToMany(() => City, (city) => city.state)
+  cities: City[];
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at?: Date;
 }

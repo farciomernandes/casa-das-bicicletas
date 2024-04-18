@@ -6,15 +6,15 @@ export const baseSchema = {
     type: 'uuid',
     generated: true,
   } as EntitySchemaColumnOptions,
-  createdAt: {
+  created_at: {
     type: 'timestamp',
     default: new Date(),
   } as EntitySchemaColumnOptions,
-  updatedAt: {
+  updated_at: {
     type: 'timestamp',
     default: new Date(),
   } as EntitySchemaColumnOptions,
-  deletedAt: {
+  deleted_at: {
     type: 'timestamp',
     nullable: true,
   } as EntitySchemaColumnOptions,
