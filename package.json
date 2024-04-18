@@ -18,7 +18,7 @@
     "typeorm": "ts-node -r tsconfig-paths/register node_modules/typeorm/cli -d src/infra/db/database.provider.ts",
     "migration:create": "npx typeorm migration:create",
     "migration:generate": "npx typeorm migration:generate -d src/infra/db/database.provider.ts",
-    "migration:latest": "npm run build npx typeorm migration:run -d dist/infra/db/database.provider.js",
+    "migration:latest": "nest build && npx typeorm migration:run -d dist/infra/db/database.provider.js",
     "migration:revert": "npx typeorm migration:revert",
     "prepare": "husky install"
   },
