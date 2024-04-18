@@ -7,7 +7,7 @@ export const StateSchema = new EntitySchema<State>({
   schema: SchemasEnum.users,
   name: State.name,
   target: State,
-  tableName: `${SchemasEnum.users}.states`,
+  tableName: `states`,
   columns: {
     ...baseSchema,
     name: {

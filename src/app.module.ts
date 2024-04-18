@@ -16,6 +16,7 @@ import { DataSource } from 'typeorm';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmDataSource } from './infra/db/database.provider';
 import { RoleController } from './presentation/controllers/role/role-controller';
+import { CityModule } from './infra/ioc/city/city.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { RoleController } from './presentation/controllers/role/role-controller'
       },
     }),
     RoleModule,
+    CityModule,
   ],
   controllers: [RoleController],
   providers: [

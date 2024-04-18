@@ -31,10 +31,6 @@ export const roleProvider: Provider[] = [
   },
   {
     provide: IDbAddRoleRepository,
-    useClass: DbAddRole,
-  },
-  {
-    provide: IDbAddRoleRepository,
     useFactory: (roleRepository: RoleRepository): DbAddRole => {
       return new DbAddRole(roleRepository);
     },

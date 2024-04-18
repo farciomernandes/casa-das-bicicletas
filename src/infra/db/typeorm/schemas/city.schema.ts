@@ -7,7 +7,7 @@ export const CitySchema = new EntitySchema<City>({
   schema: SchemasEnum.users,
   name: City.name,
   target: City,
-  tableName: `${SchemasEnum.users}.cities`,
+  tableName: `cities`,
   columns: {
     ...baseSchema,
     name: {
