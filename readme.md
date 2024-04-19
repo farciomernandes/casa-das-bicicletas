@@ -11,6 +11,7 @@
 
   > ## Erros comuns
   - Apagar .buildinfo caso o build não esteja sendo feito ao rodar npm run build
+  - Verificar a tabela de migrations está vazia
 
 > ## Design Patterns
 

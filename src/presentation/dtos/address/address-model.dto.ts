@@ -1,8 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, plainToInstance } from 'class-transformer';
 import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
-import { City } from '@/core/domain/models/city.entity';
-import { State } from '@/core/domain/models/state.entity';
 import { CityModel } from '../city/city-model.dto';
 import { StateModel } from '../state/state-model.dto';
 
