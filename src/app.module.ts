@@ -20,6 +20,7 @@ import { CityModule } from './infra/ioc/city/city.module';
 import { StateModule } from './infra/ioc/state/state.module';
 import { AddressModule } from './infra/ioc/address/address.module';
 import { UserModule } from './infra/ioc/user/user.module';
+import { CategoryModule } from './infra/ioc/category/category.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { UserModule } from './infra/ioc/user/user.module';
     CityModule,
     AddressModule,
     UserModule,
+    CategoryModule,
   ],
   controllers: [RoleController],
   providers: [
