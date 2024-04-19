@@ -6,6 +6,7 @@ import { IDbUpdateUserRepository } from '@/core/domain/protocols/db/user/update-
 import { IDbListUserRepository } from '@/core/domain/protocols/db/user/list-user-respository';
 import { UserRepository } from '@/core/domain/protocols/repositories/user';
 import { UserController } from '@/presentation/controllers/user/user-controller';
+import { IHasher } from '@/core/domain/protocols/cryptography/hasher';
 
 @Module({
   imports: [],
@@ -16,6 +17,7 @@ import { UserController } from '@/presentation/controllers/user/user-controller'
     IDbListUserRepository,
     IDbDeleteUserRepository,
     IDbUpdateUserRepository,
+    IHasher,
     UserRepository,
   ],
 })

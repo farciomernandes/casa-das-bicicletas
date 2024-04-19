@@ -14,18 +14,25 @@ import { User } from '@/core/domain/models/user.entity';
 import { UserTypeOrmRepository } from '@/infra/db/typeorm/repositories/user-typeorm.repository';
 import { UserRepository } from '@/core/domain/protocols/repositories/user';
 import { IDbListUserRepository } from '@/core/domain/protocols/db/user/list-user-respository';
+import { IHasher } from '@/core/domain/protocols/cryptography/hasher';
+import { BcryptAdapter } from '@/infra/adapters/bcrypt-adapter';
 
 export const userProvider: Provider[] = [
   DbAddUser,
   DbListUser,
   DbDeleteUser,
   DbUpdateUser,
+  BcryptAdapter,
   {
     provide: UserTypeOrmRepository,
     useFactory: (dataSource: DataSource) => {
       return new UserTypeOrmRepository(dataSource.getRepository(User));
     },
     inject: [getDataSourceToken()],
+  },
+  {
+    provide: IHasher,
+    useClass: BcryptAdapter,
   },
   {
     provide: UserRepository,
@@ -40,10 +47,13 @@ export const userProvider: Provider[] = [
   },
   {
     provide: IDbAddUserRepository,
-    useFactory: (userRepository: UserRepository): DbAddUser => {
-      return new DbAddUser(userRepository);
+    useFactory: (
+      userRepository: UserRepository,
+      hasher: IHasher,
+    ): DbAddUser => {
+      return new DbAddUser(userRepository, hasher);
     },
-    inject: [UserTypeOrmRepository, CityTypeOrmRepository],
+    inject: [UserTypeOrmRepository, BcryptAdapter],
   },
   {
     provide: IDbListUserRepository,

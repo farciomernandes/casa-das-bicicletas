@@ -5,6 +5,9 @@ import { UserRepository } from '@/core/domain/protocols/repositories/user';
 
 export class UserTypeOrmRepository implements UserRepository {
   constructor(private readonly userRepository: Repository<User>) {}
+  async findByEmail(email: string): Promise<User> {
+    return this.userRepository.findOne({ where: { email } });
+  }
   async update(payload: Omit<UserModelDto, 'id'>, id: string): Promise<User> {
     try {
       const user = await this.userRepository.findOneOrFail({

@@ -6,6 +6,7 @@ import { IDbUpdateUserRepository } from '../db/user/update-user-repository';
 import { IDbFindUserByIdRepository } from '../db/user/find-user-by-id-repository';
 import { IDbDeleteUserRepository } from '../db/user/delete-user-repository';
 import { IDbListUserRepository } from '../db/user/list-user-respository';
+import { IDbFindUserByEmailRepository } from '../db/user/find-user-by-email-repository';
 
 @Injectable()
 export abstract class UserRepository
@@ -14,9 +15,11 @@ export abstract class UserRepository
     IDbListUserRepository,
     IDbUpdateUserRepository,
     IDbFindUserByIdRepository,
+    IDbFindUserByEmailRepository,
     IDbDeleteUserRepository
 {
   abstract findById(id: string): Promise<User>;
+  abstract findByEmail(email: string): Promise<User>;
   abstract getAll(): Promise<User[]>;
   abstract create(payload: Omit<UserModelDto, 'id'>): Promise<User>;
   abstract delete(id: string): Promise<void>;
