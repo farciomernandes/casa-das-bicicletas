@@ -34,12 +34,22 @@ export const AddressSchema = new EntitySchema<Address>({
       type: 'uuid',
       nullable: false,
     },
+    state_id: {
+      type: 'uuid',
+      nullable: false,
+    },
   },
   relations: {
     city: {
       type: 'many-to-one',
       target: 'City',
       joinColumn: { name: 'city_id' },
+      eager: true,
+    },
+    state: {
+      type: 'many-to-one',
+      target: 'State',
+      joinColumn: { name: 'state_id' },
       eager: true,
     },
   },

@@ -1,6 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, plainToInstance } from 'class-transformer';
 import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { City } from '@/core/domain/models/city.entity';
+import { State } from '@/core/domain/models/state.entity';
+import { CityModel } from '../city/city-model.dto';
+import { StateModel } from '../state/state-model.dto';
 
 export class AddressModelDto {
   @ApiProperty({
@@ -69,6 +73,30 @@ export class AddressModelDto {
   @IsNotEmpty()
   @IsUUID()
   city_id: string;
+
+  @ApiProperty({
+    type: CityModel,
+    example: CityModel,
+  })
+  @Expose()
+  city: CityModel;
+
+  @ApiProperty({
+    type: String,
+    example: '65bd52691a0f4c3b57819a4b',
+    required: true,
+  })
+  @Expose()
+  @IsNotEmpty()
+  @IsUUID()
+  state_id: string;
+
+  @ApiProperty({
+    type: StateModel,
+    example: StateModel,
+  })
+  @Expose()
+  state: StateModel;
 
   static toDto(payload: AddressModelDto): AddressModelDto {
     return plainToInstance(AddressModelDto, payload, {

@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { SchemasEnum } from '@/infra/db/schema.enum';
 import { City } from './city.entity';
+import { State } from './state.entity';
 
 @Entity({ name: 'addresses', schema: SchemasEnum.users })
 export class Address {
@@ -36,6 +37,13 @@ export class Address {
   @OneToOne(() => City)
   @JoinColumn({ name: 'city_id' })
   city: City;
+
+  @Column()
+  state_id: string;
+
+  @OneToOne(() => State)
+  @JoinColumn({ name: 'state_id' })
+  state: State;
 
   @CreateDateColumn({ name: 'created_at' })
   created_at: Date;
