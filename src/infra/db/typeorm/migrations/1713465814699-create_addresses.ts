@@ -16,7 +16,7 @@ export class CreateAddresses1713465814699 implements MigrationInterface {
             default: 'uuid_generate_v4()',
           },
           {
-            name: 'zipCode',
+            name: 'zip_code',
             type: 'varchar',
           },
           {
@@ -37,11 +37,7 @@ export class CreateAddresses1713465814699 implements MigrationInterface {
             type: 'varchar',
           },
           {
-            name: 'cityId',
-            type: 'uuid',
-          },
-          {
-            name: 'state_id',
+            name: 'city_id',
             type: 'uuid',
           },
           {

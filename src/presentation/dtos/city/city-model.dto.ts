@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, plainToInstance } from 'class-transformer';
-import { StateModel } from '../state/state-model.dto';
 
 export class CityModel {
   @ApiProperty({

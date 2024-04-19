@@ -11,12 +11,12 @@ export class CityTypeOrmRepository implements CityRepository {
 
   async update(payload: Omit<CityModel, 'id'>, id: string): Promise<City> {
     try {
-      const City = await this.cityRepository.findOneOrFail({
+      const city = await this.cityRepository.findOneOrFail({
         where: { id },
       });
 
-      this.cityRepository.merge(City, payload);
-      return this.cityRepository.save(City);
+      this.cityRepository.merge(city, payload);
+      return this.cityRepository.save(city);
     } catch (error) {
       throw new Error('City not found');
     }
