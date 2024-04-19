@@ -3,7 +3,6 @@ import { StateTypeOrmRepository } from '../../db/typeorm/repositories/state-type
 import { getDataSourceToken } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { IDbDeleteStateRepository } from '@/core/domain/protocols/db/state/delete-state-repository';
-import { StateRepository } from '@/core/domain/protocols/db/repositories/state';
 import { IDbAddStateRepository } from '@/core/domain/protocols/db/state/add-state-repository';
 import { IDbListStateRepository } from '@/core/domain/protocols/db/state/list-state-respository';
 import { IDbUpdateStateRepository } from '@/core/domain/protocols/db/state/update-state-repository';
@@ -12,6 +11,7 @@ import { DbListState } from '@/core/application/state/db-list-state';
 import { DbDeleteState } from '@/core/application/state/db-delete-state';
 import { DbUpdateState } from '@/core/application/state/db-update-state';
 import { DbAddState } from '@/core/application/state/db-add-state';
+import { StateRepository } from '@/core/domain/protocols/repositories/state';
 
 export const stateProvider: Provider[] = [
   DbAddState,

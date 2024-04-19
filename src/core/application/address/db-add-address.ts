@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { IDbAddAddressRepository } from '@/core/domain/protocols/db/address/add-address-repository';
 import { Address } from '@/core/domain/models/address.entity';
-import { AddressRepository } from '@/core/domain/protocols/db/repositories/address';
-import { CityRepository } from '@/core/domain/protocols/db/repositories/city';
+import { AddressRepository } from '@/core/domain/protocols/repositories/address';
+import { CityRepository } from '@/core/domain/protocols/repositories/city';
 
 @Injectable()
 export class DbAddAddress implements IDbAddAddressRepository {

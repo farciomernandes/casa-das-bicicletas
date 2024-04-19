@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { IDbFindRoleByValueRepository } from '../../../protocols/db/role/find-role-by-value-repository';
-import { IDbListRoleRepository } from '../../../protocols/db/role/list-role-respository';
-import { IDbAddRoleRepository } from '../../../protocols/db/role/add-role-repository';
 import { Role } from '@/core/domain/models/role.entity';
-import { IDbDeleteRoleRepository } from '../role/delete-role-repository';
-import { IDbFindRoleByIdRepository } from '../role/find-role-by-id-repository';
 import { RoleModel } from '@/presentation/dtos/role/role-model.dto';
-import { IDbUpdateRoleRepository } from '../role/update-role-repository';
+import { IDbAddRoleRepository } from '../db/role/add-role-repository';
+import { IDbListRoleRepository } from '../db/role/list-role-respository';
+import { IDbFindRoleByIdRepository } from '../db/role/find-role-by-id-repository';
+import { IDbFindRoleByValueRepository } from '../db/role/find-role-by-value-repository';
+import { IDbUpdateRoleRepository } from '../db/role/update-role-repository';
+import { IDbDeleteRoleRepository } from '../db/role/delete-role-repository';
 @Injectable()
 export abstract class RoleRepository
   implements

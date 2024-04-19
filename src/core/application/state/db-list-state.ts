@@ -1,7 +1,7 @@
 import { IDbListStateRepository } from '@/core/domain/protocols/db/state/list-state-respository';
 import { Injectable } from '@nestjs/common';
 import { State } from '@/core/domain/models/state.entity';
-import { StateRepository } from '@/core/domain/protocols/db/repositories/state';
+import { StateRepository } from '@/core/domain/protocols/repositories/state';
 
 @Injectable()
 export class DbListState implements IDbListStateRepository {

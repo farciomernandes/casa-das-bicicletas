@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { AddressRepository } from '@/core/domain/protocols/db/repositories/address';
 import { IDbUpdateAddressRepository } from '@/core/domain/protocols/db/address/update-address-repository';
 import { AddressModelDto } from '@/presentation/dtos/address/address-model.dto';
 import { Address } from '@/core/domain/models/address.entity';
+import { AddressRepository } from '@/core/domain/protocols/repositories/address';
 
 @Injectable()
 export class DbUpdateAddress implements IDbUpdateAddressRepository {

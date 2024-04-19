@@ -1,7 +1,7 @@
 import { Repository } from 'typeorm';
 import { City } from '@/core/domain/models/city.entity';
-import { CityRepository } from '@/core/domain/protocols/db/repositories/city';
 import { CityModel } from '@/presentation/dtos/city/city-model.dto';
+import { CityRepository } from '@/core/domain/protocols/repositories/city';
 
 export class CityTypeOrmRepository implements CityRepository {
   constructor(private readonly cityRepository: Repository<City>) {}

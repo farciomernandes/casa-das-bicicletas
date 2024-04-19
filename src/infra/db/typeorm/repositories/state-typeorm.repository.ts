@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm';
 import { State } from '@/core/domain/models/state.entity';
-import { StateRepository } from '@/core/domain/protocols/db/repositories/state';
+import { StateRepository } from '@/core/domain/protocols/repositories/state';
 
 export class StateTypeOrmRepository implements StateRepository {
   constructor(private readonly stateRepository: Repository<State>) {}

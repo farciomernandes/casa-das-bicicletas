@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CityRepository } from '@/core/domain/protocols/db/repositories/city';
 import { IDbUpdateCityRepository } from '@/core/domain/protocols/db/city/update-city-repository';
 import { CityModel } from '@/presentation/dtos/city/city-model.dto';
 import { City } from '@/core/domain/models/city.entity';
+import { CityRepository } from '@/core/domain/protocols/repositories/city';
 
 @Injectable()
 export class DbUpdateCity implements IDbUpdateCityRepository {

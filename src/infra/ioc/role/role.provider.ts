@@ -7,11 +7,11 @@ import { getDataSourceToken } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { DbDeleteRole } from '@/core/application/role/db-delete-role';
 import { IDbDeleteRoleRepository } from '@/core/domain/protocols/db/role/delete-role-repository';
-import { RoleRepository } from '@/core/domain/protocols/db/repositories/role';
 import { IDbAddRoleRepository } from '@/core/domain/protocols/db/role/add-role-repository';
 import { IDbListRoleRepository } from '@/core/domain/protocols/db/role/list-role-respository';
 import { DbUpdateRole } from '@/core/application/role/db-update-role';
 import { IDbUpdateRoleRepository } from '@/core/domain/protocols/db/role/update-role-repository';
+import { RoleRepository } from '@/core/domain/protocols/repositories/role';
 
 export const roleProvider: Provider[] = [
   DbAddRole,

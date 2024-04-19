@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { StateRepository } from '@/core/domain/protocols/db/repositories/state';
 import { IDbDeleteStateRepository } from '@/core/domain/protocols/db/state/delete-state-repository';
+import { StateRepository } from '@/core/domain/protocols/repositories/state';
 
 @Injectable()
 export class DbDeleteState implements IDbDeleteStateRepository {

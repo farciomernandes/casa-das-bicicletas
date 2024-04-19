@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CityRepository } from '@/core/domain/protocols/db/repositories/city';
 import { IDbDeleteCityRepository } from '@/core/domain/protocols/db/city/delete-city-repository';
+import { CityRepository } from '@/core/domain/protocols/repositories/city';
 
 @Injectable()
 export class DbDeleteCity implements IDbDeleteCityRepository {

@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { IDbListStateRepository } from '../state/list-state-respository';
-import { IDbAddStateRepository } from '../state/add-state-repository';
 import { State } from '@/core/domain/models/state.entity';
-import { IDbDeleteStateRepository } from '../state/delete-state-repository';
-import { IDbUpdateStateRepository } from '../state/update-state-repository';
-import { IDbFindStateByValueRepository } from '../state/find-state-by-name-repository';
-import { IDbFindStateByIdRepository } from '../state/find-state-by-id-repository';
+import { IDbAddStateRepository } from '../db/state/add-state-repository';
+import { IDbListStateRepository } from '../db/state/list-state-respository';
+import { IDbUpdateStateRepository } from '../db/state/update-state-repository';
+import { IDbFindStateByValueRepository } from '../db/state/find-state-by-name-repository';
+import { IDbFindStateByIdRepository } from '../db/state/find-state-by-id-repository';
+import { IDbDeleteStateRepository } from '../db/state/delete-state-repository';
 
 @Injectable()
 export abstract class StateRepository

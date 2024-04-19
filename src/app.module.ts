@@ -18,7 +18,8 @@ import { TypeOrmDataSource } from './infra/db/database.provider';
 import { RoleController } from './presentation/controllers/role/role-controller';
 import { CityModule } from './infra/ioc/city/city.module';
 import { StateModule } from './infra/ioc/state/state.module';
-import { AddressModule } from './infra/ioc/address/city.module';
+import { AddressModule } from './infra/ioc/address/address.module';
+import { UserModule } from './infra/ioc/user/user.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { AddressModule } from './infra/ioc/address/city.module';
     StateModule,
     CityModule,
     AddressModule,
+    UserModule,
   ],
   controllers: [RoleController],
   providers: [

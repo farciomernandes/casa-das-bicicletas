@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { RoleRepository } from '@/core/domain/protocols/db/repositories/role';
 import { IDbDeleteRoleRepository } from '@/core/domain/protocols/db/role/delete-role-repository';
+import { RoleRepository } from '@/core/domain/protocols/repositories/role';
 
 @Injectable()
 export class DbDeleteRole implements IDbDeleteRoleRepository {

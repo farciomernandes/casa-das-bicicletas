@@ -1,7 +1,7 @@
 import { Repository } from 'typeorm';
 import { Role } from '@/core/domain/models/role.entity';
-import { RoleRepository } from '@/core/domain/protocols/db/repositories/role';
 import { RoleModel } from '@/presentation/dtos/role/role-model.dto';
+import { RoleRepository } from '@/core/domain/protocols/repositories/role';
 
 export class RoleTypeOrmRepository implements RoleRepository {
   constructor(private readonly roleRepository: Repository<Role>) {}

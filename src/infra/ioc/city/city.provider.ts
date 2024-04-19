@@ -4,7 +4,6 @@ import { CityTypeOrmRepository } from '../../db/typeorm/repositories/city-typeor
 import { getDataSourceToken } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { IDbDeleteCityRepository } from '@/core/domain/protocols/db/city/delete-city-repository';
-import { CityRepository } from '@/core/domain/protocols/db/repositories/city';
 import { IDbAddCityRepository } from '@/core/domain/protocols/db/city/add-city-repository';
 import { IDbListCityRepository } from '@/core/domain/protocols/db/city/list-city-respository';
 import { IDbUpdateCityRepository } from '@/core/domain/protocols/db/city/update-city-repository';
@@ -12,9 +11,10 @@ import { DbListCity } from '@/core/application/city/db-list-city';
 import { DbDeleteCity } from '@/core/application/city/db-delete-city';
 import { DbUpdateCity } from '@/core/application/city/db-update-city';
 import { City } from '@/core/domain/models/city.entity';
-import { StateRepository } from '@/core/domain/protocols/db/repositories/state';
 import { StateTypeOrmRepository } from '@/infra/db/typeorm/repositories/state-typeorm.repository';
 import { State } from '@/core/domain/models/state.entity';
+import { CityRepository } from '@/core/domain/protocols/repositories/city';
+import { StateRepository } from '@/core/domain/protocols/repositories/state';
 
 export const cityProvider: Provider[] = [
   DbAddCity,

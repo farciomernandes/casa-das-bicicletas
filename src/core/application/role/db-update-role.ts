@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { RoleRepository } from '@/core/domain/protocols/db/repositories/role';
 import { IDbUpdateRoleRepository } from '@/core/domain/protocols/db/role/update-role-repository';
 import { RoleModel } from '@/presentation/dtos/role/role-model.dto';
 import { Role } from '@/core/domain/models/role.entity';
+import { RoleRepository } from '@/core/domain/protocols/repositories/role';
 
 @Injectable()
 export class DbUpdateRole implements IDbUpdateRoleRepository {

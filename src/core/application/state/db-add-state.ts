@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { IDbAddStateRepository } from '@/core/domain/protocols/db/state/add-state-repository';
 import { State } from '@/core/domain/models/state.entity';
-import { StateRepository } from '@/core/domain/protocols/db/repositories/state';
+import { StateRepository } from '@/core/domain/protocols/repositories/state';
 
 @Injectable()
 export class DbAddState implements IDbAddStateRepository {

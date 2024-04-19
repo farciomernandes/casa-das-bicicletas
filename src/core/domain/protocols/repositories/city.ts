@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { IDbListCityRepository } from '../city/list-city-respository';
-import { IDbAddCityRepository } from '../city/add-city-repository';
 import { City } from '@/core/domain/models/city.entity';
-import { IDbDeleteCityRepository } from '../city/delete-city-repository';
 import { CityModel } from '@/presentation/dtos/city/city-model.dto';
-import { IDbUpdateCityRepository } from '../city/update-city-repository';
-import { IDbFindCityByValueRepository } from '../city/find-city-by-name-repository';
-import { IDbFindCityByIdRepository } from '../city/find-city-by-id-repository';
+import { IDbAddCityRepository } from '../db/city/add-city-repository';
+import { IDbListCityRepository } from '../db/city/list-city-respository';
+import { IDbUpdateCityRepository } from '../db/city/update-city-repository';
+import { IDbFindCityByValueRepository } from '../db/city/find-city-by-name-repository';
+import { IDbFindCityByIdRepository } from '../db/city/find-city-by-id-repository';
+import { IDbDeleteCityRepository } from '../db/city/delete-city-repository';
 
 @Injectable()
 export abstract class CityRepository

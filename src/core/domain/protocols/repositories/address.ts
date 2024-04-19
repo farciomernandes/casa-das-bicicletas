@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { IDbListAddressRepository } from '../address/list-address-respository';
-import { IDbAddAddressRepository } from '../address/add-address-repository';
 import { Address } from '@/core/domain/models/address.entity';
-import { IDbUpdateAddressRepository } from '../address/update-address-repository';
-import { IDbFindAddressByIdRepository } from '../address/find-address-by-id-repository';
-import { IDbDeleteAddressRepository } from '../address/delete-address-repository';
 import { AddressModelDto } from '@/presentation/dtos/address/address-model.dto';
+import { IDbAddAddressRepository } from '../db/address/add-address-repository';
+import { IDbListAddressRepository } from '../db/address/list-address-respository';
+import { IDbUpdateAddressRepository } from '../db/address/update-address-repository';
+import { IDbFindAddressByIdRepository } from '../db/address/find-address-by-id-repository';
+import { IDbDeleteAddressRepository } from '../db/address/delete-address-repository';
 
 @Injectable()
 export abstract class AddressRepository
