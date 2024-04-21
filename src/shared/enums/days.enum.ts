@@ -1,9 +1,6 @@
-export enum DaysEnum {
-  MONDAY = 'MONDAY',
-  TUESDAY = 'TUESDAY',
-  WEDNESDAY = 'WEDNESDAY',
-  THURSDAY = 'THURSDAY',
-  FRIDAY = 'FRIDAY',
-  SATURDAY = 'SATURDAY',
+export enum OrderStatusEnum {
+  MONPENDINGDAY = 'PAID',
+  PAID = 'PAID',
+  CANCELED = 'CANCELED',
   SUNDAY = 'SUNDAY',
 }
