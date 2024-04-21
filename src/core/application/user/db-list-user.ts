@@ -11,7 +11,7 @@ export class DbListUser implements IDbListUserRepository {
     try {
       return await this.userRepository.getAll();
     } catch (error) {
-      console.log(error);
+      console.log('Error delete user ', error);
       return error;
     }
   }

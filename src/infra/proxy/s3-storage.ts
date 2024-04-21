@@ -52,7 +52,7 @@ export class S3Storage implements S3UploadImage, S3DeleteImage {
     const name = object_key.match(/([^\/]+)$/)[0];
 
     try {
-      const response = await this.client
+      await this.client
         .deleteObject({
           Bucket: this.configService.get<string>('AWS_BUCKET'),
           Key: name,
