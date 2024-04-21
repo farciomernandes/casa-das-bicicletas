@@ -1,6 +1,6 @@
 import { AxiosAdapter } from '@/infra/adapters/axios-adapter';
 import { UserModelDto } from '@/presentation/dtos/user/user-model.dto';
-import { OrderStatusEnum } from '@/shared/enums/days.enum';
+import { OrderStatusEnum } from '@/shared/enums/order_status.enum';
 import { BadGatewayException, Injectable } from '@nestjs/common';
 
 @Injectable()
