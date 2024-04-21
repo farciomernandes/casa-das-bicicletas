@@ -5,6 +5,8 @@ import { IDbListCategoryRepository } from '../db/category/list-category-resposit
 import { IDbUpdateCategoryRepository } from '../db/category/update-category-repository';
 import { IDbFindCategoryByIdRepository } from '../db/category/find-category-by-id-repository';
 import { IDbDeleteCategoryRepository } from '../db/category/delete-category-repository';
+import { IDbFindCategoryByNameRepository } from '../db/category/find-category-by-name-repository';
+import { AddCategoryDto } from '@/presentation/dtos/category/add-category.dto';
 
 @Injectable()
 export abstract class CategoryRepository
@@ -12,14 +14,16 @@ export abstract class CategoryRepository
     IDbListCategoryRepository,
     IDbUpdateCategoryRepository,
     IDbFindCategoryByIdRepository,
+    IDbFindCategoryByNameRepository,
     IDbDeleteCategoryRepository
 {
   abstract findById(id: string): Promise<Category>;
+  abstract findByName(name: string): Promise<Category>;
   abstract getAll(): Promise<Category[]>;
-  abstract create(payload: Omit<CategoryModelDto, 'id'>): Promise<Category>;
+  abstract create(payload: AddCategoryDto): Promise<Category>;
   abstract delete(id: string): Promise<void>;
   abstract update(
-    payload: Omit<CategoryModelDto, 'id'>,
+    payload: Omit<AddCategoryDto, 'image_link'>,
     id: string,
   ): Promise<Category>;
 }

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, plainToClass } from 'class-transformer';
-import { IsNotEmpty, IsString, IsOptional, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class AddCategoryDto {
   @ApiProperty({
@@ -14,13 +14,13 @@ export class AddCategoryDto {
   name: string;
 
   @ApiProperty({
-    type: String,
-    example: 'Image Link',
-    required: true,
+    type: 'string',
+    format: 'binary',
+    description: 'Image file',
   })
-  @Expose()
   @IsNotEmpty()
   @IsString()
+  @Expose()
   image_link: string;
 
   @ApiProperty({

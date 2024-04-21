@@ -1,6 +1,9 @@
 import { Category } from '@/core/domain/models/category.entity';
-import { CategoryModelDto } from '@/presentation/dtos/category/category-model.dto';
+import { AddCategoryDto } from '@/presentation/dtos/category/add-category.dto';
 
 export abstract class IDbAddCategoryRepository {
-  abstract create(payload: Omit<CategoryModelDto, 'id'>): Promise<Category>;
+  abstract create(
+    payload: Omit<AddCategoryDto, 'image_link'>,
+    image_link: Express.Multer.File,
+  ): Promise<Category>;
 }

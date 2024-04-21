@@ -6,11 +6,16 @@ import {
   HttpException,
   HttpStatus,
   Param,
+  Post,
   Put,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiBody,
+  ApiConsumes,
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -20,12 +25,16 @@ import { IDbDeleteCategoryRepository } from '@/core/domain/protocols/db/category
 import { IDbUpdateCategoryRepository } from '@/core/domain/protocols/db/category/update-category-repository';
 import { Category } from '@/core/domain/models/category.entity';
 import { AddCategoryDto } from '@/presentation/dtos/category/add-category.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import multerConfig from '@/infra/config/multer';
+import { IDbAddCategoryRepository } from '@/core/domain/protocols/db/category/add-category-repository';
 
 @ApiTags('Category')
 @Controller('api/v1/category')
 export class CategoryController {
   constructor(
     private readonly dbListCategory: IDbListCategoryRepository,
+    private readonly dbAddCategory: IDbAddCategoryRepository,
     private readonly dbUpdateCategory: IDbUpdateCategoryRepository,
     private readonly dbDeleteCategory: IDbDeleteCategoryRepository,
   ) {}
@@ -41,6 +50,31 @@ export class CategoryController {
   async getAll(): Promise<CategoryModelDto[]> {
     try {
       return await this.dbListCategory.getAll();
+    } catch (error) {
+      throw new HttpException(error.response, error.status);
+    }
+  }
+
+  @Post()
+  @ApiBody({
+    type: AddCategoryDto,
+    description:
+      'Insert item in existing cart or create new cart with this item',
+  })
+  @ApiOkResponse({
+    description: 'Returns Categorys.',
+    status: HttpStatus.OK,
+    type: CategoryModelDto,
+  })
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('image_link', multerConfig))
+  @ApiBearerAuth()
+  async create(
+    @UploadedFile() image_link: Express.Multer.File,
+    @Body() payload: Omit<AddCategoryDto, 'image_link'>,
+  ): Promise<CategoryModelDto> {
+    try {
+      return await this.dbAddCategory.create(payload, image_link);
     } catch (error) {
       throw new HttpException(error.response, error.status);
     }

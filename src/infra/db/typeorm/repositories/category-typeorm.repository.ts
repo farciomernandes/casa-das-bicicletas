@@ -5,6 +5,9 @@ import { CategoryRepository } from '@/core/domain/protocols/repositories/categor
 
 export class CategoryTypeOrmRepository implements CategoryRepository {
   constructor(private readonly categoryRepository: Repository<Category>) {}
+  async findByName(name: string): Promise<Category> {
+    return this.categoryRepository.findOne({ where: { name } });
+  }
   async update(
     payload: Omit<CategoryModelDto, 'id'>,
     id: string,
