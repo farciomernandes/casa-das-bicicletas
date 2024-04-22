@@ -21,6 +21,7 @@ import { StateModule } from './infra/ioc/state/state.module';
 import { AddressModule } from './infra/ioc/address/address.module';
 import { UserModule } from './infra/ioc/user/user.module';
 import { CategoryModule } from './infra/ioc/category/category.module';
+import { AttributesModule } from './infra/ioc/attributes/attributes.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { CategoryModule } from './infra/ioc/category/category.module';
     AddressModule,
     UserModule,
     CategoryModule,
+    AttributesModule,
   ],
   controllers: [RoleController],
   providers: [
