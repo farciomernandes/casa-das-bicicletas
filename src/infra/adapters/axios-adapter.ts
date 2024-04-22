@@ -14,7 +14,6 @@ export class AxiosAdapter {
     });
   }
 
-  // Método para fazer uma solicitação GET
   async get(url: string): Promise<any> {
     try {
       const response = await this.api.get(url);
@@ -34,6 +33,4 @@ export class AxiosAdapter {
       throw error;
     }
   }
-
-  // Adicione outros métodos conforme necessário, como PUT, DELETE, etc.
 }

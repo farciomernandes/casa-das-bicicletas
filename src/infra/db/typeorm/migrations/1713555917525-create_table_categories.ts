@@ -42,6 +42,7 @@ export class CreateTableCategories1713555917525 implements MigrationInterface {
             name: 'deleted_at',
             type: 'timestamp',
             default: null,
+            onUpdate: 'CURRENT_TIMESTAMP',
             isNullable: true,
           },
         ],

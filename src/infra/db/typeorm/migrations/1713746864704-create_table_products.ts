@@ -65,9 +65,11 @@ export class CreateTableProducts1713746864704 implements MigrationInterface {
             default: 'now()',
           },
           {
-            name: 'deleted_date',
+            name: 'deleted_at',
             type: 'timestamp',
-            default: 'now()',
+            default: null,
+            onUpdate: 'CURRENT_TIMESTAMP',
+            isNullable: true,
           },
         ],
       }),

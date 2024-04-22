@@ -23,6 +23,7 @@ import { UserModule } from './infra/ioc/user/user.module';
 import { CategoryModule } from './infra/ioc/category/category.module';
 import { AttributesModule } from './infra/ioc/attributes/attributes.module';
 import { ProductModule } from './infra/ioc/product/product.module';
+import { OrderModule } from './infra/ioc/order/order.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { ProductModule } from './infra/ioc/product/product.module';
     CategoryModule,
     ProductModule,
     AttributesModule,
+    OrderModule,
   ],
   controllers: [RoleController],
   providers: [

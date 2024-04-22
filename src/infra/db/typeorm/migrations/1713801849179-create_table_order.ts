@@ -1,11 +1,16 @@
-import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey,
+} from 'typeorm';
 import { SchemasEnum } from '../../schema.enum';
 
-export class CreateTableAttributes1713725148198 implements MigrationInterface {
+export class CreateTableOrder1713801849179 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'attributes',
+        name: 'orders',
         schema: SchemasEnum.users,
         columns: [
           {
@@ -16,23 +21,22 @@ export class CreateTableAttributes1713725148198 implements MigrationInterface {
             default: 'uuid_generate_v4()',
           },
           {
-            name: 'color',
+            name: 'status',
+            type: 'enum',
+            enum: ['PENDING', 'PAID', 'CANCELED'],
+            default: "'PENDING'",
+          },
+          {
+            name: 'total',
+            type: 'numeric',
+          },
+          {
+            name: 'transaction_id',
             type: 'varchar',
+            isNullable: true,
           },
           {
-            name: 'qtd',
-            type: 'int',
-          },
-          {
-            name: 'size',
-            type: 'varchar',
-          },
-          {
-            name: 'image_link',
-            type: 'varchar',
-          },
-          {
-            name: 'product_id',
+            name: 'user_id',
             type: 'uuid',
           },
           {
@@ -55,10 +59,26 @@ export class CreateTableAttributes1713725148198 implements MigrationInterface {
           },
         ],
       }),
+      true,
+    );
+
+    await queryRunner.createForeignKey(
+      `${SchemasEnum.users}.orders`,
+      new TableForeignKey({
+        columnNames: ['user_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: `${SchemasEnum.users}.users`,
+        onDelete: 'CASCADE',
+      }),
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('attributes');
+    await queryRunner.dropForeignKey(
+      `${SchemasEnum.users}.orders`,
+      'FK_orders_user_id',
+    );
+
+    await queryRunner.dropTable('orders');
   }
 }
