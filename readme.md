@@ -10,7 +10,7 @@
   - npm run migration:create src/infra/db/typeorm/migrations/NOME_DA_MIGRATION
 
   > ## Erros comuns
-  - Apagar .buildinfo caso o build não esteja sendo feito ao rodar npm run build
+  - Apagar tsconfig.build.tsbuildinfo caso o build não esteja sendo feito ao rodar npm run build
   - Verificar a tabela de migrations está vazia
 
 > ## Design Patterns
