@@ -12,6 +12,10 @@ import { DbDeleteAttributes } from '@/core/application/attributes/db-delete-attr
 import { DbAddAttributes } from '@/core/application/attributes/db-add-attributes';
 import { AttributesRepository } from '@/core/domain/protocols/repositories/attributes';
 import { DbUpdateAttributes } from '@/core/application/attributes/db-update-attributes';
+import { S3UploadImage } from '@/core/domain/protocols/aws/s3-upload-image';
+import { S3Storage } from '@/infra/proxy/s3-storage';
+import { S3DeleteImage } from '@/core/domain/protocols/aws/s3-delete-image';
+import { ConfigService } from '@nestjs/config';
 
 export const attributesProvider: Provider[] = [
   DbAddAttributes,
@@ -36,13 +40,25 @@ export const attributesProvider: Provider[] = [
     useClass: DbAddAttributes,
   },
   {
+    provide: S3Storage,
+    useFactory: (configService: ConfigService): S3Storage => {
+      return new S3Storage(configService);
+    },
+    inject: [ConfigService],
+  },
+  {
+    provide: S3UploadImage,
+    useClass: S3Storage,
+  },
+  {
     provide: IDbAddAttributesRepository,
     useFactory: (
       attributesRepository: AttributesRepository,
+      s3Upload: S3UploadImage,
     ): DbAddAttributes => {
-      return new DbAddAttributes(attributesRepository);
+      return new DbAddAttributes(attributesRepository, s3Upload);
     },
-    inject: [AttributesTypeOrmRepository],
+    inject: [AttributesTypeOrmRepository, S3Storage],
   },
   {
     provide: IDbListAttributesRepository,

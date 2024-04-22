@@ -6,6 +6,7 @@ import { IDbDeleteAttributesRepository } from '@/core/domain/protocols/db/attrib
 import { IDbUpdateAttributesRepository } from '@/core/domain/protocols/db/attributes/update-attributes-repository';
 import { AttributesRepository } from '@/core/domain/protocols/repositories/attributes';
 import { AttributesController } from '@/presentation/controllers/attributes/attributes-controller';
+import { S3UploadImage } from '@/core/domain/protocols/aws/s3-upload-image';
 
 @Module({
   imports: [],
@@ -17,6 +18,7 @@ import { AttributesController } from '@/presentation/controllers/attributes/attr
     IDbDeleteAttributesRepository,
     IDbUpdateAttributesRepository,
     AttributesRepository,
+    S3UploadImage,
   ],
 })
 export class AttributesModule {}

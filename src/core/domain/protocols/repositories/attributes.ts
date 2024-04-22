@@ -5,6 +5,7 @@ import { IDbUpdateAttributesRepository } from '../db/attributes/update-attribute
 import { IDbDeleteAttributesRepository } from '../db/attributes/delete-attributes-repository';
 import { IDbAddAttributesRepository } from '../db/attributes/add-attributes-repository';
 import { IDbFinddAttributesByIdRepository } from '../db/attributes/find-attributes-by-id-repository';
+import { AddAttributesModel } from '@/presentation/dtos/attributes/add-attributes.dto';
 
 @Injectable()
 export abstract class AttributesRepository
@@ -17,10 +18,10 @@ export abstract class AttributesRepository
 {
   abstract findById(id: string): Promise<Attributes>;
   abstract getAll(): Promise<Attributes[]>;
-  abstract create(payload: Omit<Attributes, 'id'>): Promise<Attributes>;
+  abstract create(payload: Omit<AddAttributesModel, 'id'>): Promise<Attributes>;
   abstract delete(id: string): Promise<void>;
   abstract update(
-    payload: Omit<Attributes, 'id'>,
+    payload: Omit<AddAttributesModel, 'product_id'>,
     id: string,
   ): Promise<Attributes>;
 }

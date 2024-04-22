@@ -4,12 +4,10 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToOne,
-  JoinColumn,
+  ManyToOne,
 } from 'typeorm';
 import { SchemasEnum } from '@/infra/db/schema.enum';
-import { City } from './city.entity';
-import { State } from './state.entity';
+import { Product } from './product.entity';
 
 @Entity({ name: 'attributes', schema: SchemasEnum.users })
 export class Attributes {
@@ -24,6 +22,15 @@ export class Attributes {
 
   @Column()
   size: string;
+
+  @Column()
+  image_link: string;
+
+  @Column()
+  product_id: string;
+
+  @ManyToOne(() => Product, (product) => product.attributes)
+  product: Product;
 
   @CreateDateColumn({ name: 'created_at' })
   created_at: Date;

@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, plainToInstance } from 'class-transformer';
+import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
 
 export class AttributesModel {
   @ApiProperty({
@@ -33,6 +34,25 @@ export class AttributesModel {
   })
   @Expose()
   size: string;
+
+  @ApiProperty({
+    example: ['link1', 'link2'],
+    required: true,
+    isArray: true,
+  })
+  @IsNotEmpty()
+  @IsString({ each: true })
+  image_link: string;
+
+  @ApiProperty({
+    type: String,
+    example: '994fb2cd-0f39-4a71-b15c-333b7e2ff793',
+    required: true,
+  })
+  @Expose()
+  @IsNotEmpty()
+  @IsUUID()
+  product_id: string;
 
   @ApiProperty({
     type: String,

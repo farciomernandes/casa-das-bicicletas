@@ -9,10 +9,13 @@ import {
   Param,
   Post,
   Put,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiBody,
+  ApiConsumes,
   ApiCreatedResponse,
   ApiOkResponse,
   ApiTags,
@@ -24,6 +27,8 @@ import { IDbDeleteAttributesRepository } from '@/core/domain/protocols/db/attrib
 import { IDbUpdateAttributesRepository } from '@/core/domain/protocols/db/attributes/update-attributes-repository';
 import { Attributes } from '@/core/domain/models/attributes.entity';
 import { AddAttributesModel } from '@/presentation/dtos/attributes/add-attributes.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import multerConfig from '@/infra/config/multer';
 
 @ApiTags('Attributes')
 @Controller('api/v1/attributes')
@@ -40,13 +45,16 @@ export class AttributesController {
     type: AddAttributesModel,
   })
   @ApiCreatedResponse({ type: AddAttributesModel })
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('image_link', multerConfig))
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiBearerAuth()
   async create(
-    @Body() payload: Omit<AddAttributesModel, 'id'>,
+    @UploadedFile() image_link: Express.Multer.File,
+    @Body() payload: Omit<AddAttributesModel, 'image_link'>,
   ): Promise<Attributes> {
-    return await this.dbAddAttributes.create(payload);
+    return await this.dbAddAttributes.create(payload, image_link);
   }
 
   @Get()

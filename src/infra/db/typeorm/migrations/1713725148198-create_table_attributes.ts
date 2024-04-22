@@ -28,6 +28,14 @@ export class CreateTableAttributes1713725148198 implements MigrationInterface {
             type: 'varchar',
           },
           {
+            name: 'image_link',
+            type: 'varchar',
+          },
+          {
+            name: 'product_id',
+            type: 'uuid',
+          },
+          {
             name: 'created_at',
             type: 'timestamp',
             default: 'now()',

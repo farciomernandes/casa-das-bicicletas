@@ -22,6 +22,10 @@ export const AttributesSchema = new EntitySchema<Attributes>({
     size: {
       type: 'varchar',
     },
+    image_link: {
+      type: 'varchar',
+      nullable: false,
+    },
     created_at: {
       type: 'timestamp',
       createDate: true,
@@ -29,6 +33,17 @@ export const AttributesSchema = new EntitySchema<Attributes>({
     updated_at: {
       type: 'timestamp',
       updateDate: true,
+    },
+    product_id: {
+      type: 'uuid',
+      nullable: false,
+    },
+  },
+  relations: {
+    product: {
+      type: 'many-to-one',
+      target: 'Product',
+      joinColumn: { name: 'product_id' },
     },
   },
 });
