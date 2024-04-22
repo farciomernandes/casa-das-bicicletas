@@ -2,6 +2,7 @@ import { Repository } from 'typeorm';
 import { Address } from '@/core/domain/models/address.entity';
 import { AddressRepository } from '@/core/domain/protocols/repositories/address';
 import { UploadAddressDto } from '@/presentation/dtos/address/upload-address.dto';
+import { AddAddressDto } from '@/presentation/dtos/address/add-address.dto';
 
 export class AddressTypeOrmRepository implements AddressRepository {
   constructor(private readonly addressRepository: Repository<Address>) {}
@@ -32,7 +33,7 @@ export class AddressTypeOrmRepository implements AddressRepository {
     });
   }
 
-  async create(payload: Omit<Address, 'id'>): Promise<Address> {
+  async create(payload: AddAddressDto): Promise<Address> {
     const address = this.addressRepository.create(payload);
     return this.addressRepository.save(address);
   }
