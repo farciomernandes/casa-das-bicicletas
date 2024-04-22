@@ -24,6 +24,7 @@ import { IDbDeleteUserRepository } from '@/core/domain/protocols/db/user/delete-
 import { IDbUpdateUserRepository } from '@/core/domain/protocols/db/user/update-user-repository';
 import { User } from '@/core/domain/models/user.entity';
 import { AddUserDto } from '@/presentation/dtos/user/add-user.dto';
+import { UpdateUserDto } from '@/presentation/dtos/user/update-user.dto';
 
 @ApiTags('User')
 @Controller('api/v1/user')
@@ -67,7 +68,7 @@ export class UserController {
 
   @Put(':id')
   @ApiBody({
-    type: AddUserDto,
+    type: UpdateUserDto,
   })
   @ApiOkResponse({
     description: 'Delete success.',
@@ -77,7 +78,7 @@ export class UserController {
   @ApiBearerAuth()
   async update(
     @Param('id') id: string,
-    @Body() payload: Omit<UserModelDto, 'id'>,
+    @Body() payload: UpdateUserDto,
   ): Promise<User> {
     try {
       return await this.dbUpdateUser.update(payload, id);

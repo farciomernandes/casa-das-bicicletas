@@ -1,6 +1,6 @@
-import { UserModelDto } from '@/presentation/dtos/user/user-model.dto';
 import { User } from '@/core/domain/models/user.entity';
+import { UpdateUserDto } from '@/presentation/dtos/user/update-user.dto';
 
 export abstract class IDbUpdateUserRepository {
-  abstract update(payload: Omit<UserModelDto, 'id'>, id: string): Promise<User>;
+  abstract update(payload: UpdateUserDto, id: string): Promise<User>;
 }

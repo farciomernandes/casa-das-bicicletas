@@ -24,6 +24,7 @@ import { IDbDeleteCityRepository } from '@/core/domain/protocols/db/city/delete-
 import { IDbUpdateCityRepository } from '@/core/domain/protocols/db/city/update-city-repository';
 import { City } from '@/core/domain/models/city.entity';
 import { AddCityDto } from '@/presentation/dtos/city/add-city.dto';
+import { UpdateCityDto } from '@/presentation/dtos/city/update-city.dto';
 
 @ApiTags('City')
 @Controller('api/v1/city')
@@ -65,7 +66,7 @@ export class CityController {
 
   @Put(':id')
   @ApiBody({
-    type: AddCityDto,
+    type: UpdateCityDto,
   })
   @ApiOkResponse({
     description: 'Delete success.',
@@ -75,7 +76,7 @@ export class CityController {
   @ApiBearerAuth()
   async update(
     @Param('id') id: string,
-    @Body() payload: Omit<CityModel, 'id'>,
+    @Body() payload: UpdateCityDto,
   ): Promise<City> {
     try {
       return await this.dbUpdateCity.update(payload, id);

@@ -15,6 +15,9 @@ import { DbUpdateProduct } from '@/core/application/product/db-update-product';
 import { AttributesTypeOrmRepository } from '@/infra/db/typeorm/repositories/attributes-typeorm.repository';
 import { Attributes } from '@/core/domain/models/attributes.entity';
 import { AttributesRepository } from '@/core/domain/protocols/repositories/attributes';
+import { CategoryRepository } from '@/core/domain/protocols/repositories/category';
+import { CategoryTypeOrmRepository } from '@/infra/db/typeorm/repositories/category-typeorm.repository';
+import { Category } from '@/core/domain/models/category.entity';
 
 export const productProvider: Provider[] = [
   DbAddProduct,
@@ -46,11 +49,25 @@ export const productProvider: Provider[] = [
     useClass: AttributesTypeOrmRepository,
   },
   {
-    provide: IDbAddProductRepository,
-    useFactory: (productRepository: ProductRepository): DbAddProduct => {
-      return new DbAddProduct(productRepository);
+    provide: CategoryTypeOrmRepository,
+    useFactory: (dataSource: DataSource) => {
+      return new CategoryTypeOrmRepository(dataSource.getRepository(Category));
     },
-    inject: [ProductTypeOrmRepository, AttributesTypeOrmRepository],
+    inject: [getDataSourceToken()],
+  },
+  {
+    provide: CategoryRepository,
+    useClass: CategoryTypeOrmRepository,
+  },
+  {
+    provide: IDbAddProductRepository,
+    useFactory: (
+      productRepository: ProductRepository,
+      categoryRepository: CategoryRepository,
+    ): DbAddProduct => {
+      return new DbAddProduct(productRepository, categoryRepository);
+    },
+    inject: [ProductTypeOrmRepository, CategoryTypeOrmRepository],
   },
   {
     provide: IDbListProductRepository,

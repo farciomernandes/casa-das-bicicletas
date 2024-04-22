@@ -6,6 +6,10 @@ import { UpdateProductModelDto } from '@/presentation/dtos/product/update-produc
 
 export class ProductTypeOrmRepository implements ProductRepository {
   constructor(private readonly productRepository: Repository<Product>) {}
+  async findByName(name: string): Promise<Product> {
+    return this.productRepository.findOne({ where: { name } });
+  }
+
   async update(payload: UpdateProductModelDto, id: string): Promise<Product> {
     try {
       const product = await this.productRepository.findOneOrFail({

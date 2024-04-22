@@ -24,6 +24,7 @@ import { IDbDeleteAddressRepository } from '@/core/domain/protocols/db/address/d
 import { IDbUpdateAddressRepository } from '@/core/domain/protocols/db/address/update-address-repository';
 import { Address } from '@/core/domain/models/address.entity';
 import { AddAddressDto } from '@/presentation/dtos/address/add-address.dto';
+import { UploadAddressDto } from '@/presentation/dtos/address/upload-address.dto';
 
 @ApiTags('Address')
 @Controller('api/v1/address')
@@ -67,7 +68,7 @@ export class AddressController {
 
   @Put(':id')
   @ApiBody({
-    type: AddAddressDto,
+    type: UploadAddressDto,
   })
   @ApiOkResponse({
     description: 'Delete success.',
@@ -77,7 +78,7 @@ export class AddressController {
   @ApiBearerAuth()
   async update(
     @Param('id') id: string,
-    @Body() payload: Omit<AddressModelDto, 'id'>,
+    @Body() payload: UploadAddressDto,
   ): Promise<Address> {
     try {
       return await this.dbUpdateAddress.update(payload, id);

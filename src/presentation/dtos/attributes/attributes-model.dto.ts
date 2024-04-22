@@ -36,9 +36,8 @@ export class AttributesModel {
   size: string;
 
   @ApiProperty({
-    example: ['link1', 'link2'],
+    example: 'link1',
     required: true,
-    isArray: true,
   })
   @IsNotEmpty()
   @IsString({ each: true })

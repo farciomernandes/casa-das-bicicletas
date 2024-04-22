@@ -1,14 +1,14 @@
 import { Repository } from 'typeorm';
 import { User } from '@/core/domain/models/user.entity';
-import { UserModelDto } from '@/presentation/dtos/user/user-model.dto';
 import { UserRepository } from '@/core/domain/protocols/repositories/user';
+import { UpdateUserDto } from '@/presentation/dtos/user/update-user.dto';
 
 export class UserTypeOrmRepository implements UserRepository {
   constructor(private readonly userRepository: Repository<User>) {}
   async findByEmail(email: string): Promise<User> {
     return this.userRepository.findOne({ where: { email } });
   }
-  async update(payload: Omit<UserModelDto, 'id'>, id: string): Promise<User> {
+  async update(payload: UpdateUserDto, id: string): Promise<User> {
     try {
       const user = await this.userRepository.findOneOrFail({
         where: { id },

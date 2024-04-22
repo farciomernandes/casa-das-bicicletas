@@ -8,6 +8,7 @@ import { IDbDeleteProductRepository } from '../db/product/delete-product-reposit
 import { AddProductModelDto } from '@/presentation/dtos/product/add-product.dto';
 import { ProductModelDto } from '@/presentation/dtos/product/product-model.dto';
 import { UpdateProductModelDto } from '@/presentation/dtos/product/update-product.dto';
+import { IDbFindProductByNameRepository } from '../db/product/find-product-by-name-repository';
 
 @Injectable()
 export abstract class ProductRepository
@@ -16,9 +17,11 @@ export abstract class ProductRepository
     IDbListProductRepository,
     IDbUpdateProductRepository,
     IDbFindProductByIdRepository,
+    IDbFindProductByNameRepository,
     IDbDeleteProductRepository
 {
   abstract findById(id: string): Promise<Product>;
+  abstract findByName(name: string): Promise<Product>;
   abstract getAll(): Promise<ProductModelDto[]>;
   abstract create(payload: AddProductModelDto): Promise<Product>;
   abstract delete(id: string): Promise<void>;

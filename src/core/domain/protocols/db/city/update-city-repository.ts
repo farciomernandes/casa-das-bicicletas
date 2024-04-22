@@ -1,6 +1,6 @@
-import { CityModel } from '@/presentation/dtos/city/city-model.dto';
 import { City } from '@/core/domain/models/city.entity';
+import { UpdateCityDto } from '@/presentation/dtos/city/update-city.dto';
 
 export abstract class IDbUpdateCityRepository {
-  abstract update(payload: Omit<CityModel, 'id'>, id: string): Promise<City>;
+  abstract update(payload: UpdateCityDto, id: string): Promise<City>;
 }

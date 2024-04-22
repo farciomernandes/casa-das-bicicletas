@@ -1,14 +1,11 @@
 import { Repository } from 'typeorm';
 import { Address } from '@/core/domain/models/address.entity';
-import { AddressModelDto } from '@/presentation/dtos/address/address-model.dto';
 import { AddressRepository } from '@/core/domain/protocols/repositories/address';
+import { UploadAddressDto } from '@/presentation/dtos/address/upload-address.dto';
 
 export class AddressTypeOrmRepository implements AddressRepository {
   constructor(private readonly addressRepository: Repository<Address>) {}
-  async update(
-    payload: Omit<AddressModelDto, 'id'>,
-    id: string,
-  ): Promise<Address> {
+  async update(payload: UploadAddressDto, id: string): Promise<Address> {
     try {
       const address = await this.addressRepository.findOneOrFail({
         where: { id },

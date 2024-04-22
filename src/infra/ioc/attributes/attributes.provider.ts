@@ -14,8 +14,10 @@ import { AttributesRepository } from '@/core/domain/protocols/repositories/attri
 import { DbUpdateAttributes } from '@/core/application/attributes/db-update-attributes';
 import { S3UploadImage } from '@/core/domain/protocols/aws/s3-upload-image';
 import { S3Storage } from '@/infra/proxy/s3-storage';
-import { S3DeleteImage } from '@/core/domain/protocols/aws/s3-delete-image';
 import { ConfigService } from '@nestjs/config';
+import { ProductRepository } from '@/core/domain/protocols/repositories/product';
+import { ProductTypeOrmRepository } from '@/infra/db/typeorm/repositories/product-typeorm.repository';
+import { Product } from '@/core/domain/models/product.entity';
 
 export const attributesProvider: Provider[] = [
   DbAddAttributes,
@@ -36,6 +38,17 @@ export const attributesProvider: Provider[] = [
     useClass: AttributesTypeOrmRepository,
   },
   {
+    provide: ProductTypeOrmRepository,
+    useFactory: (dataSource: DataSource) => {
+      return new ProductTypeOrmRepository(dataSource.getRepository(Product));
+    },
+    inject: [getDataSourceToken()],
+  },
+  {
+    provide: ProductRepository,
+    useClass: ProductTypeOrmRepository,
+  },
+  {
     provide: IDbAddAttributesRepository,
     useClass: DbAddAttributes,
   },
@@ -54,11 +67,16 @@ export const attributesProvider: Provider[] = [
     provide: IDbAddAttributesRepository,
     useFactory: (
       attributesRepository: AttributesRepository,
+      productRepository: ProductRepository,
       s3Upload: S3UploadImage,
     ): DbAddAttributes => {
-      return new DbAddAttributes(attributesRepository, s3Upload);
+      return new DbAddAttributes(
+        attributesRepository,
+        productRepository,
+        s3Upload,
+      );
     },
-    inject: [AttributesTypeOrmRepository, S3Storage],
+    inject: [AttributesTypeOrmRepository, ProductTypeOrmRepository, S3Storage],
   },
   {
     provide: IDbListAttributesRepository,

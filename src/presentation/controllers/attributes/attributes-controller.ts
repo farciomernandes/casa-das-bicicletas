@@ -29,6 +29,7 @@ import { Attributes } from '@/core/domain/models/attributes.entity';
 import { AddAttributesModel } from '@/presentation/dtos/attributes/add-attributes.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import multerConfig from '@/infra/config/multer';
+import { UpdateAttributesModel } from '@/presentation/dtos/attributes/update-attributes.dto';
 
 @ApiTags('Attributes')
 @Controller('api/v1/attributes')
@@ -75,7 +76,7 @@ export class AttributesController {
 
   @Put(':id')
   @ApiBody({
-    type: AddAttributesModel,
+    type: UpdateAttributesModel,
   })
   @ApiOkResponse({
     description: 'Delete success.',
@@ -85,7 +86,7 @@ export class AttributesController {
   @ApiBearerAuth()
   async update(
     @Param('id') id: string,
-    @Body() payload: Omit<AddAttributesModel, 'id'>,
+    @Body() payload: UpdateAttributesModel,
   ): Promise<Attributes> {
     try {
       return await this.dbUpdateAttributes.update(payload, id);

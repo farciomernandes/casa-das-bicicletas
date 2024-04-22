@@ -1,9 +1,9 @@
 import { Attributes } from '@/core/domain/models/attributes.entity';
-import { AddAttributesModel } from '@/presentation/dtos/attributes/add-attributes.dto';
+import { UpdateAttributesModel } from '@/presentation/dtos/attributes/update-attributes.dto';
 
 export abstract class IDbUpdateAttributesRepository {
   abstract update(
-    payload: Omit<AddAttributesModel, 'id'>,
+    payload: UpdateAttributesModel,
     id: string,
   ): Promise<Attributes>;
 }

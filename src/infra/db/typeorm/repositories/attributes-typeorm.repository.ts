@@ -2,12 +2,13 @@ import { Repository } from 'typeorm';
 import { Attributes } from '@/core/domain/models/attributes.entity';
 import { AttributesRepository } from '@/core/domain/protocols/repositories/attributes';
 import { AddAttributesModel } from '@/presentation/dtos/attributes/add-attributes.dto';
+import { UpdateAttributesModel } from '@/presentation/dtos/attributes/update-attributes.dto';
 
 export class AttributesTypeOrmRepository implements AttributesRepository {
   constructor(private readonly attributesRepository: Repository<Attributes>) {}
 
   async update(
-    payload: Omit<AddAttributesModel, 'product_id'>,
+    payload: UpdateAttributesModel,
     id: string,
   ): Promise<Attributes> {
     try {

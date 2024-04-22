@@ -1,9 +1,6 @@
-import { AddressModelDto } from '@/presentation/dtos/address/address-model.dto';
 import { Address } from '@/core/domain/models/address.entity';
+import { UploadAddressDto } from '@/presentation/dtos/address/upload-address.dto';
 
 export abstract class IDbUpdateAddressRepository {
-  abstract update(
-    payload: Omit<AddressModelDto, 'id'>,
-    id: string,
-  ): Promise<Address>;
+  abstract update(payload: UploadAddressDto, id: string): Promise<Address>;
 }
