@@ -1,5 +1,5 @@
-import { Order } from '@/core/domain/models/order.entity';
+import { OrderModel } from '@/presentation/dtos/order/order-model.dto';
 
 export abstract class IDbListOrderRepository {
-  abstract getAll(): Promise<Order[]>;
+  abstract getAll(): Promise<OrderModel[]>;
 }

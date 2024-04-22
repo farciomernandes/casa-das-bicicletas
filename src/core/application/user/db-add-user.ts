@@ -3,6 +3,7 @@ import { IDbAddUserRepository } from '@/core/domain/protocols/db/user/add-user-r
 import { User } from '@/core/domain/models/user.entity';
 import { UserRepository } from '@/core/domain/protocols/repositories/user';
 import { IHasher } from '@/core/domain/protocols/cryptography/hasher';
+import { AddUserDto } from '@/presentation/dtos/user/add-user.dto';
 
 @Injectable()
 export class DbAddUser implements IDbAddUserRepository {
@@ -11,7 +12,7 @@ export class DbAddUser implements IDbAddUserRepository {
     private readonly hasher: IHasher,
   ) {}
 
-  async create(payload: Omit<User, 'id'>): Promise<User> {
+  async create(payload: AddUserDto): Promise<User> {
     const alreadyExists = await this.userRepository.findByEmail(payload.email);
 
     if (alreadyExists) {

@@ -94,29 +94,11 @@ export class UserModelDto {
   phone: string;
 
   @ApiProperty({
-    type: String,
-    example: '65bd52691a0f4c3b57819a4b',
-    required: true,
-  })
-  @Expose()
-  @IsUUID()
-  role_id: string;
-
-  @ApiProperty({
     type: RoleModel,
     example: RoleModel,
   })
   @Expose()
   role: RoleModel;
-
-  @ApiProperty({
-    type: String,
-    example: '65bd52691a0f4c3b57819a4b',
-    required: true,
-  })
-  @Expose()
-  @IsUUID()
-  address_id: string;
 
   @ApiProperty({
     type: AddressModelDto,

@@ -44,9 +44,7 @@ export class UserController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiBearerAuth()
-  async create(
-    @Body() payload: Omit<UserModelDto, 'id'>,
-  ): Promise<UserModelDto> {
+  async create(@Body() payload: AddUserDto): Promise<UserModelDto> {
     return await this.dbAddUser.create(payload);
   }
 

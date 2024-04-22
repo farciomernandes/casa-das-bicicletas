@@ -1,95 +1,95 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, plainToClass } from 'class-transformer';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
-export class UserOrderDto {
+export class AddUserDto {
   @ApiProperty({
     type: String,
-    example: '65bd52691a0f4c3b57819a4b',
+    example: 'john.doe@example.com',
+    required: true,
   })
   @Expose()
-  id: string;
-
-  @ApiProperty({
-    type: String,
-    example: 'example@example.com',
-  })
-  @Expose()
+  @IsNotEmpty()
+  @IsString()
   email: string;
 
   @ApiProperty({
     type: String,
-    example: 'John Doe',
+    example: 'senha123',
+    required: true,
   })
   @Expose()
+  @IsNotEmpty()
+  @IsString()
+  password: string;
+
+  @ApiProperty({
+    type: String,
+    example: 'John Doe',
+    required: true,
+  })
+  @Expose()
+  @IsNotEmpty()
+  @IsString()
   name: string;
 
   @ApiProperty({
     type: String,
-    example: '12345678900',
+    example: '123.456.789-00',
+    required: true,
   })
   @Expose()
+  @IsNotEmpty()
+  @IsString()
   cpf: string;
 
   @ApiProperty({
     type: String,
-    example: '123456789',
+    example: 'RG1234567',
+    required: false,
   })
   @Expose()
-  document: string;
+  @IsOptional()
+  @IsString()
+  document?: string;
 
   @ApiProperty({
     type: String,
-    example: 'Male',
+    example: 'MALE',
+    required: true,
   })
   @Expose()
+  @IsNotEmpty()
+  @IsString()
   sex: string;
 
   @ApiProperty({
     type: String,
     example: '1990-01-01',
+    required: true,
   })
   @Expose()
+  @IsNotEmpty()
+  @IsString()
   birthdate: string;
 
   @ApiProperty({
     type: String,
-    example: '1234567890',
+    example: '+1234567890',
+    required: true,
   })
   @Expose()
+  @IsNotEmpty()
+  @IsString()
   phone: string;
 
-  static toDto(payload: UserOrderDto): UserOrderDto {
-    return plainToClass(UserOrderDto, payload, {
-      excludeExtraneousValues: true,
-    });
-  }
-}
-
-export class OrderModel {
   @ApiProperty({
     type: String,
     example: '65bd52691a0f4c3b57819a4b',
     required: false,
   })
   @Expose()
-  id: string;
-
-  @ApiProperty({
-    type: String,
-    example: 'PENDING',
-    enum: ['PENDING', 'PAID', 'CANCELED'],
-    required: true,
-  })
-  @Expose()
-  status: string;
-
-  @ApiProperty({
-    type: Number,
-    example: 100.5,
-    required: true,
-  })
-  @Expose()
-  total: number;
+  role_id: string;
 
   @ApiProperty({
     type: String,
@@ -97,17 +97,10 @@ export class OrderModel {
     required: false,
   })
   @Expose()
-  transaction_id?: string;
+  address_id: string;
 
-  @ApiProperty({
-    type: UserOrderDto,
-    required: true,
-  })
-  @Expose()
-  user: UserOrderDto;
-
-  static toDto(payload: OrderModel): OrderModel {
-    return plainToClass(OrderModel, payload, {
+  static toDto(payload: AddUserDto): AddUserDto {
+    return plainToClass(AddUserDto, payload, {
       excludeExtraneousValues: true,
     });
   }

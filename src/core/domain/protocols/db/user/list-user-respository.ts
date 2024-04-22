@@ -1,5 +1,5 @@
-import { User } from '@/core/domain/models/user.entity';
+import { UserModelDto } from '@/presentation/dtos/user/user-model.dto';
 
 export abstract class IDbListUserRepository {
-  abstract getAll(): Promise<User[]>;
+  abstract getAll(): Promise<UserModelDto[]>;
 }

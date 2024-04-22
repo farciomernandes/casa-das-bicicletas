@@ -1,5 +1,5 @@
-import { Address } from '@/core/domain/models/address.entity';
+import { AddressModelDto } from '@/presentation/dtos/address/address-model.dto';
 
 export abstract class IDbListAddressRepository {
-  abstract getAll(): Promise<Address[]>;
+  abstract getAll(): Promise<AddressModelDto[]>;
 }
