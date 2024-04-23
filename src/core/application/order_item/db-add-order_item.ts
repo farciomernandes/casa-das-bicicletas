@@ -16,15 +16,14 @@ export class DbAddOrderItem implements IDbAddOrderItemRepository {
 
   async create(payload: AddOrderItemDto): Promise<OrderItem> {
     const product = await this.productRepository.findById(payload.product_id);
-
-    if (product) {
+    if (!product) {
       throw new BadRequestException(
         `Product with ${payload.product_id} id not found.`,
       );
     }
     const order = await this.orderRepository.findById(payload.order_id);
 
-    if (order) {
+    if (!order) {
       throw new BadRequestException(
         `Order with ${payload.order_id} id not found.`,
       );

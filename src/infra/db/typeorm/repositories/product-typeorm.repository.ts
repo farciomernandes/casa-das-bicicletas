@@ -6,6 +6,7 @@ import { UpdateProductModelDto } from '@/presentation/dtos/product/update-produc
 
 export class ProductTypeOrmRepository implements ProductRepository {
   constructor(private readonly productRepository: Repository<Product>) {}
+
   async findByName(name: string): Promise<Product> {
     return this.productRepository.findOne({ where: { name } });
   }
@@ -19,12 +20,18 @@ export class ProductTypeOrmRepository implements ProductRepository {
       this.productRepository.merge(product, payload);
       return this.productRepository.save(product);
     } catch (error) {
-      throw new Error('Error update product');
+      throw new Error('Error updating product');
     }
   }
 
   async findById(id: string): Promise<Product> {
-    return this.productRepository.findOne({ where: { id } });
+    try {
+      const product = await this.productRepository.findOne({ where: { id } });
+      return product;
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
   }
 
   async delete(id: string): Promise<void> {
@@ -32,13 +39,15 @@ export class ProductTypeOrmRepository implements ProductRepository {
   }
 
   async getAll(): Promise<any[]> {
-    return this.productRepository.find({
+    const products = await this.productRepository.find({
       relations: ['category', 'attributes'],
     });
+    return products;
   }
 
   async create(payload: AddProductModelDto): Promise<Product> {
     const product = this.productRepository.create(payload);
-    return this.productRepository.save(product);
+    const newProduct = await this.productRepository.save(product);
+    return newProduct;
   }
 }

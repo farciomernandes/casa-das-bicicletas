@@ -39,7 +39,11 @@ export const orderProvider: Provider[] = [
   },
   {
     provide: OrderRepository,
-    useClass: OrderTypeOrmRepository,
+    useFactory: (dataSource: DataSource) => {
+      const orderRepository = dataSource.getRepository(Order);
+      return new OrderTypeOrmRepository(orderRepository);
+    },
+    inject: [getDataSourceToken()],
   },
   {
     provide: UserTypeOrmRepository,
@@ -61,7 +65,11 @@ export const orderProvider: Provider[] = [
   },
   {
     provide: ProductRepository,
-    useClass: ProductTypeOrmRepository,
+    useFactory: (dataSource: DataSource) => {
+      const productRepository = dataSource.getRepository(Product);
+      return new ProductTypeOrmRepository(productRepository);
+    },
+    inject: [getDataSourceToken()],
   },
   {
     provide: OrderItemTypeOrmRepository,
@@ -74,11 +82,11 @@ export const orderProvider: Provider[] = [
   },
   {
     provide: OrderItemRepository,
-    useClass: OrderItemTypeOrmRepository,
-  },
-  {
-    provide: IDbAddOrderItemRepository,
-    useClass: DbAddOrderItem,
+    useFactory: (dataSource: DataSource) => {
+      const orderItemRepository = dataSource.getRepository(OrderItem);
+      return new OrderItemTypeOrmRepository(orderItemRepository);
+    },
+    inject: [getDataSourceToken()],
   },
   {
     provide: IDbAddOrderItemRepository,

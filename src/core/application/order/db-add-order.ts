@@ -17,8 +17,8 @@ export class DbAddOrder implements IDbAddOrderRepository {
   constructor(
     private readonly orderRepository: OrderRepository,
     private readonly userRepository: UserRepository,
-    private dbAddOrderItem: IDbAddOrderItemRepository,
-    private productRepository: ProductRepository,
+    private readonly dbAddOrderItem: IDbAddOrderItemRepository,
+    private readonly productRepository: ProductRepository,
   ) {}
 
   async create(payload: AddOrderDto): Promise<OrderModel> {
@@ -30,52 +30,51 @@ export class DbAddOrder implements IDbAddOrderRepository {
       );
     }
 
-    const cartProducts = await Promise.all(
-      payload.order_items.map((item) =>
-        this.productRepository.findById(item.id),
-      ),
+    const total = payload.order_items.reduce(
+      (acc, item) => acc + item.quantity * item.product.price,
+      0,
     );
-
-    cartProducts.forEach((product, index) => {
-      if (!product) {
-        throw new BadRequestException(
-          `Product ${payload.order_items[index].product.name} does not exist`,
-        );
-      }
-    });
-
-    const order_items = payload.order_items.map((item) => ({
-      id: item.id,
-      quantity: item.quantity,
-      sub_total:
-        item.quantity * cartProducts.find((p) => p.id === item.id).price,
-      product: item.product,
-    }));
-
-    const total = order_items.reduce((acc, item) => acc + item.sub_total, 0);
 
     const order = await this.orderRepository.create({
       total,
       user_id: payload.user_id,
       status: OrderStatusEnum.PENDING,
-      order_items,
+      order_items: [], // Array vazio inicialmente
     });
 
-    await Promise.all(
-      payload.order_items.map((item) =>
-        this.dbAddOrderItem.create({
-          order_id: order.id,
-          product_id: item.id,
-          quantity: item.quantity,
-          sub_total: item.sub_total,
-        }),
-      ),
-    );
+    const order_items: any[] = [];
 
-    const response = await this.orderRepository.findById(order.id);
+    for (const item of payload.order_items) {
+      const product = await this.productRepository.findById(item.product.id);
+      if (!product) {
+        throw new BadRequestException(
+          `Product ${item.product.name} does not exist`,
+        );
+      }
+
+      const sub_total = item.quantity * product.price;
+
+      order_items.push({
+        id: item.product.id,
+        quantity: item.quantity,
+        sub_total,
+        product: item.product,
+      });
+
+      await this.dbAddOrderItem.create({
+        order_id: order.id,
+        product_id: item.product.id,
+        quantity: item.quantity,
+        sub_total: sub_total,
+      });
+    }
+
+    // Use a variável order para evitar chamadas duplicadas ao findById
+    order.order_items = order_items;
+    const response = OrderModel.toDto(order);
 
     return {
-      ...OrderModel.toDto(response),
+      ...response,
       user: UserOrderDto.toDto(response.user),
       order_items: response.order_items.map((item) => {
         return OrderItemLocally.toDto(item);

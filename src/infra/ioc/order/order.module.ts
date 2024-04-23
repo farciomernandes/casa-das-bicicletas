@@ -6,6 +6,8 @@ import { IDbDeleteOrderRepository } from '@/core/domain/protocols/db/order/delet
 import { IDbUpdateOrderRepository } from '@/core/domain/protocols/db/order/update-order-repository';
 import { OrderRepository } from '@/core/domain/protocols/repositories/order';
 import { OrderController } from '@/presentation/controllers/order/order-controller';
+import { ProductRepository } from '@/core/domain/protocols/repositories/product';
+import { OrderItemRepository } from '@/core/domain/protocols/repositories/order_item';
 
 @Module({
   imports: [],
@@ -16,7 +18,10 @@ import { OrderController } from '@/presentation/controllers/order/order-controll
     IDbListOrderRepository,
     IDbDeleteOrderRepository,
     IDbUpdateOrderRepository,
+    IDbAddOrderRepository,
     OrderRepository,
+    ProductRepository,
+    OrderItemRepository,
   ],
 })
 export class OrderModule {}

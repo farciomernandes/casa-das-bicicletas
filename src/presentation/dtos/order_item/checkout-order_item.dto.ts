@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, plainToClass } from 'class-transformer';
-import { AddProductModelDto } from '../product/add-product.dto';
+import { ProductModelDto } from '../product/product-model.dto';
 
 export class CheckoutOrderItemDto {
   @ApiProperty({
@@ -28,11 +28,11 @@ export class CheckoutOrderItemDto {
   sub_total: number;
 
   @ApiProperty({
-    type: AddProductModelDto,
+    type: ProductModelDto,
     required: true,
   })
   @Expose()
-  product: AddProductModelDto;
+  product: ProductModelDto;
 
   static toDto(payload: CheckoutOrderItemDto): CheckoutOrderItemDto {
     return plainToClass(CheckoutOrderItemDto, payload, {
