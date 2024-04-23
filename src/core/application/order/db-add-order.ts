@@ -7,6 +7,7 @@ import { IDbAddOrderItemRepository } from '@/core/domain/protocols/db/order_item
 import {
   OrderItemLocally,
   OrderModel,
+  ProductOrderDto,
   UserOrderDto,
 } from '@/presentation/dtos/order/order-model.dto';
 import { ProductRepository } from '@/core/domain/protocols/repositories/product';
@@ -39,7 +40,7 @@ export class DbAddOrder implements IDbAddOrderRepository {
       total,
       user_id: payload.user_id,
       status: OrderStatusEnum.PENDING,
-      order_items: [], // Array vazio inicialmente
+      order_items: [],
     });
 
     const order_items: any[] = [];
@@ -69,15 +70,17 @@ export class DbAddOrder implements IDbAddOrderRepository {
       });
     }
 
-    // Use a variável order para evitar chamadas duplicadas ao findById
     order.order_items = order_items;
     const response = OrderModel.toDto(order);
 
     return {
       ...response,
-      user: UserOrderDto.toDto(response.user),
+      user: UserOrderDto.toDto(validUser),
       order_items: response.order_items.map((item) => {
-        return OrderItemLocally.toDto(item);
+        return {
+          ...OrderItemLocally.toDto(item),
+          product: ProductOrderDto.toDto(item.product),
+        };
       }),
     };
   }
