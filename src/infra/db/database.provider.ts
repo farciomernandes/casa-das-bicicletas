@@ -3,8 +3,6 @@ import { DataSource } from 'typeorm';
 import { join } from 'path';
 import { Env } from '../config/enviroments';
 
-console.log(join(__dirname, 'typeorm/migrations/*.ts'));
-
 export const TypeOrmDataSource = new DataSource({
   type: 'postgres',
   host: Env.DB_HOST,

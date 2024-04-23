@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, plainToClass } from 'class-transformer';
-import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
 import { RoleModel } from '../role/role-model.dto';
 import { AddressModelDto } from '../address/address-model.dto';
 
@@ -101,11 +101,27 @@ export class UserModelDto {
   role: RoleModel;
 
   @ApiProperty({
+    type: String,
+    example: '',
+  })
+  @IsOptional()
+  @Expose()
+  role_id?: string;
+
+  @ApiProperty({
     type: AddressModelDto,
     example: AddressModelDto,
   })
   @Expose()
   address: AddressModelDto;
+
+  @ApiProperty({
+    type: String,
+    example: '',
+  })
+  @IsOptional()
+  @Expose()
+  address_id?: string;
 
   static toDto(payload: UserModelDto): UserModelDto {
     return plainToClass(UserModelDto, payload, {

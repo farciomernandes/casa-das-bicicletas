@@ -1,6 +1,6 @@
-import { Order } from '@/core/domain/models/order.entity';
 import { AddOrderDto } from '@/presentation/dtos/order/add-order.dto';
+import { OrderModel } from '@/presentation/dtos/order/order-model.dto';
 
 export abstract class IDbAddOrderRepository {
-  abstract create(payload: AddOrderDto): Promise<Order>;
+  abstract create(payload: AddOrderDto): Promise<OrderModel>;
 }

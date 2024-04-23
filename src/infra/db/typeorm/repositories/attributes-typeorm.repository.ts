@@ -19,11 +19,8 @@ export class AttributesTypeOrmRepository implements AttributesRepository {
       this.attributesRepository.merge(attributes, payload);
 
       const save = await this.attributesRepository.save(attributes);
-      console.log('save ', save);
-
       return save;
     } catch (error) {
-      console.log(error);
       throw new Error('Attributes not found');
     }
   }

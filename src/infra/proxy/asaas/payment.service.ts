@@ -1,40 +1,46 @@
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { AsaasCreateCustomer } from '@/core/domain/protocols/asaas/create-customer';
+import { AsaasCreateTransaction } from '@/core/domain/protocols/asaas/create-transaction';
+import { IPaymentProcess } from '@/core/domain/protocols/asaas/payment-process';
 import { AxiosAdapter } from '@/infra/adapters/axios-adapter';
+import { PaymentDataDto } from '@/presentation/dtos/checkout/process-payment.dto';
+import { OrderModel } from '@/presentation/dtos/order/order-model.dto';
 import { UserModelDto } from '@/presentation/dtos/user/user-model.dto';
 import { OrderStatusEnum } from '@/shared/enums/order_status.enum';
-import { BadGatewayException, Injectable } from '@nestjs/common';
 
 @Injectable()
-export default class PaymentService {
+export default class PaymentService
+  implements IPaymentProcess, AsaasCreateCustomer, AsaasCreateTransaction
+{
   constructor(private readonly axiosAdapter: AxiosAdapter) {}
 
   async process(
-    order: any,
+    order: OrderModel,
     user: UserModelDto,
-    payment: any,
-  ): Promise<{ transactionId: string; status: OrderStatusEnum }> {
+    payment: PaymentDataDto,
+  ): Promise<{ transaction_id: string; status: OrderStatusEnum }> {
     try {
-      const userId = await this.createUser(user);
-      const transaction = await this.createTransaction(
-        userId,
+      const user_id = await this.createCustomer(user);
+      const { transactionId, gatewayStatus } = await this.createTransaction(
+        user_id,
         order,
         user,
         payment,
       );
 
       return {
-        transactionId: transaction.transactionId,
+        transaction_id: transactionId,
         status: OrderStatusEnum.PAID,
       };
     } catch (error) {
       console.error('Error on process payment: ', error);
-      return {
-        transactionId: '',
-        status: OrderStatusEnum.CANCELED,
-      };
+      throw new BadRequestException(
+        `Failed to process payment: ${error.message}`,
+      );
     }
   }
 
-  private async createUser(user: UserModelDto): Promise<string> {
+  async createCustomer(user: UserModelDto): Promise<string> {
     try {
       const userResponse = await this.axiosAdapter.get(
         `/users?email=${user.email}`,
@@ -62,27 +68,24 @@ export default class PaymentService {
       return response?.data?.id;
     } catch (error) {
       console.error('Error creating user: ', error);
-      throw new BadGatewayException(`Error payment gateway ${error.message}`);
+      throw new BadRequestException(`Failed to create user: ${error.message}`);
     }
   }
 
-  private async createTransaction(
-    userId: string,
-    order: any,
+  async createTransaction(
+    user_id: string,
+    order: OrderModel,
     user: UserModelDto,
-    payment: any,
-  ): Promise<{
-    transactionId: string;
-    gatewayStatus: string;
-  }> {
+    payment: PaymentDataDto,
+  ): Promise<{ transactionId: string; gatewayStatus: string }> {
     try {
       const paymentParams = {
-        user: userId,
+        user: user_id,
         billingType: 'CREDIT_CARD',
         dueDate: new Date().toISOString(),
         value: order.total,
         description: `Pedido #${order.id}`,
-        externalReference: order.id.toString(),
+        externalReference: order.id,
         creditCard: {
           holderName: payment.creditCardHolder,
           number: payment.creditCardNumber,
@@ -97,7 +100,7 @@ export default class PaymentService {
           postalCode: user.address.zip_code,
           addressNumber: user.address.number,
           addressComplement: user.address.complement,
-          mobilePhone: user.password,
+          mobilePhone: user.phone,
         },
       };
 
@@ -109,7 +112,9 @@ export default class PaymentService {
       };
     } catch (error) {
       console.error('Error creating transaction: ', error);
-      throw error;
+      throw new BadRequestException(
+        `Failed to create transaction: ${error.message}`,
+      );
     }
   }
 }

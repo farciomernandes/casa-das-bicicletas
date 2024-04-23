@@ -50,7 +50,7 @@ export class OrderItemController {
 
   @Get()
   @ApiOkResponse({
-    description: 'Returns OrderItems.',
+    description: 'Returns order_items.',
     status: HttpStatus.OK,
     type: OrderItemDto,
     isArray: true,

@@ -22,7 +22,6 @@ export class OrderItemTypeOrmRepository implements OrderItemRepository {
       });
       return this.orderItemRepository.save(orderItem);
     } catch (error) {
-      console.log(error);
       throw new Error(error);
     }
   }

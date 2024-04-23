@@ -15,12 +15,21 @@ import { UserTypeOrmRepository } from '@/infra/db/typeorm/repositories/user-type
 import { User } from '@/core/domain/models/user.entity';
 import { OrderRepository } from '@/core/domain/protocols/repositories/order';
 import { UserRepository } from '@/core/domain/protocols/repositories/user';
+import { IDbAddOrderItemRepository } from '@/core/domain/protocols/db/order_item/add-order_item-repository';
+import { ProductRepository } from '@/core/domain/protocols/repositories/product';
+import { ProductTypeOrmRepository } from '@/infra/db/typeorm/repositories/product-typeorm.repository';
+import { Product } from '@/core/domain/models/product.entity';
+import { OrderItemTypeOrmRepository } from '@/infra/db/typeorm/repositories/order_item-typeorm.repository';
+import { OrderItem } from '@/core/domain/models/order_item.entity';
+import { OrderItemRepository } from '@/core/domain/protocols/repositories/order_item';
+import { DbAddOrderItem } from '@/core/application/order_item/db-add-order_item';
 
 export const orderProvider: Provider[] = [
   DbAddOrder,
   DbListOrder,
   DbDeleteOrder,
   DbUpdateOrder,
+  DbAddOrderItem,
   {
     provide: OrderTypeOrmRepository,
     useFactory: (dataSource: DataSource) => {
@@ -44,14 +53,73 @@ export const orderProvider: Provider[] = [
     useClass: UserTypeOrmRepository,
   },
   {
+    provide: ProductTypeOrmRepository,
+    useFactory: (dataSource: DataSource) => {
+      return new ProductTypeOrmRepository(dataSource.getRepository(Product));
+    },
+    inject: [getDataSourceToken()],
+  },
+  {
+    provide: ProductRepository,
+    useClass: ProductTypeOrmRepository,
+  },
+  {
+    provide: OrderItemTypeOrmRepository,
+    useFactory: (dataSource: DataSource) => {
+      return new OrderItemTypeOrmRepository(
+        dataSource.getRepository(OrderItem),
+      );
+    },
+    inject: [getDataSourceToken()],
+  },
+  {
+    provide: OrderItemRepository,
+    useClass: OrderItemTypeOrmRepository,
+  },
+  {
+    provide: IDbAddOrderItemRepository,
+    useClass: DbAddOrderItem,
+  },
+  {
+    provide: IDbAddOrderItemRepository,
+    useFactory: (
+      orderItemRepository: OrderItemRepository,
+      productRepository: ProductRepository,
+      orderRepository: OrderRepository,
+    ): DbAddOrderItem => {
+      return new DbAddOrderItem(
+        orderItemRepository,
+        productRepository,
+        orderRepository,
+      );
+    },
+    inject: [
+      OrderItemTypeOrmRepository,
+      ProductTypeOrmRepository,
+      OrderTypeOrmRepository,
+    ],
+  },
+  {
     provide: IDbAddOrderRepository,
     useFactory: (
       orderRepository: OrderRepository,
       userRepository: UserRepository,
+      dbAddOrderItem: IDbAddOrderItemRepository,
+      productRepository: ProductRepository,
     ): DbAddOrder => {
-      return new DbAddOrder(orderRepository, userRepository);
+      return new DbAddOrder(
+        orderRepository,
+        userRepository,
+        dbAddOrderItem,
+        productRepository,
+      );
     },
-    inject: [OrderTypeOrmRepository, UserTypeOrmRepository],
+    inject: [
+      OrderTypeOrmRepository,
+      UserTypeOrmRepository,
+      DbAddOrderItem,
+      ProductTypeOrmRepository,
+    ],
   },
   {
     provide: IDbListOrderRepository,

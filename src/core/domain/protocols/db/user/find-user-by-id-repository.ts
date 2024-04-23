@@ -1,5 +1,5 @@
-import { User } from '@/core/domain/models/user.entity';
+import { UserModelDto } from '@/presentation/dtos/user/user-model.dto';
 
 export abstract class IDbFindUserByIdRepository {
-  abstract findById(id: string): Promise<User>;
+  abstract findById(id: string): Promise<UserModelDto>;
 }

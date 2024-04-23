@@ -1,6 +1,5 @@
 export enum OrderStatusEnum {
-  MONPENDINGDAY = 'PAID',
+  PENDING = 'PAID',
   PAID = 'PAID',
   CANCELED = 'CANCELED',
-  SUNDAY = 'SUNDAY',
 }

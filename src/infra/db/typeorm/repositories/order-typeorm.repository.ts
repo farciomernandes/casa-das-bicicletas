@@ -29,9 +29,13 @@ export class OrderTypeOrmRepository implements OrderRepository {
   }
 
   async getAll(): Promise<Order[]> {
-    return this.orderRepository.find({
-      relations: ['user'],
-    });
+    const ordersWithItems = await this.orderRepository
+      .createQueryBuilder('order')
+      .leftJoinAndSelect('order.user', 'user')
+      .leftJoinAndSelect('order.order_items', 'order_items')
+      .getMany();
+
+    return ordersWithItems;
   }
 
   async create(payload: AddOrderDto): Promise<Order> {

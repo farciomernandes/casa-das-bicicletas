@@ -43,7 +43,6 @@ export class S3Storage implements S3UploadImage, S3DeleteImage {
 
       return objectUrl;
     } catch (error) {
-      console.log(error);
       throw new InternalServerErrorException('Erro ao salvar o arquivo no S3');
     }
   }

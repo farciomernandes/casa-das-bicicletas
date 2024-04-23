@@ -1,16 +1,7 @@
 import { Expose, plainToInstance } from 'class-transformer';
-import {
-  IsNotEmpty,
-  IsString,
-  IsUUID,
-  IsNumber,
-  IsArray,
-  ValidateNested,
-} from 'class-validator';
+import { IsNotEmpty, IsString, IsUUID, IsNumber } from 'class-validator';
 
 import { ApiProperty } from '@nestjs/swagger';
-import { AttributesModel } from '../attributes/attributes-model.dto';
-import { Attributes } from '@/core/domain/models/attributes.entity';
 
 export class AddProductModelDto {
   @ApiProperty({

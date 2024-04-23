@@ -6,11 +6,11 @@ import {
 } from 'typeorm';
 import { SchemasEnum } from '../../schema.enum';
 
-export class CreateTableOrderItem1713804749334 implements MigrationInterface {
+export class CreateTableOrderItems1713804749334 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'order_item',
+        name: 'order_items',
         schema: SchemasEnum.users,
         columns: [
           {
@@ -60,7 +60,7 @@ export class CreateTableOrderItem1713804749334 implements MigrationInterface {
     );
 
     await queryRunner.createForeignKey(
-      `${SchemasEnum.users}.order_item`,
+      `${SchemasEnum.users}.order_items`,
       new TableForeignKey({
         columnNames: ['order_id'],
         referencedColumnNames: ['id'],
@@ -70,7 +70,7 @@ export class CreateTableOrderItem1713804749334 implements MigrationInterface {
     );
 
     await queryRunner.createForeignKey(
-      `${SchemasEnum.users}.order_item`,
+      `${SchemasEnum.users}.order_items`,
       new TableForeignKey({
         columnNames: ['product_id'],
         referencedColumnNames: ['id'],
@@ -82,13 +82,13 @@ export class CreateTableOrderItem1713804749334 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropForeignKey(
-      `${SchemasEnum.users}.order_item`,
-      'FK_order_item_order_id',
+      `${SchemasEnum.users}.order_items`,
+      'FK_order_items_order_id',
     );
     await queryRunner.dropForeignKey(
-      `${SchemasEnum.users}.order_item`,
-      'FK_order_item_product_id',
+      `${SchemasEnum.users}.order_items`,
+      'FK_order_items_product_id',
     );
-    await queryRunner.dropTable('order_item');
+    await queryRunner.dropTable('order_items');
   }
 }

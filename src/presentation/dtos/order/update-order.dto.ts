@@ -17,6 +17,14 @@ export class UpdateOrderDto {
   @Expose()
   total: number;
 
+  @ApiProperty({
+    type: String,
+    example: '65bd52691a0f4c3b57819a4b',
+    required: false,
+  })
+  @Expose()
+  transaction_id?: string;
+
   static toDto(payload: UpdateOrderDto): UpdateOrderDto {
     return plainToClass(UpdateOrderDto, payload, {
       excludeExtraneousValues: true,

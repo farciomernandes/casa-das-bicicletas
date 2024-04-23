@@ -8,7 +8,7 @@ export const OrderItemSchema = new EntitySchema<OrderItem>({
   schema: SchemasEnum.users,
   name: OrderItem.name,
   target: OrderItem,
-  tableName: `order_item`,
+  tableName: `order_items`,
   columns: {
     id: {
       type: 'uuid',

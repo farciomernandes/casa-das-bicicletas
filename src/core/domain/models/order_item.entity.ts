@@ -12,7 +12,7 @@ import { SchemasEnum } from '@/infra/db/schema.enum';
 import { Order } from './order.entity';
 import { Product } from './product.entity';
 
-@Entity({ name: 'order_item', schema: SchemasEnum.users })
+@Entity({ name: 'order_items', schema: SchemasEnum.users })
 export class OrderItem {
   @PrimaryGeneratedColumn('uuid')
   id: string;

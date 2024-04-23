@@ -7,10 +7,12 @@ import {
   ManyToOne,
   JoinColumn,
   DeleteDateColumn,
+  OneToMany,
 } from 'typeorm';
 import { SchemasEnum } from '@/infra/db/schema.enum';
 import { OrderStatusEnum } from '@/shared/enums/order_status.enum';
 import { User } from './user.entity';
+import { OrderItem } from './order_item.entity';
 
 @Entity({ name: 'orders', schema: SchemasEnum.users })
 export class Order {
@@ -29,6 +31,9 @@ export class Order {
   @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id' })
   user: User;
+
+  @OneToMany(() => OrderItem, (orderItem) => orderItem.order) // Correção aqui
+  order_items: OrderItem[]; // Correção aqui
 
   @Column()
   user_id: string;
