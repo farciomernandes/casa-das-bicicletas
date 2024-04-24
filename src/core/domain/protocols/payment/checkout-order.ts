@@ -1,10 +1,9 @@
 import { PaymentDataDto } from '@/presentation/dtos/checkout/process-payment.dto';
-import { AddOrderDto } from '@/presentation/dtos/order/add-order.dto';
-
+import { OrderModel } from '@/presentation/dtos/order/order-model.dto';
 export abstract class ICheckoutOrder {
   abstract process(
-    order: AddOrderDto,
+    order_id: string,
     user_id: string,
     payment: PaymentDataDto,
-  ): Promise<{ id: string; transaction_id: string; status: string }>;
+  ): Promise<OrderModel>;
 }

@@ -23,6 +23,12 @@ import { OrderItemTypeOrmRepository } from '@/infra/db/typeorm/repositories/orde
 import { OrderItem } from '@/core/domain/models/order_item.entity';
 import { OrderItemRepository } from '@/core/domain/protocols/repositories/order_item';
 import { DbAddOrderItem } from '@/core/application/order_item/db-add-order_item';
+import { ICheckoutOrder } from '@/core/domain/protocols/payment/checkout-order';
+import { CheckoutOrder } from '@/core/application/order/checkout-order';
+import { IPaymentProcess } from '@/core/domain/protocols/asaas/payment-process';
+import PaymentService from '@/infra/proxy/asaas/payment.service';
+import { AxiosAdapter } from '@/infra/adapters/axios-adapter';
+import { ConfigService } from '@nestjs/config';
 
 export const orderProvider: Provider[] = [
   DbAddOrder,
@@ -30,6 +36,7 @@ export const orderProvider: Provider[] = [
   DbDeleteOrder,
   DbUpdateOrder,
   DbAddOrderItem,
+  CheckoutOrder,
   {
     provide: OrderTypeOrmRepository,
     useFactory: (dataSource: DataSource) => {
@@ -89,6 +96,24 @@ export const orderProvider: Provider[] = [
     inject: [getDataSourceToken()],
   },
   {
+    provide: AxiosAdapter,
+    useFactory: (configService: ConfigService): AxiosAdapter => {
+      return new AxiosAdapter(configService);
+    },
+    inject: [ConfigService],
+  },
+  {
+    provide: PaymentService,
+    useFactory: (axiosAdapter: AxiosAdapter): PaymentService => {
+      return new PaymentService(axiosAdapter);
+    },
+    inject: [AxiosAdapter],
+  },
+  {
+    provide: IPaymentProcess,
+    useClass: PaymentService,
+  },
+  {
     provide: IDbAddOrderItemRepository,
     useFactory: (
       orderItemRepository: OrderItemRepository,
@@ -127,6 +152,28 @@ export const orderProvider: Provider[] = [
       UserTypeOrmRepository,
       DbAddOrderItem,
       ProductTypeOrmRepository,
+    ],
+  },
+  {
+    provide: ICheckoutOrder,
+    useFactory: (
+      orderRepository: OrderRepository,
+      userRepository: UserRepository,
+      dbUpdateOrderItem: IDbUpdateOrderRepository,
+      paymentService: IPaymentProcess,
+    ): CheckoutOrder => {
+      return new CheckoutOrder(
+        orderRepository,
+        userRepository,
+        dbUpdateOrderItem,
+        paymentService,
+      );
+    },
+    inject: [
+      OrderTypeOrmRepository,
+      UserTypeOrmRepository,
+      DbUpdateOrder,
+      PaymentService,
     ],
   },
   {

@@ -43,7 +43,7 @@ export default class PaymentService
   async createCustomer(user: UserModelDto): Promise<string> {
     try {
       const userResponse = await this.axiosAdapter.get(
-        `/users?email=${user.email}`,
+        `/customers?email=${user.email}`,
       );
 
       if (userResponse?.data?.length > 0) {
@@ -54,7 +54,7 @@ export default class PaymentService
         name: user.name,
         email: user.email,
         mobilePhone: user.phone,
-        cpfCnpj: user.document,
+        cpfCnpj: user.cpf,
         postalCode: user.address.zip_code,
         address: user.address.street,
         addressNumber: user.address.number,
@@ -63,11 +63,10 @@ export default class PaymentService
         notificationDisabled: true,
       };
 
-      const response = await this.axiosAdapter.post('/users', userParams);
+      const response = await this.axiosAdapter.post('/customers', userParams);
 
       return response?.data?.id;
     } catch (error) {
-      console.error('Error creating user: ', error);
       throw new BadRequestException(`Failed to create user: ${error.message}`);
     }
   }
@@ -80,7 +79,7 @@ export default class PaymentService
   ): Promise<{ transactionId: string; gatewayStatus: string }> {
     try {
       const paymentParams = {
-        user: user_id,
+        customer: user_id,
         billingType: 'CREDIT_CARD',
         dueDate: new Date().toISOString(),
         value: order.total,
@@ -96,13 +95,14 @@ export default class PaymentService
         creditCardHolderInfo: {
           name: user.name,
           email: user.email,
-          cpfCnpj: user.document,
+          cpfCnpj: user.cpf,
           postalCode: user.address.zip_code,
           addressNumber: user.address.number,
           addressComplement: user.address.complement,
-          mobilePhone: user.phone,
+          phone: user.phone,
         },
       };
+      console.log('paymentParams  ', paymentParams);
 
       const response = await this.axiosAdapter.post('/payments', paymentParams);
 

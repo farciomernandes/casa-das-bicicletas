@@ -1,15 +1,20 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import axios, { AxiosInstance } from 'axios';
 
 @Injectable()
 export class AxiosAdapter {
   private api: AxiosInstance;
 
-  constructor() {
+  constructor(private readonly configService: ConfigService) {
+    console.log(configService.get<string>('ASAAS_API_URL'));
+    console.log(configService.get<string>('ASAAS_API_ACCESS_TOKEN'));
+
     this.api = axios.create({
-      baseURL: process.env.ASAAS_API_URL,
+      baseURL: configService.get<string>('ASAAS_API_URL'),
       headers: {
-        access_token: process.env.ASAAS_API_ACCESS_TOKEN,
+        access_token:
+          '$aact_YTU5YTE0M2M2N2I4MTliNzk0YTI5N2U5MzdjNWZmNDQ6OjAwMDAwMDAwMDAwMDAwNzkyNDM6OiRhYWNoXzQxYTg2ODJlLTRhNjEtNDYzOS05MzFlLWZhMzE3MDljYmI2NQ==',
       },
     });
   }
@@ -19,7 +24,7 @@ export class AxiosAdapter {
       const response = await this.api.get(url);
       return response.data;
     } catch (error) {
-      console.error('Erro ao fazer a solicitação GET:', error);
+      console.error('Erro ao fazer a solicitação POST:', error.response.data);
       throw error;
     }
   }
@@ -29,7 +34,7 @@ export class AxiosAdapter {
       const response = await this.api.post(url, data);
       return response.data;
     } catch (error) {
-      console.error('Erro ao fazer a solicitação POST:', error);
+      console.error('Erro ao fazer a solicitação POST:', error.response.data);
       throw error;
     }
   }

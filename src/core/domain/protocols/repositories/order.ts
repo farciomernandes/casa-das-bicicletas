@@ -7,6 +7,7 @@ import { IDbFindOrderByIdRepository } from '../db/order/find-order-by-id-reposit
 import { IDbDeleteOrderRepository } from '../db/order/delete-order-repository';
 import { UpdateOrderDto } from '@/presentation/dtos/order/update-order.dto';
 import { AddOrderDto } from '@/presentation/dtos/order/add-order.dto';
+import { OrderModel } from '@/presentation/dtos/order/order-model.dto';
 
 @Injectable()
 export abstract class OrderRepository
@@ -18,8 +19,8 @@ export abstract class OrderRepository
     IDbDeleteOrderRepository
 {
   abstract findById(id: string): Promise<Order>;
-  abstract getAll(): Promise<Order[]>;
+  abstract getAll(): Promise<OrderModel[]>;
   abstract create(payload: AddOrderDto): Promise<Order>;
   abstract delete(id: string): Promise<void>;
-  abstract update(payload: UpdateOrderDto, id: string): Promise<Order>;
+  abstract update(payload: UpdateOrderDto, id: string): Promise<OrderModel>;
 }

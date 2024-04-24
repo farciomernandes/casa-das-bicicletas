@@ -3,12 +3,13 @@ import { IDbUpdateOrderRepository } from '@/core/domain/protocols/db/order/updat
 import { Order } from '@/core/domain/models/order.entity';
 import { OrderRepository } from '@/core/domain/protocols/repositories/order';
 import { UpdateOrderDto } from '@/presentation/dtos/order/update-order.dto';
+import { OrderModel } from '@/presentation/dtos/order/order-model.dto';
 
 @Injectable()
 export class DbUpdateOrder implements IDbUpdateOrderRepository {
   constructor(private readonly orderRepository: OrderRepository) {}
 
-  async update(payload: UpdateOrderDto, id: string): Promise<Order> {
+  async update(payload: UpdateOrderDto, id: string): Promise<OrderModel> {
     try {
       return await this.orderRepository.update(payload, id);
     } catch (error) {

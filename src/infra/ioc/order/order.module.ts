@@ -8,6 +8,8 @@ import { OrderRepository } from '@/core/domain/protocols/repositories/order';
 import { OrderController } from '@/presentation/controllers/order/order-controller';
 import { ProductRepository } from '@/core/domain/protocols/repositories/product';
 import { OrderItemRepository } from '@/core/domain/protocols/repositories/order_item';
+import { ICheckoutOrder } from '@/core/domain/protocols/payment/checkout-order';
+import { IPaymentProcess } from '@/core/domain/protocols/asaas/payment-process';
 
 @Module({
   imports: [],
@@ -22,6 +24,8 @@ import { OrderItemRepository } from '@/core/domain/protocols/repositories/order_
     OrderRepository,
     ProductRepository,
     OrderItemRepository,
+    ICheckoutOrder,
+    IPaymentProcess,
   ],
 })
 export class OrderModule {}
