@@ -102,7 +102,6 @@ export default class PaymentService
           phone: user.phone,
         },
       };
-      console.log('paymentParams  ', paymentParams);
 
       const response = await this.axiosAdapter.post('/payments', paymentParams);
 
