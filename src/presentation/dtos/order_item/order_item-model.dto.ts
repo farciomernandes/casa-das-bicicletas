@@ -58,7 +58,7 @@ export class OrderItemDto {
   @Expose()
   product_id: string;
 
-  static toDto(payload: OrderItemDto): OrderItemDto {
+  static toDto(payload: any): OrderItemDto {
     return plainToClass(OrderItemDto, payload, {
       excludeExtraneousValues: true,
     });

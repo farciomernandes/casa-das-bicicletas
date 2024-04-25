@@ -12,6 +12,7 @@ import {
 } from '@/presentation/dtos/order/order-model.dto';
 import { ProductRepository } from '@/core/domain/protocols/repositories/product';
 import { OrderStatusEnum } from '@/shared/enums/order_status.enum';
+import { AttributesRepository } from '@/core/domain/protocols/repositories/attributes';
 
 @Injectable()
 export class DbAddOrder implements IDbAddOrderRepository {
@@ -20,51 +21,59 @@ export class DbAddOrder implements IDbAddOrderRepository {
     private readonly userRepository: UserRepository,
     private readonly dbAddOrderItem: IDbAddOrderItemRepository,
     private readonly productRepository: ProductRepository,
+    private readonly attributeRepository: AttributesRepository,
   ) {}
 
   async create(payload: AddOrderDto): Promise<OrderModel> {
     const validUser = await this.userRepository.findById(payload.user_id);
-
     if (!validUser) {
       throw new BadRequestException(
         `User with ${payload.user_id} id not found`,
       );
     }
 
-    const total = payload.order_items.reduce(
-      (acc, item) => acc + item.quantity * item.product.price,
-      0,
-    );
-
     const order = await this.orderRepository.create({
-      total,
+      total: 0,
       user_id: payload.user_id,
       status: OrderStatusEnum.PENDING,
       order_items: [],
     });
 
+    let total = 0;
+
     const order_items: any[] = [];
 
     for (const item of payload.order_items) {
-      const product = await this.productRepository.findById(item.product.id);
-      if (!product) {
+      const productAttribute = await this.attributeRepository.findById(
+        item.attribute_id,
+      );
+
+      if (!productAttribute) {
         throw new BadRequestException(
-          `Product ${item.product.name} does not exist`,
+          `Product for attribute ${item.attribute_id} not found`,
         );
+      }
+      const productId = productAttribute.product_id;
+
+      const product = await this.productRepository.findById(productId);
+      if (!product) {
+        throw new BadRequestException(`Product with ${productId} id not found`);
       }
 
       const sub_total = item.quantity * product.price;
 
       order_items.push({
-        id: item.product.id,
+        id: productId,
         quantity: item.quantity,
         sub_total,
-        product: item.product,
+        product: product,
       });
+
+      total += sub_total;
 
       await this.dbAddOrderItem.create({
         order_id: order.id,
-        product_id: item.product.id,
+        product_id: productId,
         quantity: item.quantity,
         sub_total: sub_total,
       });
@@ -72,6 +81,14 @@ export class DbAddOrder implements IDbAddOrderRepository {
 
     order.order_items = order_items;
     const response = OrderModel.toDto(order);
+
+    await this.orderRepository.update(
+      {
+        status: order.status,
+        total,
+      },
+      order.id,
+    );
 
     return {
       ...response,

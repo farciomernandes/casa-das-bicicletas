@@ -45,11 +45,11 @@ export class CheckoutOrderItemDto {
   sub_total: number;
 
   @ApiProperty({
-    type: ProductModelDto,
+    type: String,
     required: true,
   })
   @Expose()
-  product: ProductModelDto;
+  attribute_id: string;
 }
 
 export class AddOrderDto {
@@ -92,16 +92,7 @@ export class AddOrderDto {
       {
         quantity: 1,
         sub_total: 20,
-        product: {
-          id: 'fb08fe94-f467-4a71-9a66-e4c8f9506cdb',
-          name: 'Product Name',
-          description: 'Product Description',
-          large_description: 'Large Product Description',
-          price: 100,
-          discount_price: 90,
-          discount_percent: 10,
-          sku: 'SKU123',
-        },
+        attribute_id: 'fb08fe94-f467-4a71-9a66-e4c8f9506cdb',
       },
     ],
     required: true,

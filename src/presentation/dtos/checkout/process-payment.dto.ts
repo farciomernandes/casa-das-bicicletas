@@ -5,7 +5,7 @@ import { IsNotEmpty, IsString, Matches } from 'class-validator';
 export class PaymentDataDto {
   @ApiProperty({
     type: String,
-    example: '4444444444444444',
+    example: '5162306219378829',
     description: 'Número do cartão de crédito',
   })
   @IsNotEmpty()
@@ -16,7 +16,7 @@ export class PaymentDataDto {
 
   @ApiProperty({
     type: String,
-    example: 'John Doe',
+    example: 'marcelo h almeida',
     description: 'Nome do titular do cartão de crédito',
   })
   @IsNotEmpty()
@@ -27,7 +27,7 @@ export class PaymentDataDto {
   @ApiProperty({
     type: String,
     example: 'MM/YY',
-    description: 'Data de validade do cartão de crédito (MM/YY)',
+    description: 'Data de validade do cartão de crédito (05/25)',
   })
   @IsNotEmpty()
   @IsString()
@@ -37,7 +37,7 @@ export class PaymentDataDto {
 
   @ApiProperty({
     type: String,
-    example: '123',
+    example: '318',
     description: 'Código de segurança do cartão de crédito',
   })
   @IsNotEmpty()

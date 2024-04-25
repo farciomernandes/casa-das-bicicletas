@@ -31,7 +31,7 @@ export class AxiosAdapter {
       const response = await this.api.post(url, data);
       return response.data;
     } catch (error) {
-      console.error('Erro ao fazer a solicitação POST:', error.response.data);
+      console.log('Erro ao fazer a solicitação POST:', error.response.data);
       throw error;
     }
   }

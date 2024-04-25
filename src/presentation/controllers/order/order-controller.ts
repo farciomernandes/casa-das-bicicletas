@@ -114,7 +114,7 @@ export class OrderController {
     @Param('id') order_id: string,
     @Body() payload: PaymentDataDto,
     @Ip() ip,
-  ): Promise<OrderModel> {
+  ): Promise<any> {
     const user_id = 'd8748c4e-639c-4fa9-9dc4-98099fac82a4';
     return await this.checkoutOrder.process(order_id, user_id, payload);
   }

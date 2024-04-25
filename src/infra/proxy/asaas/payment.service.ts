@@ -7,6 +7,7 @@ import { PaymentDataDto } from '@/presentation/dtos/checkout/process-payment.dto
 import { OrderModel } from '@/presentation/dtos/order/order-model.dto';
 import { UserModelDto } from '@/presentation/dtos/user/user-model.dto';
 import { OrderStatusEnum } from '@/shared/enums/order_status.enum';
+import { PaymentMethodEnum } from '@/shared/enums/payment_method.enum';
 
 @Injectable()
 export default class PaymentService
@@ -33,7 +34,6 @@ export default class PaymentService
         status: OrderStatusEnum.PAID,
       };
     } catch (error) {
-      console.error('Error on process payment: ', error);
       throw new BadRequestException(
         `Failed to process payment: ${error.message}`,
       );
@@ -80,7 +80,7 @@ export default class PaymentService
     try {
       const paymentParams = {
         customer: user_id,
-        billingType: 'CREDIT_CARD',
+        billingType: PaymentMethodEnum.CREDIT_CARD,
         dueDate: new Date().toISOString(),
         value: order.total,
         description: `Pedido #${order.id}`,
@@ -100,8 +100,11 @@ export default class PaymentService
           addressNumber: user.address.number,
           addressComplement: user.address.complement,
           phone: user.phone,
+          mobilePhone: user.phone,
         },
       };
+
+      console.log(paymentParams);
 
       const response = await this.axiosAdapter.post('/payments', paymentParams);
 
@@ -110,7 +113,6 @@ export default class PaymentService
         gatewayStatus: response?.data?.status,
       };
     } catch (error) {
-      console.error('Error creating transaction: ', error);
       throw new BadRequestException(
         `Failed to create transaction: ${error.message}`,
       );

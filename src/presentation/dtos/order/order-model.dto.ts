@@ -218,6 +218,27 @@ export class OrderModel {
 
   @ApiProperty({
     type: [OrderItemLocally],
+    example: [
+      {
+        id: '65bd52691a0f4c3b57819a4b',
+        quantity: 2,
+        sub_total: 50.75,
+        product: {
+          id: '994fb2cd-0f39-4a71-b15c-333b7e2ff793',
+          name: 'Product Name',
+          category: {
+            id: '65bd52691a0f4c3b57819a4b',
+            name: 'Category Name',
+          },
+          description: 'Product Description',
+          large_description: 'Large Product Description',
+          price: 25.5,
+          discount_price: 20.75,
+          discount_percent: 10,
+          sku: 'SKU123',
+        },
+      },
+    ],
     isArray: true,
   })
   @Expose()

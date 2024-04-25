@@ -26,9 +26,12 @@ import { DbAddOrderItem } from '@/core/application/order_item/db-add-order_item'
 import { ICheckoutOrder } from '@/core/domain/protocols/payment/checkout-order';
 import { CheckoutOrder } from '@/core/application/order/checkout-order';
 import { IPaymentProcess } from '@/core/domain/protocols/asaas/payment-process';
-import PaymentService from '@/infra/proxy/asaas/payment.service';
 import { AxiosAdapter } from '@/infra/adapters/axios-adapter';
 import { ConfigService } from '@nestjs/config';
+import { AttributesRepository } from '@/core/domain/protocols/repositories/attributes';
+import { AttributesTypeOrmRepository } from '@/infra/db/typeorm/repositories/attributes-typeorm.repository';
+import { Attributes } from '@/core/domain/models/attributes.entity';
+import PaymentService from '@/infra/proxy/asaas/payment.service';
 
 export const orderProvider: Provider[] = [
   DbAddOrder,
@@ -64,9 +67,11 @@ export const orderProvider: Provider[] = [
     useClass: UserTypeOrmRepository,
   },
   {
-    provide: ProductTypeOrmRepository,
+    provide: AttributesTypeOrmRepository,
     useFactory: (dataSource: DataSource) => {
-      return new ProductTypeOrmRepository(dataSource.getRepository(Product));
+      return new AttributesTypeOrmRepository(
+        dataSource.getRepository(Attributes),
+      );
     },
     inject: [getDataSourceToken()],
   },
@@ -75,6 +80,21 @@ export const orderProvider: Provider[] = [
     useFactory: (dataSource: DataSource) => {
       const productRepository = dataSource.getRepository(Product);
       return new ProductTypeOrmRepository(productRepository);
+    },
+    inject: [getDataSourceToken()],
+  },
+  {
+    provide: ProductTypeOrmRepository,
+    useFactory: (dataSource: DataSource) => {
+      return new ProductTypeOrmRepository(dataSource.getRepository(Product));
+    },
+    inject: [getDataSourceToken()],
+  },
+  {
+    provide: AttributesRepository,
+    useFactory: (dataSource: DataSource) => {
+      const attributesRepository = dataSource.getRepository(Attributes);
+      return new AttributesTypeOrmRepository(attributesRepository);
     },
     inject: [getDataSourceToken()],
   },
@@ -110,10 +130,6 @@ export const orderProvider: Provider[] = [
     inject: [AxiosAdapter],
   },
   {
-    provide: IPaymentProcess,
-    useClass: PaymentService,
-  },
-  {
     provide: IDbAddOrderItemRepository,
     useFactory: (
       orderItemRepository: OrderItemRepository,
@@ -139,12 +155,14 @@ export const orderProvider: Provider[] = [
       userRepository: UserRepository,
       dbAddOrderItem: IDbAddOrderItemRepository,
       productRepository: ProductRepository,
+      attributeRepository: AttributesRepository,
     ): DbAddOrder => {
       return new DbAddOrder(
         orderRepository,
         userRepository,
         dbAddOrderItem,
         productRepository,
+        attributeRepository,
       );
     },
     inject: [
@@ -152,6 +170,7 @@ export const orderProvider: Provider[] = [
       UserTypeOrmRepository,
       DbAddOrderItem,
       ProductTypeOrmRepository,
+      AttributesTypeOrmRepository,
     ],
   },
   {
@@ -160,13 +179,13 @@ export const orderProvider: Provider[] = [
       orderRepository: OrderRepository,
       userRepository: UserRepository,
       dbUpdateOrderItem: IDbUpdateOrderRepository,
-      paymentService: IPaymentProcess,
+      PaymentService: IPaymentProcess,
     ): CheckoutOrder => {
       return new CheckoutOrder(
         orderRepository,
         userRepository,
         dbUpdateOrderItem,
-        paymentService,
+        PaymentService,
       );
     },
     inject: [
@@ -175,6 +194,10 @@ export const orderProvider: Provider[] = [
       DbUpdateOrder,
       PaymentService,
     ],
+  },
+  {
+    provide: IPaymentProcess,
+    useClass: PaymentService,
   },
   {
     provide: IDbListOrderRepository,

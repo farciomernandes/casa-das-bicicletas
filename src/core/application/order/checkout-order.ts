@@ -26,7 +26,7 @@ export class CheckoutOrder implements ICheckoutOrder {
     order_id: string,
     user_id: string,
     payment: PaymentDataDto,
-  ): Promise<OrderModel> {
+  ): Promise<any> {
     const user = await this.userRepository.findById(user_id);
     if (!user) {
       throw new BadRequestException(`User with id ${user_id} not found`);
@@ -40,6 +40,8 @@ export class CheckoutOrder implements ICheckoutOrder {
     if (order.status == OrderStatusEnum.PAID) {
       throw new BadRequestException(`Order is paid!`);
     }
+
+    return await this.paymentService.process(order, user, payment);
     const { transaction_id, status } = await this.paymentService.process(
       order,
       user,

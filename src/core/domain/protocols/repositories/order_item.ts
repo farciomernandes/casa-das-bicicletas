@@ -20,7 +20,7 @@ export abstract class OrderItemRepository
 {
   abstract findById(id: string): Promise<OrderItem>;
   abstract getAll(): Promise<OrderItemDto[]>;
-  abstract create(payload: AddOrderItemDto): Promise<OrderItem>;
+  abstract create(payload: AddOrderItemDto): Promise<OrderItemDto>;
   abstract delete(id: string): Promise<void>;
   abstract update(payload: UpdateOrderItemDto, id: string): Promise<OrderItem>;
 }
