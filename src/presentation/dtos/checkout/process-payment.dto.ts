@@ -1,6 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
-import { IsNotEmpty, IsString, Matches } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  Matches,
+  IsEnum,
+  IsOptional,
+} from 'class-validator';
+import { PaymentMethodEnum } from '@/shared/enums/payment_method.enum';
 
 export class PaymentDataDto {
   @ApiProperty({
@@ -8,9 +15,8 @@ export class PaymentDataDto {
     example: '5162306219378829',
     description: 'Número do cartão de crédito',
   })
-  @IsNotEmpty()
-  @IsString()
   @Matches(/^\d{16}$/)
+  @IsOptional()
   @Expose()
   creditCardNumber: string;
 
@@ -19,20 +25,18 @@ export class PaymentDataDto {
     example: 'marcelo h almeida',
     description: 'Nome do titular do cartão de crédito',
   })
-  @IsNotEmpty()
-  @IsString()
   @Expose()
+  @IsOptional()
   creditCardHolder: string;
 
   @ApiProperty({
     type: String,
-    example: 'MM/YY',
-    description: 'Data de validade do cartão de crédito (05/25)',
+    example: '05/25',
+    description: 'Data de validade do cartão de crédito',
   })
-  @IsNotEmpty()
-  @IsString()
   @Matches(/^\d{2}\/\d{2}$/)
   @Expose()
+  @IsOptional()
   creditCardExpiration: string;
 
   @ApiProperty({
@@ -40,9 +44,18 @@ export class PaymentDataDto {
     example: '318',
     description: 'Código de segurança do cartão de crédito',
   })
-  @IsNotEmpty()
-  @IsString()
   @Matches(/^\d{3}$/)
   @Expose()
+  @IsOptional()
   creditCardSecurityCode: string;
+
+  @ApiProperty({
+    type: String,
+    example: 'credit_card',
+    description: 'Método de pagamento (credit_card, boleto, pix)',
+  })
+  @IsEnum(PaymentMethodEnum)
+  @Expose()
+  @IsOptional()
+  method: string;
 }

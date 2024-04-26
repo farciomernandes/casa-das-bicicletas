@@ -8,6 +8,7 @@ import { OrderModel } from '@/presentation/dtos/order/order-model.dto';
 import { UserModelDto } from '@/presentation/dtos/user/user-model.dto';
 import { OrderStatusEnum } from '@/shared/enums/order_status.enum';
 import { PaymentMethodEnum } from '@/shared/enums/payment_method.enum';
+import { PixTransactionDto } from '@/presentation/dtos/asaas/payment-pix.dto';
 
 @Injectable()
 export default class PaymentService
@@ -19,19 +20,32 @@ export default class PaymentService
     order: OrderModel,
     user: UserModelDto,
     payment: PaymentDataDto,
-  ): Promise<{ transaction_id: string; status: OrderStatusEnum }> {
+  ): Promise<{
+    transaction_id: string;
+    status: OrderStatusEnum;
+    transaction: any;
+  }> {
     try {
       const user_id = await this.createCustomer(user);
-      const { transactionId, gatewayStatus } = await this.createTransaction(
+      const response = await this.createTransaction(
         user_id,
         order,
         user,
         payment,
       );
 
+      if (payment.method == PaymentMethodEnum.PIX) {
+        return {
+          transaction_id: response.transactionId,
+          status: OrderStatusEnum.PENDING,
+          transaction: PixTransactionDto.toDto(response),
+        };
+      }
+
       return {
-        transaction_id: transactionId,
-        status: OrderStatusEnum.PAID,
+        transaction_id: response.transactionId,
+        status: OrderStatusEnum.PENDING,
+        transaction: PixTransactionDto.toDto(response),
       };
     } catch (error) {
       throw new BadRequestException(
@@ -76,42 +90,68 @@ export default class PaymentService
     order: OrderModel,
     user: UserModelDto,
     payment: PaymentDataDto,
-  ): Promise<{ transactionId: string; gatewayStatus: string }> {
+  ): Promise<any> {
     try {
-      const paymentParams = {
+      const baseParams = {
         customer: user_id,
-        billingType: PaymentMethodEnum.CREDIT_CARD,
         dueDate: new Date().toISOString(),
         value: order.total,
-        description: `Pedido #${order.id}`,
-        externalReference: order.id,
-        creditCard: {
-          holderName: payment.creditCardHolder,
-          number: payment.creditCardNumber,
-          expiryMonth: payment.creditCardExpiration?.split('/')[0],
-          expiryYear: payment.creditCardExpiration?.split('/')[1],
-          ccv: payment.creditCardSecurityCode,
-        },
-        creditCardHolderInfo: {
-          name: user.name,
-          email: user.email,
-          cpfCnpj: user.cpf,
-          postalCode: user.address.zip_code,
-          addressNumber: user.address.number,
-          addressComplement: user.address.complement,
-          phone: user.phone,
-          mobilePhone: user.phone,
-        },
+        description: `Casa das bicicletas - Pedido #${order.id}`,
+        externalReference: `${payment.method} - ${order.id}`,
       };
 
-      console.log(paymentParams);
+      if (payment.method == PaymentMethodEnum.CREDIT_CARD) {
+        const paymentParams = {
+          ...baseParams,
+          billingType: PaymentMethodEnum.CREDIT_CARD,
+          creditCard: {
+            holderName: payment.creditCardHolder,
+            number: payment.creditCardNumber,
+            expiryMonth: payment.creditCardExpiration?.split('/')[0],
+            expiryYear: payment.creditCardExpiration?.split('/')[1],
+            ccv: payment.creditCardSecurityCode,
+          },
+          creditCardHolderInfo: {
+            name: user.name,
+            email: user.email,
+            cpfCnpj: user.cpf,
+            postalCode: user.address.zip_code,
+            addressNumber: user.address.number,
+            addressComplement: user.address.complement,
+            phone: user.phone,
+            mobilePhone: user.phone,
+          },
+        };
 
-      const response = await this.axiosAdapter.post('/payments', paymentParams);
+        const response = await this.axiosAdapter.post(
+          '/payments/',
+          paymentParams,
+        );
 
-      return {
-        transactionId: response?.data?.id,
-        gatewayStatus: response?.data?.status,
-      };
+        return {
+          transactionId: response?.data?.id,
+          gatewayStatus: response?.data?.status,
+        };
+      } else if (payment.method == PaymentMethodEnum.BOLETO) {
+        const paymentParams = {
+          ...baseParams,
+          billingType: PaymentMethodEnum.BOLETO,
+        };
+        const response = await this.axiosAdapter.post(
+          '/payments/',
+          paymentParams,
+        );
+        return {
+          transactionId: response?.data?.id,
+          gatewayStatus: response?.data?.status,
+        };
+      } else {
+        const paymentParams = {
+          ...baseParams,
+          billingType: PaymentMethodEnum.PIX,
+        };
+        return await this.axiosAdapter.post('/payments/', paymentParams);
+      }
     } catch (error) {
       throw new BadRequestException(
         `Failed to create transaction: ${error.message}`,

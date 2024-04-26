@@ -7,5 +7,5 @@ export abstract class IPaymentProcess {
     cart: OrderModel,
     user: UserModelDto,
     payment: PaymentDataDto,
-  ): Promise<{ transaction_id: string; status: string }>;
+  ): Promise<{ transaction_id: string; status: string; transaction: any }>;
 }
