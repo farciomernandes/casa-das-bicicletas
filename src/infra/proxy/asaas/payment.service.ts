@@ -9,6 +9,7 @@ import { UserModelDto } from '@/presentation/dtos/user/user-model.dto';
 import { OrderStatusEnum } from '@/shared/enums/order_status.enum';
 import { PaymentMethodEnum } from '@/shared/enums/payment_method.enum';
 import { PixTransactionDto } from '@/presentation/dtos/asaas/payment-pix.dto';
+import { BoletoTransactionDto } from '@/presentation/dtos/asaas/payment-boleto.dto';
 
 @Injectable()
 export default class PaymentService
@@ -39,6 +40,12 @@ export default class PaymentService
           transaction_id: response.transactionId,
           status: OrderStatusEnum.PENDING,
           transaction: PixTransactionDto.toDto(response),
+        };
+      } else if (payment.method == PaymentMethodEnum.BOLETO) {
+        return {
+          transaction_id: response.transactionId,
+          status: OrderStatusEnum.PENDING,
+          transaction: BoletoTransactionDto.toDto(response),
         };
       }
 
@@ -128,10 +135,7 @@ export default class PaymentService
           paymentParams,
         );
 
-        return {
-          transactionId: response?.data?.id,
-          gatewayStatus: response?.data?.status,
-        };
+        return response;
       } else if (payment.method == PaymentMethodEnum.BOLETO) {
         const paymentParams = {
           ...baseParams,
@@ -141,10 +145,8 @@ export default class PaymentService
           '/payments/',
           paymentParams,
         );
-        return {
-          transactionId: response?.data?.id,
-          gatewayStatus: response?.data?.status,
-        };
+
+        return response;
       } else {
         const paymentParams = {
           ...baseParams,
