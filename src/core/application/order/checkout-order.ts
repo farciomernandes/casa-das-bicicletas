@@ -45,7 +45,6 @@ export class CheckoutOrder implements ICheckoutOrder {
         throw new BadRequestException(`Order is paid!`);
       }
 
-      // ATUALIZAR A ORDER COM O QUE VEM
       const { transaction_id, status, transaction } =
         await this.paymentService.process(order, user, payment);
 

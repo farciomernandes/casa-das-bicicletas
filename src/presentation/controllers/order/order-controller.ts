@@ -6,7 +6,6 @@ import {
   HttpCode,
   HttpException,
   HttpStatus,
-  Ip,
   Param,
   Post,
   Put,
@@ -23,11 +22,12 @@ import { IDbListOrderRepository } from '@/core/domain/protocols/db/order/list-or
 import { OrderModel } from '@/presentation/dtos/order/order-model.dto';
 import { IDbDeleteOrderRepository } from '@/core/domain/protocols/db/order/delete-order-repository';
 import { IDbUpdateOrderRepository } from '@/core/domain/protocols/db/order/update-order-repository';
-import { Order } from '@/core/domain/models/order.entity';
 import { AddOrderDto } from '@/presentation/dtos/order/add-order.dto';
 import { UpdateOrderDto } from '@/presentation/dtos/order/update-order.dto';
 import { ICheckoutOrder } from '@/core/domain/protocols/payment/checkout-order';
 import { PaymentDataDto } from '@/presentation/dtos/checkout/process-payment.dto';
+import { PaymentConfirmedDto } from '@/presentation/dtos/order/order-payment-confirmed.dto';
+import { OrderStatusEnum } from '@/shared/enums/order_status.enum';
 
 @ApiTags('Order')
 @Controller('api/v1/order')
@@ -113,9 +113,30 @@ export class OrderController {
   async checkout(
     @Param('id') order_id: string,
     @Body() payload: PaymentDataDto,
-    @Ip() ip,
   ): Promise<any> {
     const user_id = 'd8748c4e-639c-4fa9-9dc4-98099fac82a4';
     return await this.checkoutOrder.process(order_id, user_id, payload);
+  }
+
+  @Post('payment-webhook')
+  async handleWebhook(
+    @Body() body: PaymentConfirmedDto,
+  ): Promise<{ received: boolean }> {
+    switch (body.event) {
+      case 'PAYMENT_CONFIRMED':
+        const paymentReceived = body.payment;
+        const id = paymentReceived.externalReference.split(' - ')[1].trim();
+        const payload = {
+          status: OrderStatusEnum.PAID,
+          total: paymentReceived.value,
+          transaction_id: paymentReceived.id,
+        };
+        await this.dbUpdateOrder.update(payload, id);
+        break;
+      default:
+        console.log(`Este evento não é aceito: ${body.event}`);
+    }
+
+    return { received: true };
   }
 }
