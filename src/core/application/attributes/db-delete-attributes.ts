@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { IDbDeleteAttributesRepository } from '@/core/domain/protocols/db/attributes/delete-attributes-repository';
 import { AttributesRepository } from '@/core/domain/protocols/repositories/attributes';
 
@@ -7,11 +11,18 @@ export class DbDeleteAttributes implements IDbDeleteAttributesRepository {
   constructor(private readonly attributesRepository: AttributesRepository) {}
 
   async delete(id: string): Promise<void> {
-    const alreadyExists = await this.attributesRepository.findById(id);
+    try {
+      const alreadyExists = await this.attributesRepository.findById(id);
 
-    if (!alreadyExists) {
-      throw new BadRequestException(`Attributes not found`);
+      if (!alreadyExists) {
+        throw new BadRequestException(`Attributes not found`);
+      }
+      await this.attributesRepository.delete(id);
+    } catch (error) {
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+      throw new InternalServerErrorException(error.message);
     }
-    await this.attributesRepository.delete(id);
   }
 }

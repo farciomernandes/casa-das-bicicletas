@@ -26,7 +26,6 @@ export class DbListUser implements IDbListUserRepository {
         };
       });
     } catch (error) {
-      console.log('Error delete user ', error);
       return error;
     }
   }

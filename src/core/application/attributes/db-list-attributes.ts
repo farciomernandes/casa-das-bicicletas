@@ -8,6 +8,10 @@ export class DbListAttributes implements IDbListAttributesRepository {
   constructor(private readonly attributesRepository: AttributesRepository) {}
 
   async getAll(): Promise<Attributes[]> {
-    return this.attributesRepository.getAll();
+    try {
+      return this.attributesRepository.getAll();
+    } catch (error) {
+      throw error;
+    }
   }
 }

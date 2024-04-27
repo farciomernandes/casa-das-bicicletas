@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { IDbDeleteCategoryRepository } from '@/core/domain/protocols/db/category/delete-category-repository';
 import { CategoryRepository } from '@/core/domain/protocols/repositories/category';
 import { S3DeleteImage } from '@/core/domain/protocols/aws/s3-delete-image';
@@ -21,8 +25,10 @@ export class DbDeleteCategory implements IDbDeleteCategoryRepository {
       await this.s3Delete.deleteBucket(category.image_link);
       await this.categoryRepository.delete(id);
     } catch (error) {
-      console.log('Error deleting category:', error);
-      throw error;
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+      throw new InternalServerErrorException(error.message);
     }
   }
 }

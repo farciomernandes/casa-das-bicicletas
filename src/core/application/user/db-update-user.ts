@@ -1,6 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { IDbUpdateUserRepository } from '@/core/domain/protocols/db/user/update-user-repository';
-import { UserModelDto } from '@/presentation/dtos/user/user-model.dto';
 import { User } from '@/core/domain/models/user.entity';
 import { UserRepository } from '@/core/domain/protocols/repositories/user';
 import { UpdateUserDto } from '@/presentation/dtos/user/update-user.dto';

@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { UserRepository } from '../../domain/protocols/repositories/user';
 import { PaymentDataDto } from '@/presentation/dtos/checkout/process-payment.dto';
 import { IDbUpdateOrderRepository } from '@/core/domain/protocols/db/order/update-order-repository';
@@ -26,42 +30,49 @@ export class CheckoutOrder implements ICheckoutOrder {
     user_id: string,
     payment: PaymentDataDto,
   ): Promise<any> {
-    const user = await this.userRepository.findById(user_id);
-    if (!user) {
-      throw new BadRequestException(`User with id ${user_id} not found`);
+    try {
+      const user = await this.userRepository.findById(user_id);
+      if (!user) {
+        throw new BadRequestException(`User with id ${user_id} not found`);
+      }
+      const order = await this.orderRepository.findById(order_id);
+
+      if (!order) {
+        throw new BadRequestException(`Order with id ${user_id} not found`);
+      }
+
+      if (order.status == OrderStatusEnum.PAID) {
+        throw new BadRequestException(`Order is paid!`);
+      }
+
+      // ATUALIZAR A ORDER COM O QUE VEM
+      const { transaction_id, status, transaction } =
+        await this.paymentService.process(order, user, payment);
+
+      await this.dbUpdateOrder.update(
+        {
+          ...order,
+          transaction_id,
+          status,
+        },
+        order.id,
+      );
+
+      return {
+        transaction: transaction,
+        user: UserOrderDto.toDto(order.user),
+        order_items: order.order_items.map((item) => {
+          return {
+            ...OrderItemLocally.toDto(item),
+            product: ProductOrderDto.toDto(item.product),
+          };
+        }),
+      };
+    } catch (error) {
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+      throw new InternalServerErrorException(error.message);
     }
-    const order = await this.orderRepository.findById(order_id);
-
-    if (!order) {
-      throw new BadRequestException(`Order with id ${user_id} not found`);
-    }
-
-    if (order.status == OrderStatusEnum.PAID) {
-      throw new BadRequestException(`Order is paid!`);
-    }
-
-    // ATUALIZAR A ORDER COM O QUE VEM
-    const { transaction_id, status, transaction } =
-      await this.paymentService.process(order, user, payment);
-
-    await this.dbUpdateOrder.update(
-      {
-        ...order,
-        transaction_id,
-        status,
-      },
-      order.id,
-    );
-
-    return {
-      transaction: transaction,
-      user: UserOrderDto.toDto(order.user),
-      order_items: order.order_items.map((item) => {
-        return {
-          ...OrderItemLocally.toDto(item),
-          product: ProductOrderDto.toDto(item.product),
-        };
-      }),
-    };
   }
 }

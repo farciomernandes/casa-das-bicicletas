@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { OrderRepository } from '@/core/domain/protocols/repositories/order';
 import {
   OrderItemLocally,
@@ -11,18 +11,22 @@ export class DbListOrder {
   constructor(private readonly orderRepository: OrderRepository) {}
 
   async getAll(): Promise<OrderModel[]> {
-    const orders = await this.orderRepository.getAll();
-    return orders.map((order) => {
-      return {
-        ...OrderModel.toDto(order),
-        user: UserOrderDto.toDto(order.user),
-        order_items: order.order_items.map((item) => {
-          return {
-            ...OrderItemLocally.toDto(item),
-            product: ProductModelDto.toDto(item.product),
-          };
-        }),
-      };
-    });
+    try {
+      const orders = await this.orderRepository.getAll();
+      return orders.map((order) => {
+        return {
+          ...OrderModel.toDto(order),
+          user: UserOrderDto.toDto(order.user),
+          order_items: order.order_items.map((item) => {
+            return {
+              ...OrderItemLocally.toDto(item),
+              product: ProductModelDto.toDto(item.product),
+            };
+          }),
+        };
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 }

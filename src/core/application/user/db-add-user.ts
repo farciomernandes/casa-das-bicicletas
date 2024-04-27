@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { IDbAddUserRepository } from '@/core/domain/protocols/db/user/add-user-repository';
 import { User } from '@/core/domain/models/user.entity';
 import { UserRepository } from '@/core/domain/protocols/repositories/user';
@@ -13,19 +17,28 @@ export class DbAddUser implements IDbAddUserRepository {
   ) {}
 
   async create(payload: AddUserDto): Promise<User> {
-    const alreadyExists = await this.userRepository.findByEmail(payload.email);
-
-    if (alreadyExists) {
-      throw new BadRequestException(
-        `Already exists a user with ${payload.email} email.`,
+    try {
+      const alreadyExists = await this.userRepository.findByEmail(
+        payload.email,
       );
+
+      if (alreadyExists) {
+        throw new BadRequestException(
+          `Already exists a user with ${payload.email} email.`,
+        );
+      }
+
+      const password_hash = await this.hasher.hash(payload.password);
+
+      return await this.userRepository.create({
+        ...payload,
+        password: password_hash,
+      });
+    } catch (error) {
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+      throw new InternalServerErrorException(error.message);
     }
-
-    const password_hash = await this.hasher.hash(payload.password);
-
-    return await this.userRepository.create({
-      ...payload,
-      password: password_hash,
-    });
   }
 }

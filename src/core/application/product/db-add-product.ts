@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { IDbAddProductRepository } from '@/core/domain/protocols/db/product/add-product-repository';
 import { Product } from '@/core/domain/models/product.entity';
 import { ProductRepository } from '@/core/domain/protocols/repositories/product';
@@ -13,23 +17,32 @@ export class DbAddProduct implements IDbAddProductRepository {
   ) {}
 
   async create(payload: AddProductModelDto): Promise<Product> {
-    const alreadyExists = await this.productRepository.findByName(payload.name);
-
-    if (alreadyExists) {
-      throw new BadRequestException(
-        `Already exists a Product with ${payload.name} name.`,
+    try {
+      const alreadyExists = await this.productRepository.findByName(
+        payload.name,
       );
-    }
-    const categoryExists = await this.categoryRepository.findById(
-      payload.category_id,
-    );
 
-    if (!categoryExists) {
-      throw new BadRequestException(
-        `Category with ${payload.category_id} id not found.`,
+      if (alreadyExists) {
+        throw new BadRequestException(
+          `Already exists a Product with ${payload.name} name.`,
+        );
+      }
+      const categoryExists = await this.categoryRepository.findById(
+        payload.category_id,
       );
-    }
 
-    return await this.productRepository.create(payload);
+      if (!categoryExists) {
+        throw new BadRequestException(
+          `Category with ${payload.category_id} id not found.`,
+        );
+      }
+
+      return await this.productRepository.create(payload);
+    } catch (error) {
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+      throw new InternalServerErrorException(error.message);
+    }
   }
 }

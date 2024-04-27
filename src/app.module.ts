@@ -25,6 +25,7 @@ import { AttributesModule } from './infra/ioc/attributes/attributes.module';
 import { ProductModule } from './infra/ioc/product/product.module';
 import { OrderModule } from './infra/ioc/order/order.module';
 import { OrderItemModule } from './infra/ioc/order_item/order_item.module';
+import { AuthModule } from './infra/ioc/auth/auth.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { OrderItemModule } from './infra/ioc/order_item/order_item.module';
         return dataSource;
       },
     }),
+    AuthModule,
     RoleModule,
     StateModule,
     CityModule,

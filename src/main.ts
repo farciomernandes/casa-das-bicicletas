@@ -4,11 +4,13 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as basicAuth from 'express-basic-auth';
 import { ConfigService } from '@nestjs/config';
+import { AllExceptionsFilter } from './shared/filter/http-exception.filter';
 
 async function bootstrap() {
   try {
     const app = await NestFactory.create(AppModule);
     const configService = app.get(ConfigService);
+    app.useGlobalFilters(new AllExceptionsFilter());
 
     const setupSwagger = (application: INestApplication) => {
       let swaggerRoute = '/';

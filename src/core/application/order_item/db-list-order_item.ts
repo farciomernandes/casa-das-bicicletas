@@ -1,5 +1,5 @@
 import { IDbListOrderItemRepository } from '@/core/domain/protocols/db/order_item/list-order_item-respository';
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { OrderItemRepository } from '@/core/domain/protocols/repositories/order_item';
 import { OrderItemDto } from '@/presentation/dtos/order_item/order_item-model.dto';
 import { AddOrderDto } from '@/presentation/dtos/order/add-order.dto';
@@ -10,14 +10,18 @@ export class DbListOrderItem implements IDbListOrderItemRepository {
   constructor(private readonly orderItemRepository: OrderItemRepository) {}
 
   async getAll(): Promise<OrderItemDto[]> {
-    const orders = await this.orderItemRepository.getAll();
+    try {
+      const orders = await this.orderItemRepository.getAll();
 
-    return orders.map((order) => {
-      return {
-        ...OrderItemDto.toDto(order),
-        order: AddOrderDto.toDto(order.order),
-        product: AddProductModelDto.toDto(order.product),
-      };
-    });
+      return orders.map((order) => {
+        return {
+          ...OrderItemDto.toDto(order),
+          order: AddOrderDto.toDto(order.order),
+          product: AddProductModelDto.toDto(order.product),
+        };
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 }

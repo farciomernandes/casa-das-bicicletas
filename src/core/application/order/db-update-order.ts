@@ -1,6 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { IDbUpdateOrderRepository } from '@/core/domain/protocols/db/order/update-order-repository';
-import { Order } from '@/core/domain/models/order.entity';
 import { OrderRepository } from '@/core/domain/protocols/repositories/order';
 import { UpdateOrderDto } from '@/presentation/dtos/order/update-order.dto';
 import { OrderModel } from '@/presentation/dtos/order/order-model.dto';

@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { IDbAddAddressRepository } from '@/core/domain/protocols/db/address/add-address-repository';
 import { Address } from '@/core/domain/models/address.entity';
 import { AddressRepository } from '@/core/domain/protocols/repositories/address';
@@ -12,11 +16,18 @@ export class DbAddAddress implements IDbAddAddressRepository {
   ) {}
 
   async create(payload: Omit<Address, 'id'>): Promise<Address> {
-    const validCity = await this.cityRepository.findById(payload.city_id);
+    try {
+      const validCity = await this.cityRepository.findById(payload.city_id);
 
-    if (!validCity) {
-      throw new BadRequestException(`City ${payload.city_id} not found`);
+      if (!validCity) {
+        throw new BadRequestException(`City ${payload.city_id} not found`);
+      }
+      return await this.addressRepository.create(payload);
+    } catch (error) {
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+      throw new InternalServerErrorException(error.message);
     }
-    return await this.addressRepository.create(payload);
   }
 }
