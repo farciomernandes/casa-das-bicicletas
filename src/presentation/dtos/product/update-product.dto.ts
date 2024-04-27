@@ -33,6 +33,20 @@ export class UpdateProductModelDto {
 
   @ApiProperty({
     type: Number,
+    example: 1,
+  })
+  @Expose()
+  installment_count: number;
+
+  @ApiProperty({
+    type: Number,
+    example: 100,
+  })
+  @Expose()
+  installment_value: number;
+
+  @ApiProperty({
+    type: Number,
   })
   @Expose()
   discount_price: number;

@@ -43,6 +43,12 @@ export class Product {
   @Column({ type: 'numeric' })
   discount_percent: number;
 
+  @Column({ type: 'integer' })
+  installment_count: number;
+
+  @Column({ type: 'integer' })
+  installment_value: number;
+
   @Column({ type: 'varchar', length: 255 })
   sku: string;
 

@@ -1,7 +1,37 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, plainToClass, plainToInstance } from 'class-transformer';
-import { CategoryModelDto } from '../category/category-model.dto';
 import { IsOptional } from 'class-validator';
+
+export class CategoryLocallylDto {
+  @ApiProperty({
+    type: String,
+    example: '65bd52691a0f4c3b57819a4b',
+    required: false,
+  })
+  id: string;
+
+  @ApiProperty({
+    type: String,
+    example: 'Category Name',
+    required: true,
+  })
+  @Expose()
+  name: string;
+
+  @ApiProperty({
+    type: String,
+    example: 'Category Description',
+    required: true,
+  })
+  @Expose()
+  description: string;
+
+  static toDto(payload: CategoryLocallylDto): CategoryLocallylDto {
+    return plainToInstance(CategoryLocallylDto, payload, {
+      excludeExtraneousValues: true,
+    });
+  }
+}
 
 export class UserOrderDto {
   @ApiProperty({
@@ -83,11 +113,11 @@ export class ProductOrderDto {
   name: string;
 
   @ApiProperty({
-    type: CategoryModelDto,
-    example: CategoryModelDto,
+    type: CategoryLocallylDto,
+    example: CategoryLocallylDto,
   })
   @Expose()
-  category: CategoryModelDto;
+  category: CategoryLocallylDto;
 
   @ApiProperty({
     type: String,
@@ -109,6 +139,20 @@ export class ProductOrderDto {
   })
   @Expose()
   price: number;
+
+  @ApiProperty({
+    type: Number,
+    example: 1,
+  })
+  @Expose()
+  installment_count: number;
+
+  @ApiProperty({
+    type: Number,
+    example: 100,
+  })
+  @Expose()
+  installment_value: number;
 
   @ApiProperty({
     type: Number,

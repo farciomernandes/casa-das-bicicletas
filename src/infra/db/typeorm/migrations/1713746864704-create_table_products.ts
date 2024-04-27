@@ -50,6 +50,14 @@ export class CreateTableProducts1713746864704 implements MigrationInterface {
             type: 'numeric',
           },
           {
+            name: 'installment_count',
+            type: 'integer',
+          },
+          {
+            name: 'installment_value',
+            type: 'integer',
+          },
+          {
             name: 'sku',
             type: 'varchar',
             length: '255',

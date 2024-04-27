@@ -1,3 +1,4 @@
+import { OrderStatusEnum } from '@/shared/enums/order_status.enum';
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, plainToClass } from 'class-transformer';
 
@@ -16,6 +17,12 @@ export class ProductModelDto {
 
   @ApiProperty()
   price: number;
+
+  @ApiProperty()
+  installment_count: number;
+
+  @ApiProperty()
+  installment_value: number;
 
   @ApiProperty()
   discount_price: number;
@@ -55,7 +62,7 @@ export class CheckoutOrderItemDto {
 export class AddOrderDto {
   @ApiProperty({
     type: String,
-    example: 'PENDING',
+    example: OrderStatusEnum.PAID,
     enum: ['PENDING', 'PAID', 'CANCELED'],
     required: true,
   })

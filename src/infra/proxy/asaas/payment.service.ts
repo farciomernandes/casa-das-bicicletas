@@ -56,7 +56,7 @@ export default class PaymentService
       };
     } catch (error) {
       throw new BadRequestException(
-        `Failed to process payment: ${error.message}`,
+        `Failed to process AXIOS payment: ${error.message}`,
       );
     }
   }
@@ -88,7 +88,9 @@ export default class PaymentService
 
       return response?.data?.id;
     } catch (error) {
-      throw new BadRequestException(`Failed to create user: ${error.message}`);
+      throw new BadRequestException(
+        `Failed to create AXIOS customer: ${error.message}`,
+      );
     }
   }
 
@@ -156,7 +158,7 @@ export default class PaymentService
       }
     } catch (error) {
       throw new BadRequestException(
-        `Failed to create transaction: ${error.message}`,
+        `Failed to create AXIOS transaction: ${error.message}`,
       );
     }
   }

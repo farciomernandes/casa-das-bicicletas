@@ -7,7 +7,6 @@ import { IPaymentProcess } from '@/core/domain/protocols/asaas/payment-process';
 import { OrderRepository } from '@/core/domain/protocols/repositories/order';
 import {
   OrderItemLocally,
-  OrderModel,
   ProductOrderDto,
   UserOrderDto,
 } from '@/presentation/dtos/order/order-model.dto';
@@ -41,14 +40,11 @@ export class CheckoutOrder implements ICheckoutOrder {
       throw new BadRequestException(`Order is paid!`);
     }
 
-    return await this.paymentService.process(order, user, payment);
-    const { transaction_id, status } = await this.paymentService.process(
-      order,
-      user,
-      payment,
-    );
+    // ATUALIZAR A ORDER COM O QUE VEM
+    const { transaction_id, status, transaction } =
+      await this.paymentService.process(order, user, payment);
 
-    const orderUpdated = await this.dbUpdateOrder.update(
+    await this.dbUpdateOrder.update(
       {
         ...order,
         transaction_id,
@@ -58,7 +54,7 @@ export class CheckoutOrder implements ICheckoutOrder {
     );
 
     return {
-      ...orderUpdated,
+      transaction: transaction,
       user: UserOrderDto.toDto(order.user),
       order_items: order.order_items.map((item) => {
         return {

@@ -33,6 +33,14 @@ export const ProductsSchema = new EntitySchema<Product>({
       type: 'numeric',
       nullable: false,
     },
+    installment_value: {
+      type: 'integer',
+      nullable: false,
+    },
+    installment_count: {
+      type: 'integer',
+      nullable: false,
+    },
     discount_price: {
       type: 'numeric',
       nullable: false,

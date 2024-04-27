@@ -5,6 +5,7 @@ import { OrderRepository } from '@/core/domain/protocols/repositories/order';
 import { AddOrderDto } from '@/presentation/dtos/order/add-order.dto';
 import { IDbAddOrderItemRepository } from '@/core/domain/protocols/db/order_item/add-order_item-repository';
 import {
+  CategoryLocallylDto,
   OrderItemLocally,
   OrderModel,
   ProductOrderDto,
@@ -80,23 +81,28 @@ export class DbAddOrder implements IDbAddOrderRepository {
     }
 
     order.order_items = order_items;
-    const response = OrderModel.toDto(order);
 
-    await this.orderRepository.update(
+    const response = await this.orderRepository.update(
       {
         status: order.status,
         total,
       },
       order.id,
     );
+    const updatedOrder = OrderModel.toDto(response);
 
     return {
-      ...response,
+      ...updatedOrder,
       user: UserOrderDto.toDto(validUser),
-      order_items: response.order_items.map((item) => {
+      order_items: order.order_items.map((item) => {
         return {
           ...OrderItemLocally.toDto(item),
-          product: ProductOrderDto.toDto(item.product),
+          product: {
+            ...ProductOrderDto.toDto(item.product),
+            category: {
+              ...CategoryLocallylDto.toDto(item.product.category),
+            },
+          },
         };
       }),
     };

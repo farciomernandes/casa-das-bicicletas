@@ -69,6 +69,26 @@ export class ProductModelDto {
 
   @ApiProperty({
     type: Number,
+    example: 1,
+    required: true,
+  })
+  @Expose()
+  @IsNotEmpty()
+  @IsNumber()
+  installment_count: number;
+
+  @ApiProperty({
+    type: Number,
+    example: 100,
+    required: true,
+  })
+  @Expose()
+  @IsNotEmpty()
+  @IsNumber()
+  installment_value: number;
+
+  @ApiProperty({
+    type: Number,
     example: 90,
     required: true,
   })
