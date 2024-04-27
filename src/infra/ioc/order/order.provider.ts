@@ -31,7 +31,7 @@ import { ConfigService } from '@nestjs/config';
 import { AttributesRepository } from '@/core/domain/protocols/repositories/attributes';
 import { AttributesTypeOrmRepository } from '@/infra/db/typeorm/repositories/attributes-typeorm.repository';
 import { Attributes } from '@/core/domain/models/attributes.entity';
-import PaymentService from '@/infra/proxy/asaas/payment.service';
+import AsaasPaymentService from '@/infra/proxy/asaas/payment.service';
 
 export const orderProvider: Provider[] = [
   DbAddOrder,
@@ -123,9 +123,9 @@ export const orderProvider: Provider[] = [
     inject: [ConfigService],
   },
   {
-    provide: PaymentService,
-    useFactory: (axiosAdapter: AxiosAdapter): PaymentService => {
-      return new PaymentService(axiosAdapter);
+    provide: AsaasPaymentService,
+    useFactory: (axiosAdapter: AxiosAdapter): AsaasPaymentService => {
+      return new AsaasPaymentService(axiosAdapter);
     },
     inject: [AxiosAdapter],
   },
@@ -179,25 +179,25 @@ export const orderProvider: Provider[] = [
       orderRepository: OrderRepository,
       userRepository: UserRepository,
       dbUpdateOrderItem: IDbUpdateOrderRepository,
-      PaymentService: IPaymentProcess,
+      paymentService: IPaymentProcess,
     ): CheckoutOrder => {
       return new CheckoutOrder(
         orderRepository,
         userRepository,
         dbUpdateOrderItem,
-        PaymentService,
+        paymentService,
       );
     },
     inject: [
       OrderTypeOrmRepository,
       UserTypeOrmRepository,
       DbUpdateOrder,
-      PaymentService,
+      AsaasPaymentService,
     ],
   },
   {
     provide: IPaymentProcess,
-    useClass: PaymentService,
+    useClass: AsaasPaymentService,
   },
   {
     provide: IDbListOrderRepository,

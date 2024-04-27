@@ -28,6 +28,7 @@ import { ICheckoutOrder } from '@/core/domain/protocols/payment/checkout-order';
 import { PaymentDataDto } from '@/presentation/dtos/checkout/process-payment.dto';
 import { PaymentConfirmedDto } from '@/presentation/dtos/order/order-payment-confirmed.dto';
 import { OrderStatusEnum } from '@/shared/enums/order_status.enum';
+import { PaymentCreditCardDto } from '@/presentation/dtos/asaas/payment-credit-card.dto';
 
 @ApiTags('Order')
 @Controller('api/v1/order')
@@ -106,7 +107,7 @@ export class OrderController {
   @ApiBody({
     type: PaymentDataDto,
   })
-  @ApiCreatedResponse({ type: OrderModel })
+  @ApiCreatedResponse({ type: PaymentCreditCardDto })
   @Post('checkout/:id')
   @HttpCode(HttpStatus.CREATED)
   @ApiBearerAuth()
@@ -122,6 +123,7 @@ export class OrderController {
   async handleWebhook(
     @Body() body: PaymentConfirmedDto,
   ): Promise<{ received: boolean }> {
+    console.log('entrou aqui galera ', body);
     switch (body.event) {
       case 'PAYMENT_CONFIRMED':
         const paymentReceived = body.payment;

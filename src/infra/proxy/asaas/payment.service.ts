@@ -10,9 +10,13 @@ import { OrderStatusEnum } from '@/shared/enums/order_status.enum';
 import { PaymentMethodEnum } from '@/shared/enums/payment_method.enum';
 import { PixTransactionDto } from '@/presentation/dtos/asaas/payment-pix.dto';
 import { BoletoTransactionDto } from '@/presentation/dtos/asaas/payment-boleto.dto';
+import {
+  CreditCardDto,
+  PaymentDto,
+} from '@/presentation/dtos/asaas/payment-base.dto';
 
 @Injectable()
-export default class PaymentService
+export default class AsaasPaymentService
   implements IPaymentProcess, AsaasCreateCustomer, AsaasCreateTransaction
 {
   constructor(private readonly axiosAdapter: AxiosAdapter) {}
@@ -52,7 +56,10 @@ export default class PaymentService
       return {
         transaction_id: response.transactionId,
         status: OrderStatusEnum.PENDING,
-        transaction: PixTransactionDto.toDto(response),
+        transaction: {
+          ...PaymentDto.toDto(response),
+          creditCard: CreditCardDto.toDto(response.creditCard),
+        },
       };
     } catch (error) {
       throw new BadRequestException(
