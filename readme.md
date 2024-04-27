@@ -8,6 +8,7 @@
 
 > ## Criacação de Migrations
   - npm run migration:create src/infra/db/typeorm/migrations/NOME_DA_MIGRATION
+  - Configurar o webhook da asaas apontando para o endpoint POST /api/v1/order/payment-webhook
 
   > ## Erros comuns
   - Apagar tsconfig.build.tsbuildinfo caso o build não esteja sendo feito ao rodar npm run build
