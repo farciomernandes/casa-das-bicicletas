@@ -12,12 +12,22 @@ import { IDbListRoleRepository } from '@/core/domain/protocols/db/role/list-role
 import { DbUpdateRole } from '@/core/application/role/db-update-role';
 import { IDbUpdateRoleRepository } from '@/core/domain/protocols/db/role/update-role-repository';
 import { RoleRepository } from '@/core/domain/protocols/repositories/role';
+import { RoleSeed } from '@/infra/db/typeorm/seeds/roles.seeds';
+import { IRoleSeed } from '@/core/domain/protocols/db/role/seed-role';
 
 export const roleProvider: Provider[] = [
   DbAddRole,
   DbListRole,
   DbDeleteRole,
   DbUpdateRole,
+  RoleSeed,
+  {
+    provide: IRoleSeed,
+    useFactory: (roleRepository: RoleRepository): RoleSeed => {
+      return new RoleSeed(roleRepository);
+    },
+    inject: [RoleTypeOrmRepository],
+  },
   {
     provide: RoleTypeOrmRepository,
     useFactory: (dataSource: DataSource) => {

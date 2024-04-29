@@ -19,7 +19,8 @@
 * Factory
 * Dependency Injection
 
-> ## Metodologias e Designs
+
+> ## Metodologias, Tecnologias e Designs
 
 * TDD
 * Clean Architecture
@@ -27,12 +28,17 @@
 * Conventional Commits
 * Use Cases
 * Continuous Integration
+* Server Side
+* Gateway de pagamentos - Asaas
+* Roles e Middlewares
+
 
 > ## Para todar esse projeto
 
 * Node 18
 * NPM
 * PostgreSQL
+* Cadastro no Asaas para credenciais e webhook
 
 [![Code Style: Standard](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
 [![License: GPLv3](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
