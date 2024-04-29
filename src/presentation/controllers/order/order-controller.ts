@@ -123,7 +123,6 @@ export class OrderController {
   async handleWebhook(
     @Body() body: PaymentConfirmedDto,
   ): Promise<{ received: boolean }> {
-    console.log('entrou aqui galera ', body);
     switch (body.event) {
       case 'PAYMENT_CONFIRMED':
         const paymentReceived = body.payment;
