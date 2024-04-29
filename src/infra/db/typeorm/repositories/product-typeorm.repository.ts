@@ -3,6 +3,7 @@ import { Product } from '@/core/domain/models/product.entity';
 import { ProductRepository } from '@/core/domain/protocols/repositories/product';
 import { AddProductModelDto } from '@/presentation/dtos/product/add-product.dto';
 import { UpdateProductModelDto } from '@/presentation/dtos/product/update-product.dto';
+import { ProductParamsDTO } from '@/presentation/dtos/product/params-product.dto';
 
 export class ProductTypeOrmRepository implements ProductRepository {
   constructor(private readonly productRepository: Repository<Product>) {}
@@ -38,10 +39,44 @@ export class ProductTypeOrmRepository implements ProductRepository {
     await this.productRepository.delete(id);
   }
 
-  async getAll(): Promise<any[]> {
-    const products = await this.productRepository.find({
-      relations: ['category', 'attributes'],
-    });
+  async getAll(params: ProductParamsDTO): Promise<any[]> {
+    const queryBuilder = this.productRepository.createQueryBuilder('product');
+    if (params.id) {
+      queryBuilder.where('product.id = :id', { id: params.id });
+    }
+
+    if (params.category_id) {
+      queryBuilder.andWhere('product.category_id = :categoryId', {
+        categoryId: params.category_id,
+      });
+    }
+
+    if (params.name) {
+      queryBuilder.andWhere('product.name LIKE :name', {
+        name: `%${params.name}%`,
+      });
+    }
+
+    if (params.price) {
+      queryBuilder.andWhere('product.price = :price', { price: params.price });
+    }
+
+    if (params.sku) {
+      queryBuilder.andWhere('product.sku = :sku', { sku: params.sku });
+    }
+
+    if (params.limit) {
+      queryBuilder.take(params.limit);
+    }
+
+    if (params.page) {
+      queryBuilder.skip((Number(params.page) - 1) * params.limit);
+    }
+
+    queryBuilder.leftJoinAndSelect('product.category', 'category');
+    queryBuilder.leftJoinAndSelect('product.attributes', 'attributes');
+
+    const products = await queryBuilder.getMany();
     return products;
   }
 

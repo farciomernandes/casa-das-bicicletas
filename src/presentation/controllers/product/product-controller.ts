@@ -9,6 +9,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -25,6 +26,7 @@ import { Product } from '@/core/domain/models/product.entity';
 import { AddProductModelDto } from '@/presentation/dtos/product/add-product.dto';
 import { ProductModelDto } from '@/presentation/dtos/product/product-model.dto';
 import { UpdateProductModelDto } from '@/presentation/dtos/product/update-product.dto';
+import { ProductParamsDTO } from '@/presentation/dtos/product/params-product.dto';
 
 @ApiTags('Product')
 @Controller('api/v1/product')
@@ -58,9 +60,11 @@ export class ProductController {
     isArray: true,
   })
   @ApiBearerAuth()
-  async getAll(): Promise<ProductModelDto[]> {
+  async getAll(
+    @Query() queryParams: ProductParamsDTO,
+  ): Promise<ProductModelDto[]> {
     try {
-      return await this.dbListProduct.getAll();
+      return await this.dbListProduct.getAll(queryParams);
     } catch (error) {
       throw new HttpException(error.response, error.status);
     }
