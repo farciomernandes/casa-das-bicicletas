@@ -11,7 +11,7 @@ import {
 } from 'typeorm';
 import { SchemasEnum } from '@/infra/db/schema.enum';
 import { Category } from './category.entity';
-import { Attributes } from './attributes.entity';
+import { ProductVariables } from './product_variables.entity';
 
 @Entity({ name: 'products', schema: SchemasEnum.users })
 export class Product {
@@ -52,8 +52,11 @@ export class Product {
   @Column({ type: 'varchar', length: 255 })
   sku: string;
 
-  @OneToMany(() => Attributes, (attribute) => attribute.product)
-  attributes: Attributes[];
+  @OneToMany(
+    () => ProductVariables,
+    (product_variables) => product_variables.product,
+  )
+  product_variables: ProductVariables[];
 
   @CreateDateColumn({
     name: 'created_date',

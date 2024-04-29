@@ -17,7 +17,7 @@ import {
 } from '@/presentation/dtos/order/order-model.dto';
 import { ProductRepository } from '@/core/domain/protocols/repositories/product';
 import { OrderStatusEnum } from '@/shared/enums/order_status.enum';
-import { AttributesRepository } from '@/core/domain/protocols/repositories/attributes';
+import { ProductVariablesRepository } from '@/core/domain/protocols/repositories/product_variable';
 
 @Injectable()
 export class DbAddOrder implements IDbAddOrderRepository {
@@ -26,7 +26,7 @@ export class DbAddOrder implements IDbAddOrderRepository {
     private readonly userRepository: UserRepository,
     private readonly dbAddOrderItem: IDbAddOrderItemRepository,
     private readonly productRepository: ProductRepository,
-    private readonly attributeRepository: AttributesRepository,
+    private readonly productVariablesRepository: ProductVariablesRepository,
   ) {}
 
   async create(payload: AddOrderDto): Promise<OrderModel> {
@@ -50,16 +50,16 @@ export class DbAddOrder implements IDbAddOrderRepository {
       const order_items: any[] = [];
 
       for (const item of payload.order_items) {
-        const productAttribute = await this.attributeRepository.findById(
-          item.attribute_id,
+        const product_variable = await this.productVariablesRepository.findById(
+          item.product_variables_id,
         );
 
-        if (!productAttribute) {
+        if (!product_variable) {
           throw new BadRequestException(
-            `Product for attribute ${item.attribute_id} not found`,
+            `Product for variable_id ${item.product_variables_id} not found`,
           );
         }
-        const productId = productAttribute.product_id;
+        const productId = product_variable.product_id;
 
         const product = await this.productRepository.findById(productId);
         if (!product) {

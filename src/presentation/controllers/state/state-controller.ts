@@ -26,7 +26,7 @@ import { State } from '@/core/domain/models/state.entity';
 import { AddStateDto } from '@/presentation/dtos/state/add-state.dto';
 
 @ApiTags('State')
-@Controller('api/v1/state')
+@Controller('api/v1/states')
 export class StateController {
   constructor(
     private readonly dbAddState: IDbAddStateRepository,

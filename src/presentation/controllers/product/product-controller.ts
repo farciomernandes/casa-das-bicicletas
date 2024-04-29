@@ -29,7 +29,7 @@ import { UpdateProductModelDto } from '@/presentation/dtos/product/update-produc
 import { ProductParamsDTO } from '@/presentation/dtos/product/params-product.dto';
 
 @ApiTags('Product')
-@Controller('api/v1/product')
+@Controller('api/v1/products')
 export class ProductController {
   constructor(
     private readonly dbAddProduct: IDbAddProductRepository,

@@ -1,12 +1,12 @@
 import { EntitySchema } from 'typeorm';
-import { Attributes } from '@/core/domain/models/attributes.entity';
 import { SchemasEnum } from '@/infra/db/schema.enum';
+import { ProductVariables } from '@/core/domain/models/product_variables.entity';
 
-export const AttributesSchema = new EntitySchema<Attributes>({
+export const ProductVariablesSchema = new EntitySchema<ProductVariables>({
   schema: SchemasEnum.users,
-  name: Attributes.name,
-  target: Attributes,
-  tableName: `attributes`,
+  name: ProductVariables.name,
+  target: ProductVariables,
+  tableName: `product_variables`,
   columns: {
     id: {
       type: 'uuid',
@@ -16,7 +16,7 @@ export const AttributesSchema = new EntitySchema<Attributes>({
     color: {
       type: 'varchar',
     },
-    qtd: {
+    quantity: {
       type: 'int',
     },
     size: {
@@ -37,6 +37,27 @@ export const AttributesSchema = new EntitySchema<Attributes>({
     product_id: {
       type: 'uuid',
       nullable: false,
+    },
+    type: {
+      type: 'varchar',
+    },
+    weight: {
+      type: 'int',
+    },
+    format: {
+      type: 'varchar',
+    },
+    length: {
+      type: 'int',
+    },
+    height: {
+      type: 'int',
+    },
+    width: {
+      type: 'int',
+    },
+    diameter: {
+      type: 'int',
     },
   },
   relations: {

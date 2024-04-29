@@ -1,8 +1,8 @@
 import { EntitySchema } from 'typeorm';
 import { SchemasEnum } from '../../schema.enum';
 import { Product } from '@/core/domain/models/product.entity';
-import { Attributes } from '@/core/domain/models/attributes.entity';
 import { Category } from '@/core/domain/models/category.entity';
+import { ProductVariables } from '@/core/domain/models/product_variables.entity';
 
 export const ProductsSchema = new EntitySchema<Product>({
   schema: SchemasEnum.users,
@@ -76,9 +76,9 @@ export const ProductsSchema = new EntitySchema<Product>({
       joinColumn: { name: 'category_id' },
       eager: true,
     },
-    attributes: {
+    product_variables: {
       type: 'one-to-many',
-      target: () => Attributes,
+      target: () => ProductVariables,
       inverseSide: 'product',
       eager: true,
     },

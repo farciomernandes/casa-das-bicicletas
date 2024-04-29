@@ -12,12 +12,12 @@ import { DbAddProduct } from '@/core/application/product/db-add-product';
 import { DbDeleteProduct } from '@/core/application/product/db-delete-product';
 import { DbListProduct } from '@/core/application/product/db-list-product';
 import { DbUpdateProduct } from '@/core/application/product/db-update-product';
-import { AttributesTypeOrmRepository } from '@/infra/db/typeorm/repositories/attributes-typeorm.repository';
-import { Attributes } from '@/core/domain/models/attributes.entity';
-import { AttributesRepository } from '@/core/domain/protocols/repositories/attributes';
 import { CategoryRepository } from '@/core/domain/protocols/repositories/category';
 import { CategoryTypeOrmRepository } from '@/infra/db/typeorm/repositories/category-typeorm.repository';
 import { Category } from '@/core/domain/models/category.entity';
+import { ProductVariablesTypeOrmRepository } from '@/infra/db/typeorm/repositories/product_variables-typeorm.repository';
+import { ProductVariables } from '@/core/domain/models/product_variables.entity';
+import { ProductVariablesRepository } from '@/core/domain/protocols/repositories/product_variable';
 
 export const productProvider: Provider[] = [
   DbAddProduct,
@@ -36,17 +36,17 @@ export const productProvider: Provider[] = [
     useClass: ProductTypeOrmRepository,
   },
   {
-    provide: AttributesTypeOrmRepository,
+    provide: ProductVariablesTypeOrmRepository,
     useFactory: (dataSource: DataSource) => {
-      return new AttributesTypeOrmRepository(
-        dataSource.getRepository(Attributes),
+      return new ProductVariablesTypeOrmRepository(
+        dataSource.getRepository(ProductVariables),
       );
     },
     inject: [getDataSourceToken()],
   },
   {
-    provide: AttributesRepository,
-    useClass: AttributesTypeOrmRepository,
+    provide: ProductVariablesRepository,
+    useClass: ProductVariablesTypeOrmRepository,
   },
   {
     provide: CategoryTypeOrmRepository,

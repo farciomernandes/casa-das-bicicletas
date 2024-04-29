@@ -21,7 +21,7 @@ import { StateModule } from './infra/ioc/state/state.module';
 import { AddressModule } from './infra/ioc/address/address.module';
 import { UserModule } from './infra/ioc/user/user.module';
 import { CategoryModule } from './infra/ioc/category/category.module';
-import { AttributesModule } from './infra/ioc/attributes/attributes.module';
+import { ProductVariablesModule } from './infra/ioc/product_variable/product_variables.module';
 import { ProductModule } from './infra/ioc/product/product.module';
 import { OrderModule } from './infra/ioc/order/order.module';
 import { OrderItemModule } from './infra/ioc/order_item/order_item.module';
@@ -50,7 +50,7 @@ import { AuthModule } from './infra/ioc/auth/auth.module';
     UserModule,
     CategoryModule,
     ProductModule,
-    AttributesModule,
+    ProductVariablesModule,
     OrderModule,
     OrderItemModule,
   ],

@@ -28,10 +28,10 @@ import { CheckoutOrder } from '@/core/application/order/checkout-order';
 import { IPaymentProcess } from '@/core/domain/protocols/asaas/payment-process';
 import { AxiosAdapter } from '@/infra/adapters/axios-adapter';
 import { ConfigService } from '@nestjs/config';
-import { AttributesRepository } from '@/core/domain/protocols/repositories/attributes';
-import { AttributesTypeOrmRepository } from '@/infra/db/typeorm/repositories/attributes-typeorm.repository';
-import { Attributes } from '@/core/domain/models/attributes.entity';
 import AsaasPaymentService from '@/infra/proxy/asaas/payment.service';
+import { ProductVariablesTypeOrmRepository } from '@/infra/db/typeorm/repositories/product_variables-typeorm.repository';
+import { ProductVariables } from '@/core/domain/models/product_variables.entity';
+import { ProductVariablesRepository } from '@/core/domain/protocols/repositories/product_variable';
 
 export const orderProvider: Provider[] = [
   DbAddOrder,
@@ -67,10 +67,10 @@ export const orderProvider: Provider[] = [
     useClass: UserTypeOrmRepository,
   },
   {
-    provide: AttributesTypeOrmRepository,
+    provide: ProductVariablesTypeOrmRepository,
     useFactory: (dataSource: DataSource) => {
-      return new AttributesTypeOrmRepository(
-        dataSource.getRepository(Attributes),
+      return new ProductVariablesTypeOrmRepository(
+        dataSource.getRepository(ProductVariables),
       );
     },
     inject: [getDataSourceToken()],
@@ -91,10 +91,11 @@ export const orderProvider: Provider[] = [
     inject: [getDataSourceToken()],
   },
   {
-    provide: AttributesRepository,
+    provide: ProductVariablesRepository,
     useFactory: (dataSource: DataSource) => {
-      const attributesRepository = dataSource.getRepository(Attributes);
-      return new AttributesTypeOrmRepository(attributesRepository);
+      const ProductVariablesRepository =
+        dataSource.getRepository(ProductVariables);
+      return new ProductVariablesTypeOrmRepository(ProductVariablesRepository);
     },
     inject: [getDataSourceToken()],
   },
@@ -155,14 +156,14 @@ export const orderProvider: Provider[] = [
       userRepository: UserRepository,
       dbAddOrderItem: IDbAddOrderItemRepository,
       productRepository: ProductRepository,
-      attributeRepository: AttributesRepository,
+      productVariablesRepository: ProductVariablesRepository,
     ): DbAddOrder => {
       return new DbAddOrder(
         orderRepository,
         userRepository,
         dbAddOrderItem,
         productRepository,
-        attributeRepository,
+        productVariablesRepository,
       );
     },
     inject: [
@@ -170,7 +171,7 @@ export const orderProvider: Provider[] = [
       UserTypeOrmRepository,
       DbAddOrderItem,
       ProductTypeOrmRepository,
-      AttributesTypeOrmRepository,
+      ProductVariablesTypeOrmRepository,
     ],
   },
   {

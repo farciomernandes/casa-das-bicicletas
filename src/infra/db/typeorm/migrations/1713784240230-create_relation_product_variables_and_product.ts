@@ -1,12 +1,12 @@
 import { MigrationInterface, QueryRunner, TableForeignKey } from 'typeorm';
 import { SchemasEnum } from '@/infra/db/schema.enum';
 
-export class CreateRelationAttributesProduct1713784240230
+export class CreateRelationProductVariablesAndProduct1713784240230
   implements MigrationInterface
 {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createForeignKey(
-      `${SchemasEnum.users}.attributes`,
+      `${SchemasEnum.users}.product_variables`,
       new TableForeignKey({
         columnNames: ['product_id'],
         referencedColumnNames: ['id'],
@@ -18,8 +18,8 @@ export class CreateRelationAttributesProduct1713784240230
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropForeignKey(
-      `${SchemasEnum.users}.attributes`,
-      'FK_attributes_product_id',
+      `${SchemasEnum.users}.product_variables`,
+      'FK_product_variables_product_id',
     );
   }
 }

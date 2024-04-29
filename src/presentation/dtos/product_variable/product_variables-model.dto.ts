@@ -2,7 +2,15 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Expose, plainToInstance } from 'class-transformer';
 import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
 
-export class AddAttributesModel {
+export class ProductVariablesModel {
+  @ApiProperty({
+    type: String,
+    example: '65bd52691a0f4c3b57819a4b',
+    required: false,
+  })
+  @Expose()
+  id: string;
+
   @ApiProperty({
     type: String,
     example: 'blue',
@@ -17,7 +25,7 @@ export class AddAttributesModel {
     required: true,
   })
   @Expose()
-  qtd: number;
+  quantity: number;
 
   @ApiProperty({
     type: String,
@@ -28,13 +36,11 @@ export class AddAttributesModel {
   size: string;
 
   @ApiProperty({
-    type: 'string',
-    format: 'binary',
-    description: 'Image file',
+    example: 'link1',
+    required: true,
   })
   @IsNotEmpty()
-  @IsString()
-  @Expose()
+  @IsString({ each: true })
   image_link: string;
 
   @ApiProperty({
@@ -47,8 +53,24 @@ export class AddAttributesModel {
   @IsUUID()
   product_id: string;
 
-  static toDto(payload: AddAttributesModel): AddAttributesModel {
-    return plainToInstance(AddAttributesModel, payload, {
+  @ApiProperty({
+    type: String,
+    example: '2024-04-20T10:00:00.000Z',
+    required: false,
+  })
+  @Expose()
+  created_at?: Date;
+
+  @ApiProperty({
+    type: String,
+    example: '2024-04-20T12:00:00.000Z',
+    required: false,
+  })
+  @Expose()
+  updated_at?: Date;
+
+  static toDto(payload: ProductVariablesModel): ProductVariablesModel {
+    return plainToInstance(ProductVariablesModel, payload, {
       excludeExtraneousValues: true,
     });
   }

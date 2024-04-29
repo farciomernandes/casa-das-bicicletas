@@ -3,25 +3,25 @@ import {
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { IDbAddAttributesRepository } from '@/core/domain/protocols/db/attributes/add-attributes-repository';
-import { Attributes } from '@/core/domain/models/attributes.entity';
-import { AttributesRepository } from '@/core/domain/protocols/repositories/attributes';
 import { S3UploadImage } from '@/core/domain/protocols/aws/s3-upload-image';
-import { AddAttributesModel } from '@/presentation/dtos/attributes/add-attributes.dto';
 import { ProductRepository } from '@/core/domain/protocols/repositories/product';
+import { ProductVariablesRepository } from '@/core/domain/protocols/repositories/product_variable';
+import { IDbAddProductVariablesRepository } from '@/core/domain/protocols/db/product_variables/add-product_variables-repository';
+import { AddProductVariablesModel } from '@/presentation/dtos/product_variable/add-product_variables.dto';
+import { ProductVariables } from '@/core/domain/models/product_variables.entity';
 
 @Injectable()
-export class DbAddAttributes implements IDbAddAttributesRepository {
+export class DbAddProductVariables implements IDbAddProductVariablesRepository {
   constructor(
-    private readonly attributesRepository: AttributesRepository,
+    private readonly productVariablesRepository: ProductVariablesRepository,
     private readonly productRepository: ProductRepository,
     private readonly s3Upload: S3UploadImage,
   ) {}
 
   async create(
-    payload: Omit<AddAttributesModel, 'image_link'>,
+    payload: Omit<AddProductVariablesModel, 'image_link'>,
     image_link: Express.Multer.File,
-  ): Promise<Attributes> {
+  ): Promise<ProductVariables> {
     try {
       const alreadyExists = await this.productRepository.findById(
         payload.product_id,
@@ -34,7 +34,7 @@ export class DbAddAttributes implements IDbAddAttributesRepository {
       }
       const objectUrl = await this.s3Upload.saveFile(image_link);
 
-      return this.attributesRepository.create({
+      return this.productVariablesRepository.create({
         ...payload,
         image_link: objectUrl,
       });

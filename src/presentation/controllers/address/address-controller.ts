@@ -27,7 +27,7 @@ import { AddAddressDto } from '@/presentation/dtos/address/add-address.dto';
 import { UploadAddressDto } from '@/presentation/dtos/address/upload-address.dto';
 
 @ApiTags('Address')
-@Controller('api/v1/address')
+@Controller('api/v1/addresses')
 export class AddressController {
   constructor(
     private readonly dbAddAddress: IDbAddAddressRepository,

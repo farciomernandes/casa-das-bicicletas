@@ -9,8 +9,8 @@ import {
 import { SchemasEnum } from '@/infra/db/schema.enum';
 import { Product } from './product.entity';
 
-@Entity({ name: 'attributes', schema: SchemasEnum.users })
-export class Attributes {
+@Entity({ name: 'product_variables', schema: SchemasEnum.users })
+export class ProductVariables {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -18,7 +18,7 @@ export class Attributes {
   color: string;
 
   @Column()
-  qtd: number;
+  quantity: number;
 
   @Column()
   size: string;
@@ -29,7 +29,28 @@ export class Attributes {
   @Column()
   product_id: string;
 
-  @ManyToOne(() => Product, (product) => product.attributes)
+  @Column({ nullable: true })
+  type: string;
+
+  @Column({ nullable: true })
+  weight: number;
+
+  @Column({ nullable: true })
+  format: string;
+
+  @Column({ nullable: true })
+  length: number;
+
+  @Column({ nullable: true })
+  height: number;
+
+  @Column({ nullable: true })
+  width: number;
+
+  @Column({ nullable: true })
+  diameter: number;
+
+  @ManyToOne(() => Product, (product) => product.product_variables)
   product: Product;
 
   @CreateDateColumn({ name: 'created_at' })

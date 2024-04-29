@@ -26,8 +26,8 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-@ApiTags('OrderItem')
-@Controller('api/v1/order_item')
+@ApiTags('Order Item')
+@Controller('api/v1/order_items')
 export class OrderItemController {
   constructor(
     private readonly dbAddOrderItem: IDbAddOrderItemRepository,

@@ -1,11 +1,13 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 import { SchemasEnum } from '../../schema.enum';
 
-export class CreateTableAttributes1713725148198 implements MigrationInterface {
+export class CreateTableProductVariables1713725148198
+  implements MigrationInterface
+{
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'attributes',
+        name: 'product_variables',
         schema: SchemasEnum.users,
         columns: [
           {
@@ -20,12 +22,40 @@ export class CreateTableAttributes1713725148198 implements MigrationInterface {
             type: 'varchar',
           },
           {
-            name: 'qtd',
+            name: 'quantity',
             type: 'int',
           },
           {
             name: 'size',
+            type: 'int',
+          },
+          {
+            name: 'type',
             type: 'varchar',
+          },
+          {
+            name: 'format',
+            type: 'varchar',
+          },
+          {
+            name: 'length',
+            type: 'int',
+          },
+          {
+            name: 'height',
+            type: 'int',
+          },
+          {
+            name: 'width',
+            type: 'int',
+          },
+          {
+            name: 'weight',
+            type: 'int',
+          },
+          {
+            name: 'diameter',
+            type: 'int',
           },
           {
             name: 'image_link',
@@ -59,6 +89,6 @@ export class CreateTableAttributes1713725148198 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('attributes');
+    await queryRunner.dropTable('product_variables');
   }
 }

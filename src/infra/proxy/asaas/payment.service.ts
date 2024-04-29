@@ -28,6 +28,7 @@ export default class AsaasPaymentService
   ): Promise<{
     transaction_id: string;
     status: OrderStatusEnum;
+    // Deixar todos os campos obrigatorios e deixar opcionais
     transaction: any;
   }> {
     try {

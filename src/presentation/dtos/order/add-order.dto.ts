@@ -56,7 +56,7 @@ export class CheckoutOrderItemDto {
     required: true,
   })
   @Expose()
-  attribute_id: string;
+  product_variables_id: string;
 }
 
 export class AddOrderDto {
@@ -99,7 +99,7 @@ export class AddOrderDto {
       {
         quantity: 1,
         sub_total: 20,
-        attribute_id: 'fb08fe94-f467-4a71-9a66-e4c8f9506cdb',
+        product_variables_id: 'fb08fe94-f467-4a71-9a66-e4c8f9506cdb',
       },
     ],
     required: true,

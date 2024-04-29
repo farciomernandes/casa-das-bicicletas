@@ -27,7 +27,7 @@ import { AddUserDto } from '@/presentation/dtos/user/add-user.dto';
 import { UpdateUserDto } from '@/presentation/dtos/user/update-user.dto';
 
 @ApiTags('User')
-@Controller('api/v1/user')
+@Controller('api/v1/users')
 export class UserController {
   constructor(
     private readonly dbAddUser: IDbAddUserRepository,

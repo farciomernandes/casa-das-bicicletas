@@ -28,7 +28,7 @@ import { IDbUpdateRoleRepository } from '@/core/domain/protocols/db/role/update-
 import { Role } from '@/core/domain/models/role.entity';
 import { UpdateRoleDto } from '@/presentation/dtos/role/update-role.dto';
 @ApiTags('Role')
-@Controller('api/v1/role')
+@Controller('api/v1/roles')
 export class RoleController {
   constructor(
     private readonly dbAddRole: IDbAddRoleRepository,

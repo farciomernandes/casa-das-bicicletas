@@ -10,7 +10,7 @@ import { ProductRepository } from '@/core/domain/protocols/repositories/product'
 import { OrderItemRepository } from '@/core/domain/protocols/repositories/order_item';
 import { ICheckoutOrder } from '@/core/domain/protocols/payment/checkout-order';
 import { IPaymentProcess } from '@/core/domain/protocols/asaas/payment-process';
-import { AttributesRepository } from '@/core/domain/protocols/repositories/attributes';
+import { ProductVariablesRepository } from '@/core/domain/protocols/repositories/product_variable';
 
 @Module({
   imports: [],
@@ -24,7 +24,7 @@ import { AttributesRepository } from '@/core/domain/protocols/repositories/attri
     IDbAddOrderRepository,
     OrderRepository,
     ProductRepository,
-    AttributesRepository,
+    ProductVariablesRepository,
     OrderItemRepository,
     ICheckoutOrder,
     IPaymentProcess,

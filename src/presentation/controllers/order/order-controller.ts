@@ -31,7 +31,7 @@ import { OrderStatusEnum } from '@/shared/enums/order_status.enum';
 import { PaymentCreditCardDto } from '@/presentation/dtos/asaas/payment-credit-card.dto';
 
 @ApiTags('Order')
-@Controller('api/v1/order')
+@Controller('api/v1/orders')
 export class OrderController {
   constructor(
     private readonly dbAddOrder: IDbAddOrderRepository,

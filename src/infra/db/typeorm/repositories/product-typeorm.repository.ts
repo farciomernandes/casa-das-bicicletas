@@ -74,7 +74,10 @@ export class ProductTypeOrmRepository implements ProductRepository {
     }
 
     queryBuilder.leftJoinAndSelect('product.category', 'category');
-    queryBuilder.leftJoinAndSelect('product.attributes', 'attributes');
+    queryBuilder.leftJoinAndSelect(
+      'product.prorduct_variables',
+      'prorduct_variables',
+    );
 
     const products = await queryBuilder.getMany();
     return products;

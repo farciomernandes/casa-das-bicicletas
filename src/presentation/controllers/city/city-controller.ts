@@ -27,7 +27,7 @@ import { AddCityDto } from '@/presentation/dtos/city/add-city.dto';
 import { UpdateCityDto } from '@/presentation/dtos/city/update-city.dto';
 
 @ApiTags('City')
-@Controller('api/v1/city')
+@Controller('api/v1/cities')
 export class CityController {
   constructor(
     private readonly dbAddCity: IDbAddCityRepository,

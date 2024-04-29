@@ -30,7 +30,7 @@ import multerConfig from '@/infra/config/multer';
 import { IDbAddCategoryRepository } from '@/core/domain/protocols/db/category/add-category-repository';
 
 @ApiTags('Category')
-@Controller('api/v1/category')
+@Controller('api/v1/categories')
 export class CategoryController {
   constructor(
     private readonly dbListCategory: IDbListCategoryRepository,
