@@ -4,6 +4,7 @@ import { ProductRepository } from '@/core/domain/protocols/repositories/product'
 import { ProductModelDto } from '@/presentation/dtos/product/product-model.dto';
 import { CategoryModelDto } from '@/presentation/dtos/category/category-model.dto';
 import { ProductParamsDTO } from '@/presentation/dtos/product/params-product.dto';
+import { ProductVariablesModel } from '@/presentation/dtos/product_variable/product_variables-model.dto';
 
 @Injectable()
 export class DbListProduct implements IDbListProductRepository {
@@ -21,6 +22,9 @@ export class DbListProduct implements IDbListProductRepository {
         return {
           ...ProductModelDto.toDto(product),
           category: CategoryModelDto.toDto(product.category),
+          product_variables: product.product_variables.map((variable) => {
+            return ProductVariablesModel.toDto(variable);
+          }),
         };
       });
     } catch (error) {

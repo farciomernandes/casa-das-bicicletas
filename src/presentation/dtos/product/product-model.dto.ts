@@ -7,6 +7,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { CategoryModelDto } from '../category/category-model.dto';
+import { ProductVariablesModel } from '../product_variable/product_variables-model.dto';
 
 export class ProductModelDto {
   @ApiProperty({
@@ -116,6 +117,14 @@ export class ProductModelDto {
   @IsNotEmpty()
   @IsString()
   sku: string;
+
+  @ApiProperty({
+    type: ProductVariablesModel,
+    required: true,
+    isArray: true,
+  })
+  @Expose()
+  product_variables: ProductVariablesModel[];
 
   static toDto(payload: any): ProductModelDto {
     return plainToClass(ProductModelDto, payload, {

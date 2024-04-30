@@ -59,6 +59,13 @@ export class DbAddOrder implements IDbAddOrderRepository {
             `Product for variable_id ${item.product_variables_id} not found`,
           );
         }
+
+        if (item.quantity > product_variable.quantity) {
+          throw new BadRequestException(
+            `Quantity of ${item.quantity} exceeds available quantity (${product_variable.quantity}) for product variable ${item.product_variables_id}`,
+          );
+        }
+
         const productId = product_variable.product_id;
 
         const product = await this.productRepository.findById(productId);
