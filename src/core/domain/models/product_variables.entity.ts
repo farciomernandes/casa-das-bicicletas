@@ -29,25 +29,25 @@ export class ProductVariables {
   @Column()
   product_id: string;
 
-  @Column({ nullable: true })
+  @Column()
   type: string;
 
-  @Column({ nullable: true })
+  @Column()
   weight: number;
 
-  @Column({ nullable: true })
+  @Column()
   format: string;
 
-  @Column({ nullable: true })
+  @Column()
   length: number;
 
-  @Column({ nullable: true })
+  @Column()
   height: number;
 
-  @Column({ nullable: true })
+  @Column()
   width: number;
 
-  @Column({ nullable: true })
+  @Column()
   diameter: number;
 
   @ManyToOne(() => Product, (product) => product.product_variables)

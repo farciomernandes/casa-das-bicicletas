@@ -9,6 +9,7 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -29,6 +30,11 @@ import { PaymentDataDto } from '@/presentation/dtos/checkout/process-payment.dto
 import { PaymentConfirmedDto } from '@/presentation/dtos/order/order-payment-confirmed.dto';
 import { OrderStatusEnum } from '@/shared/enums/order_status.enum';
 import { PaymentCreditCardDto } from '@/presentation/dtos/asaas/payment-credit-card.dto';
+import { RolesGuard } from '@/infra/guards/roles.guard';
+import { Roles } from '@/shared/decorators/roles.decorator';
+import { RolesEnum } from '@/shared/enums/roles.enum';
+import { User } from '@/shared/decorators/user.decorator';
+import { Authenticated } from '@/presentation/dtos/auth/authenticated.dto';
 
 @ApiTags('Order')
 @Controller('api/v1/orders')
@@ -48,9 +54,14 @@ export class OrderController {
   @ApiCreatedResponse({ type: OrderModel })
   @Post()
   @HttpCode(HttpStatus.CREATED)
+  @Roles(RolesEnum.ADMIN)
+  @UseGuards(RolesGuard)
   @ApiBearerAuth()
-  async create(@Body() payload: AddOrderDto): Promise<OrderModel> {
-    return await this.dbAddOrder.create(payload);
+  async create(
+    @Body() payload: AddOrderDto,
+    @User() user: Authenticated,
+  ): Promise<OrderModel> {
+    return await this.dbAddOrder.create(payload, user.id);
   }
 
   @Get()
@@ -60,8 +71,10 @@ export class OrderController {
     type: OrderModel,
     isArray: true,
   })
+  @Roles(RolesEnum.ADMIN)
+  @UseGuards(RolesGuard)
   @ApiBearerAuth()
-  async getAll(): Promise<OrderModel[]> {
+  async getAll(@User() user: Authenticated): Promise<OrderModel[]> {
     try {
       return await this.dbListOrder.getAll();
     } catch (error) {
@@ -110,13 +123,15 @@ export class OrderController {
   @ApiCreatedResponse({ type: PaymentCreditCardDto })
   @Post('checkout/:id')
   @HttpCode(HttpStatus.CREATED)
+  @Roles(RolesEnum.ADMIN)
+  @UseGuards(RolesGuard)
   @ApiBearerAuth()
   async checkout(
     @Param('id') order_id: string,
     @Body() payload: PaymentDataDto,
+    @User() user: Authenticated,
   ): Promise<any> {
-    const user_id = 'd8748c4e-639c-4fa9-9dc4-98099fac82a4';
-    return await this.checkoutOrder.process(order_id, user_id, payload);
+    return await this.checkoutOrder.process(order_id, user.id, payload);
   }
 
   @Post('payment-webhook')

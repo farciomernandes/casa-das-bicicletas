@@ -46,8 +46,8 @@ export class OrderTypeOrmRepository implements OrderRepository {
     return ordersWithItemsAndProducts;
   }
 
-  async create(payload: AddOrderDto): Promise<Order> {
-    const order = this.orderRepository.create(payload);
+  async create(payload: AddOrderDto, user_id: string): Promise<Order> {
+    const order = this.orderRepository.create({ ...payload, user_id });
     return this.orderRepository.save(order);
   }
 }

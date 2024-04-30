@@ -29,21 +29,21 @@ export class DbAddOrder implements IDbAddOrderRepository {
     private readonly productVariablesRepository: ProductVariablesRepository,
   ) {}
 
-  async create(payload: AddOrderDto): Promise<OrderModel> {
+  async create(payload: AddOrderDto, user_id: string): Promise<OrderModel> {
     try {
-      const validUser = await this.userRepository.findById(payload.user_id);
+      const validUser = await this.userRepository.findById(user_id);
       if (!validUser) {
-        throw new BadRequestException(
-          `User with ${payload.user_id} id not found`,
-        );
+        throw new BadRequestException(`User with ${user_id} id not found`);
       }
 
-      const order = await this.orderRepository.create({
-        total: 0,
-        user_id: payload.user_id,
-        status: OrderStatusEnum.PENDING,
-        order_items: [],
-      });
+      const order = await this.orderRepository.create(
+        {
+          total: 0,
+          status: OrderStatusEnum.PENDING,
+          order_items: [],
+        },
+        user_id,
+      );
 
       let total = 0;
 

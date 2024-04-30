@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, plainToClass } from 'class-transformer';
 import { AddProductModelDto } from '../product/add-product.dto';
-import { AddOrderDto } from '../order/add-order.dto';
+import { ListOrderDto } from '../order/add-order.dto';
 
 export class OrderItemDto {
   @ApiProperty({
@@ -29,11 +29,11 @@ export class OrderItemDto {
   sub_total: number;
 
   @ApiProperty({
-    type: AddOrderDto,
+    type: ListOrderDto,
     required: true,
   })
   @Expose()
-  order: AddOrderDto;
+  order: ListOrderDto;
 
   @ApiProperty({
     type: String,

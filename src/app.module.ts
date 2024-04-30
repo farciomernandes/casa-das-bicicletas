@@ -12,7 +12,6 @@ import { AuthMiddleware } from './infra/middleware/auth.middleware';
 import { JwtAdapter } from './infra/adapters/jwt-adapter';
 import { Decrypter } from './core/domain/protocols/cryptography/decrypter';
 import { RoleModule } from './infra/ioc/role/role.module';
-import { DataSource } from 'typeorm';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmDataSource } from './infra/db/database.provider';
 import { RoleController } from './presentation/controllers/role/role-controller';
@@ -67,10 +66,83 @@ import { AuthModule } from './infra/ioc/auth/auth.module';
   ],
 })
 export class AppModule implements NestModule {
+  private readonly usersEndpoints = [
+    { path: 'api/v1/users**', method: RequestMethod.PUT },
+    { path: 'api/v1/users**', method: RequestMethod.GET },
+    { path: 'api/v1/users**', method: RequestMethod.DELETE },
+  ];
+
+  private readonly statesEndpoints = [
+    { path: 'api/v1/states**', method: RequestMethod.PUT },
+    { path: 'api/v1/states**', method: RequestMethod.DELETE },
+  ];
+
+  private readonly product_variableEndpoints = [
+    { path: 'api/v1/product_variables', method: RequestMethod.POST },
+    { path: 'api/v1/product_variables**', method: RequestMethod.PUT },
+    { path: 'api/v1/product_variables**', method: RequestMethod.DELETE },
+  ];
+
+  private readonly order_itemEndpoints = [
+    { path: 'api/v1/order_items', method: RequestMethod.POST },
+    { path: 'api/v1/order_items', method: RequestMethod.GET },
+    { path: 'api/v1/order_items**', method: RequestMethod.PUT },
+    { path: 'api/v1/order_items**', method: RequestMethod.DELETE },
+  ];
+
+  private readonly orderEndpoints = [
+    { path: 'api/v1/orders', method: RequestMethod.POST },
+    { path: 'api/v1/orders', method: RequestMethod.GET },
+    { path: 'api/v1/orders**', method: RequestMethod.PUT },
+    { path: 'api/v1/orders**', method: RequestMethod.DELETE },
+  ];
+
+  private readonly cityEndpoints = [
+    { path: 'api/v1/cities', method: RequestMethod.GET },
+    { path: 'api/v1/cities**', method: RequestMethod.PUT },
+    { path: 'api/v1/cities**', method: RequestMethod.DELETE },
+  ];
+
+  private readonly addressEndpoints = [
+    { path: 'api/v1/addresses', method: RequestMethod.GET },
+    { path: 'api/v1/addresses**', method: RequestMethod.PUT },
+    { path: 'api/v1/addresses**', method: RequestMethod.DELETE },
+  ];
+
+  private readonly userEndpoints = [
+    { path: 'api/v1/users', method: RequestMethod.GET },
+    { path: 'api/v1/users**', method: RequestMethod.PUT },
+    { path: 'api/v1/users**', method: RequestMethod.DELETE },
+  ];
+
+  private readonly categoryEndpoints = [
+    { path: 'api/v1/category', method: RequestMethod.POST },
+    { path: 'api/v1/category', method: RequestMethod.PUT },
+    { path: 'api/v1/category', method: RequestMethod.DELETE },
+  ];
+
+  private readonly productEndpoints = [
+    { path: 'api/v1/product', method: RequestMethod.POST },
+    { path: 'api/v1/product', method: RequestMethod.PUT },
+    { path: 'api/v1/product', method: RequestMethod.DELETE },
+  ];
+
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware)
-      .forRoutes({ path: 'api/v1/role', method: RequestMethod.PATCH });
+      .forRoutes(
+        ...this.orderEndpoints,
+        ...this.cityEndpoints,
+        ...this.addressEndpoints,
+        ...this.userEndpoints,
+        ...this.categoryEndpoints,
+        ...this.productEndpoints,
+        ...this.usersEndpoints,
+        ...this.statesEndpoints,
+        ...this.product_variableEndpoints,
+        ...this.order_itemEndpoints,
+        { path: 'api/v1/role', method: RequestMethod.ALL },
+        { path: 'api/v1/admin', method: RequestMethod.ALL },
+      );
   }
-  constructor(private dataSource: DataSource) {}
 }

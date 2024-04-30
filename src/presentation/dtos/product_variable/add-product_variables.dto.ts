@@ -1,12 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, plainToInstance } from 'class-transformer';
-import {
-  IsNotEmpty,
-  IsString,
-  IsUUID,
-  IsOptional,
-  IsNumber,
-} from 'class-validator';
+import { IsNotEmpty, IsString, IsUUID, IsNumber } from 'class-validator';
 
 export class AddProductVariablesModel {
   @ApiProperty({
@@ -56,70 +50,63 @@ export class AddProductVariablesModel {
   @ApiProperty({
     type: String,
     example: 'Ferro nobre',
-    required: false,
+    required: true,
   })
   @Expose()
-  @IsOptional()
   @IsString()
   type: string;
 
   @ApiProperty({
     type: Number,
     example: 1.5,
-    required: false,
+    required: true,
   })
   @Expose()
-  @IsOptional()
   @IsNumber()
   weight: number;
 
   @ApiProperty({
     type: String,
     example: 'Triangular',
-    required: false,
+    required: true,
   })
   @Expose()
-  @IsOptional()
   @IsString()
   format: string;
 
   @ApiProperty({
     type: Number,
     example: 30,
-    required: false,
+    required: true,
   })
   @Expose()
-  @IsOptional()
   @IsNumber()
   length: number;
 
   @ApiProperty({
     type: Number,
     example: 20,
-    required: false,
+    required: true,
   })
   @Expose()
-  @IsOptional()
   @IsNumber()
   height: number;
 
   @ApiProperty({
     type: Number,
     example: 10,
-    required: false,
+    required: true,
   })
   @Expose()
-  @IsOptional()
   @IsNumber()
   width: number;
 
   @ApiProperty({
     type: Number,
     example: 10,
-    required: false,
+    required: true,
   })
   @Expose()
-  @IsOptional()
   @IsNumber()
   diameter: number;
 

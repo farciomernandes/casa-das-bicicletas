@@ -27,7 +27,7 @@ export class CreateTableProductVariables1713725148198
           },
           {
             name: 'size',
-            type: 'int',
+            type: 'varchar',
           },
           {
             name: 'type',
@@ -39,23 +39,23 @@ export class CreateTableProductVariables1713725148198
           },
           {
             name: 'length',
-            type: 'int',
+            type: 'numeric',
           },
           {
             name: 'height',
-            type: 'int',
+            type: 'numeric',
           },
           {
             name: 'width',
-            type: 'int',
+            type: 'numeric',
           },
           {
             name: 'weight',
-            type: 'int',
+            type: 'numeric',
           },
           {
             name: 'diameter',
-            type: 'int',
+            type: 'numeric',
           },
           {
             name: 'image_link',

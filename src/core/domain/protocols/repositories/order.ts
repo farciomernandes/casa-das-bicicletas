@@ -20,7 +20,7 @@ export abstract class OrderRepository
 {
   abstract findById(id: string): Promise<Order>;
   abstract getAll(): Promise<OrderModel[]>;
-  abstract create(payload: AddOrderDto): Promise<Order>;
+  abstract create(payload: AddOrderDto, user_id: string): Promise<Order>;
   abstract delete(id: string): Promise<void>;
   abstract update(payload: UpdateOrderDto, id: string): Promise<OrderModel>;
 }

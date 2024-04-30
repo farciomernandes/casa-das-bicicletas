@@ -1,12 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
-import {
-  IsNotEmpty,
-  IsString,
-  Matches,
-  IsEnum,
-  IsOptional,
-} from 'class-validator';
+import { Matches, IsEnum, IsOptional } from 'class-validator';
 import { PaymentMethodEnum } from '@/shared/enums/payment_method.enum';
 
 export class PaymentDataDto {

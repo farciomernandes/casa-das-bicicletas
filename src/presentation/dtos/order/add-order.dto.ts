@@ -33,7 +33,6 @@ export class ProductModelDto {
   @ApiProperty()
   sku: string;
 }
-
 export class CheckoutOrderItemDto {
   @ApiProperty({
     type: Number,
@@ -58,8 +57,56 @@ export class CheckoutOrderItemDto {
   @Expose()
   product_variables_id: string;
 }
-
 export class AddOrderDto {
+  @ApiProperty({
+    type: String,
+    example: OrderStatusEnum.PAID,
+    enum: ['PENDING', 'PAID', 'CANCELED'],
+    readOnly: true,
+  })
+  @Expose()
+  status: string;
+
+  @ApiProperty({
+    type: Number,
+    example: 100.5,
+    readOnly: true,
+  })
+  @Expose()
+  total: number;
+
+  @ApiProperty({
+    type: String,
+    example: '65bd52691a0f4c3b57819a4b',
+    required: false,
+    readOnly: true,
+  })
+  @Expose()
+  transaction_id?: string;
+
+  @ApiProperty({
+    type: CheckoutOrderItemDto,
+    example: [
+      {
+        quantity: 1,
+        sub_total: 20,
+        product_variables_id: 'fb08fe94-f467-4a71-9a66-e4c8f9506cdb',
+      },
+    ],
+    required: true,
+    isArray: true,
+  })
+  @Expose()
+  order_items: CheckoutOrderItemDto[];
+
+  static toDto(payload: AddOrderDto): AddOrderDto {
+    return plainToClass(AddOrderDto, payload, {
+      excludeExtraneousValues: true,
+    });
+  }
+}
+
+export class ListOrderDto {
   @ApiProperty({
     type: String,
     example: OrderStatusEnum.PAID,
@@ -88,7 +135,6 @@ export class AddOrderDto {
   @ApiProperty({
     type: String,
     example: '65bd52691a0f4c3b57819a4b',
-    required: true,
   })
   @Expose()
   user_id: string;
@@ -108,8 +154,8 @@ export class AddOrderDto {
   @Expose()
   order_items: CheckoutOrderItemDto[];
 
-  static toDto(payload: AddOrderDto): AddOrderDto {
-    return plainToClass(AddOrderDto, payload, {
+  static toDto(payload: ListOrderDto): ListOrderDto {
+    return plainToClass(ListOrderDto, payload, {
       excludeExtraneousValues: true,
     });
   }
