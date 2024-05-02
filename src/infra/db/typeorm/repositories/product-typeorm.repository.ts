@@ -41,8 +41,9 @@ export class ProductTypeOrmRepository implements ProductRepository {
 
   async getAll(params: ProductParamsDTO): Promise<any[]> {
     const queryBuilder = this.productRepository.createQueryBuilder('product');
+
     if (params.id) {
-      queryBuilder.where('product.id = :id', { id: params.id });
+      queryBuilder.andWhere('product.id = :id', { id: params.id });
     }
 
     if (params.category_id) {
@@ -58,11 +59,19 @@ export class ProductTypeOrmRepository implements ProductRepository {
     }
 
     if (params.price) {
-      queryBuilder.andWhere('product.price = :price', { price: params.price });
+      // Use join para acessar product_variables e aplicar condição de preço
+      queryBuilder.innerJoin('product.product_variables', 'product_variables');
+      queryBuilder.andWhere('product_variables.price = :price', {
+        price: params.price,
+      });
     }
 
     if (params.sku) {
-      queryBuilder.andWhere('product.sku = :sku', { sku: params.sku });
+      // Use join para acessar product_variables e aplicar condição de SKU
+      queryBuilder.innerJoin('product.product_variables', 'product_variables');
+      queryBuilder.andWhere('product_variables.sku = :sku', {
+        sku: params.sku,
+      });
     }
 
     if (params.limit) {

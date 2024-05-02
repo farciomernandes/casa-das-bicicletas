@@ -16,6 +16,39 @@ export const ProductVariablesSchema = new EntitySchema<ProductVariables>({
     color: {
       type: 'varchar',
     },
+    description: {
+      type: 'text',
+      nullable: false,
+    },
+    large_description: {
+      type: 'text',
+      nullable: false,
+    },
+    price: {
+      type: 'numeric',
+      nullable: false,
+    },
+    installment_value: {
+      type: 'integer',
+      nullable: false,
+    },
+    installment_count: {
+      type: 'integer',
+      nullable: false,
+    },
+    discount_price: {
+      type: 'numeric',
+      nullable: false,
+    },
+    discount_percent: {
+      type: 'numeric',
+      nullable: false,
+    },
+    sku: {
+      type: 'varchar',
+      length: 255,
+      nullable: false,
+    },
     quantity: {
       type: 'int',
     },

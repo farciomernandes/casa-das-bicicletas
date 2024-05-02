@@ -15,8 +15,6 @@ export class OrderItemTypeOrmRepository implements OrderItemRepository {
         relations: ['product'],
       });
 
-      // -> orderItem.product.price
-
       const sub_total = payload.quantity * 3;
 
       this.orderItemRepository.merge(orderItem, {

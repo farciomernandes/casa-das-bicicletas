@@ -22,6 +22,39 @@ export class CreateTableProductVariables1713725148198
             type: 'varchar',
           },
           {
+            name: 'description',
+            type: 'text',
+          },
+          {
+            name: 'large_description',
+            type: 'text',
+          },
+          {
+            name: 'price',
+            type: 'numeric',
+          },
+          {
+            name: 'discount_price',
+            type: 'numeric',
+          },
+          {
+            name: 'discount_percent',
+            type: 'numeric',
+          },
+          {
+            name: 'installment_count',
+            type: 'integer',
+          },
+          {
+            name: 'installment_value',
+            type: 'integer',
+          },
+          {
+            name: 'sku',
+            type: 'varchar',
+            length: '255',
+          },
+          {
             name: 'quantity',
             type: 'int',
           },

@@ -12,6 +12,86 @@ export class AddProductVariablesModel {
   color: string;
 
   @ApiProperty({
+    type: String,
+    example: 'Product Description',
+    required: true,
+  })
+  @Expose()
+  @IsNotEmpty()
+  @IsString()
+  description: string;
+
+  @ApiProperty({
+    type: String,
+    example: 'Large Product Description',
+    required: true,
+  })
+  @Expose()
+  @IsNotEmpty()
+  @IsString()
+  large_description: string;
+
+  @ApiProperty({
+    type: Number,
+    example: 100,
+    required: true,
+  })
+  @Expose()
+  @IsNotEmpty()
+  @IsNumber()
+  price: number;
+
+  @ApiProperty({
+    type: Number,
+    example: 1,
+    required: true,
+  })
+  @Expose()
+  @IsNotEmpty()
+  @IsNumber()
+  installment_count: number;
+
+  @ApiProperty({
+    type: Number,
+    example: 100,
+    required: true,
+  })
+  @Expose()
+  @IsNotEmpty()
+  @IsNumber()
+  installment_value: number;
+
+  @ApiProperty({
+    type: Number,
+    example: 90,
+    required: true,
+  })
+  @Expose()
+  @IsNotEmpty()
+  @IsNumber()
+  discount_price: number;
+
+  @ApiProperty({
+    type: Number,
+    example: 10,
+    required: true,
+  })
+  @Expose()
+  @IsNotEmpty()
+  @IsNumber()
+  discount_percent: number;
+
+  @ApiProperty({
+    type: String,
+    example: 'SKU123',
+    required: true,
+  })
+  @Expose()
+  @IsNotEmpty()
+  @IsString()
+  sku: string;
+
+  @ApiProperty({
     type: Number,
     example: 10,
     required: true,

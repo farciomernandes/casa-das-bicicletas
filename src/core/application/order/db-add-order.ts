@@ -18,6 +18,7 @@ import {
 import { ProductRepository } from '@/core/domain/protocols/repositories/product';
 import { OrderStatusEnum } from '@/shared/enums/order_status.enum';
 import { ProductVariablesRepository } from '@/core/domain/protocols/repositories/product_variable';
+import { ProductVariablesModel } from '@/presentation/dtos/product_variable/product_variables-model.dto';
 
 @Injectable()
 export class DbAddOrder implements IDbAddOrderRepository {
@@ -29,7 +30,7 @@ export class DbAddOrder implements IDbAddOrderRepository {
     private readonly productVariablesRepository: ProductVariablesRepository,
   ) {}
 
-  async create(payload: AddOrderDto, user_id: string): Promise<any> {
+  async create(payload: AddOrderDto, user_id: string): Promise<OrderModel> {
     try {
       const validUser = await this.userRepository.findById(user_id);
       if (!validUser) {
@@ -76,13 +77,13 @@ export class DbAddOrder implements IDbAddOrderRepository {
           );
         }
 
-        const sub_total = item.quantity * product.price;
+        const sub_total = item.quantity * product_variable.price;
 
         order_items.push({
           id: product_variable.id,
           quantity: item.quantity,
           sub_total,
-          product: product_variable,
+          product: product,
         });
 
         total += sub_total;
@@ -105,17 +106,18 @@ export class DbAddOrder implements IDbAddOrderRepository {
         order.id,
       );
       const updatedOrder = OrderModel.toDto(response);
+
       return {
-        id: updatedOrder.id,
-        status: updatedOrder.status,
-        total: updatedOrder.total,
-        transaction_id: null,
-        user: {
-          ...validUser,
-          role: undefined,
-          password: undefined,
-          order_items,
-        },
+        ...updatedOrder,
+        user: UserOrderDto.toDto(validUser),
+        order_items: order_items.map((item) => {
+          return {
+            ...OrderItemLocally.toDto(item),
+            product_variables: {
+              ...ProductVariablesModel.toDto(item.product.product_variables[0]),
+            },
+          };
+        }),
       };
     } catch (error) {
       if (error instanceof BadRequestException) {

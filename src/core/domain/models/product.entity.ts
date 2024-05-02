@@ -28,30 +28,6 @@ export class Product {
   @Column()
   category_id: string;
 
-  @Column({ type: 'text' })
-  description: string;
-
-  @Column({ type: 'text' })
-  large_description: string;
-
-  @Column({ type: 'numeric' })
-  price: number;
-
-  @Column({ type: 'numeric' })
-  discount_price: number;
-
-  @Column({ type: 'numeric' })
-  discount_percent: number;
-
-  @Column({ type: 'integer' })
-  installment_count: number;
-
-  @Column({ type: 'integer' })
-  installment_value: number;
-
-  @Column({ type: 'varchar', length: 255 })
-  sku: string;
-
   @OneToMany(
     () => ProductVariables,
     (product_variables) => product_variables.product,

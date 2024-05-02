@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, plainToClass, plainToInstance } from 'class-transformer';
 import { IsOptional } from 'class-validator';
+import { ProductVariablesModel } from '../product_variable/product_variables-model.dto';
 
 export class CategoryLocallylDto {
   @ApiProperty({
@@ -119,63 +120,6 @@ export class ProductOrderDto {
   @Expose()
   category: CategoryLocallylDto;
 
-  @ApiProperty({
-    type: String,
-    example: 'Product Description',
-  })
-  @Expose()
-  description: string;
-
-  @ApiProperty({
-    type: String,
-    example: 'Large Product Description',
-  })
-  @Expose()
-  large_description: string;
-
-  @ApiProperty({
-    type: Number,
-    required: true,
-  })
-  @Expose()
-  price: number;
-
-  @ApiProperty({
-    type: Number,
-    example: 1,
-  })
-  @Expose()
-  installment_count: number;
-
-  @ApiProperty({
-    type: Number,
-    example: 100,
-  })
-  @Expose()
-  installment_value: number;
-
-  @ApiProperty({
-    type: Number,
-    example: 90,
-  })
-  @Expose()
-  discount_price: number;
-
-  @ApiProperty({
-    type: Number,
-    example: 10,
-    required: true,
-  })
-  @Expose()
-  discount_percent: number;
-
-  @ApiProperty({
-    type: String,
-    example: 'SKU123',
-  })
-  @Expose()
-  sku: string;
-
   static toDto(payload: ProductOrderDto): ProductOrderDto {
     return plainToInstance(ProductOrderDto, payload, {
       excludeExtraneousValues: true,
@@ -206,10 +150,11 @@ export class OrderItemLocally {
   sub_total: number;
 
   @ApiProperty({
+    type: ProductVariablesModel,
     required: true,
   })
   @Expose()
-  product_variables: any;
+  product_variables: ProductVariablesModel;
 
   static toDto(payload: OrderItemLocally): OrderItemLocally {
     return plainToClass(OrderItemLocally, payload, {

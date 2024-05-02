@@ -8,7 +8,8 @@ export class ProductModelDto {
 
   @ApiProperty()
   name: string;
-
+}
+export class CheckoutOrderItemDto {
   @ApiProperty()
   description: string;
 
@@ -32,8 +33,7 @@ export class ProductModelDto {
 
   @ApiProperty()
   sku: string;
-}
-export class CheckoutOrderItemDto {
+
   @ApiProperty({
     type: Number,
     example: 1,

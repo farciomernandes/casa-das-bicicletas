@@ -10,6 +10,60 @@ export class UpdateProductVariablesModel {
   color: string;
 
   @ApiProperty({
+    type: String,
+    example: 'Product Description',
+  })
+  @Expose()
+  description: string;
+
+  @ApiProperty({
+    type: String,
+    example: 'Large Product Description',
+  })
+  @Expose()
+  large_description: string;
+
+  @ApiProperty({
+    type: Number,
+    example: 100,
+  })
+  @Expose()
+  price: number;
+
+  @ApiProperty({
+    type: Number,
+    example: 1,
+  })
+  @Expose()
+  installment_count: number;
+
+  @ApiProperty({
+    type: Number,
+    example: 100,
+  })
+  @Expose()
+  installment_value: number;
+
+  @ApiProperty({
+    type: Number,
+  })
+  @Expose()
+  discount_price: number;
+
+  @ApiProperty({
+    type: Number,
+    example: 10,
+  })
+  @Expose()
+  discount_percent: number;
+
+  @ApiProperty({
+    type: String,
+  })
+  @Expose()
+  sku: string;
+
+  @ApiProperty({
     type: Number,
     example: 10,
   })

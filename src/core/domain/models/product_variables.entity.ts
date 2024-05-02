@@ -17,6 +17,30 @@ export class ProductVariables {
   @Column()
   color: string;
 
+  @Column({ type: 'text' })
+  description: string;
+
+  @Column({ type: 'text' })
+  large_description: string;
+
+  @Column({ type: 'numeric' })
+  price: number;
+
+  @Column({ type: 'numeric' })
+  discount_price: number;
+
+  @Column({ type: 'numeric' })
+  discount_percent: number;
+
+  @Column({ type: 'integer' })
+  installment_count: number;
+
+  @Column({ type: 'integer' })
+  installment_value: number;
+
+  @Column({ type: 'varchar', length: 255 })
+  sku: string;
+
   @Column()
   quantity: number;
 
