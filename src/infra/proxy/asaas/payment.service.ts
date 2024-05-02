@@ -104,7 +104,7 @@ export default class AsaasPaymentService
 
   async createTransaction(
     user_id: string,
-    order: OrderModel,
+    order: any,
     user: UserModelDto,
     payment: PaymentDataDto,
   ): Promise<any> {
