@@ -8,7 +8,7 @@ import { OrderModel } from '@/presentation/dtos/order/order-model.dto';
 export class OrderTypeOrmRepository implements OrderRepository {
   constructor(private readonly orderRepository: Repository<Order>) {}
 
-  async update(payload: UpdateOrderDto, id: string): Promise<OrderModel> {
+  async update(payload: UpdateOrderDto, id: string): Promise<any> {
     try {
       const order = await this.orderRepository.findOneOrFail({
         where: { id },
@@ -26,7 +26,7 @@ export class OrderTypeOrmRepository implements OrderRepository {
       .createQueryBuilder('order')
       .leftJoinAndSelect('order.user', 'user')
       .leftJoinAndSelect('order.order_items', 'order_items')
-      .leftJoinAndSelect('order_items.product', 'product')
+      .leftJoinAndSelect('order_items.product_variables', 'product_variables')
       .where('order.id = :id', { id })
       .getOne();
   }
@@ -35,12 +35,12 @@ export class OrderTypeOrmRepository implements OrderRepository {
     await this.orderRepository.delete(id);
   }
 
-  async getAll(): Promise<OrderModel[]> {
+  async getAll(): Promise<any> {
     const ordersWithItemsAndProducts = await this.orderRepository
       .createQueryBuilder('order')
       .leftJoinAndSelect('order.user', 'user')
       .leftJoinAndSelect('order.order_items', 'order_items')
-      .leftJoinAndSelect('order_items.product', 'product')
+      .leftJoinAndSelect('order_items.product_variables', 'product_variables')
       .getMany();
 
     return ordersWithItemsAndProducts;

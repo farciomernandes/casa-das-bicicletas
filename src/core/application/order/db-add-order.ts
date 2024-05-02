@@ -29,7 +29,7 @@ export class DbAddOrder implements IDbAddOrderRepository {
     private readonly productVariablesRepository: ProductVariablesRepository,
   ) {}
 
-  async create(payload: AddOrderDto, user_id: string): Promise<OrderModel> {
+  async create(payload: AddOrderDto, user_id: string): Promise<any> {
     try {
       const validUser = await this.userRepository.findById(user_id);
       if (!validUser) {
@@ -66,9 +66,10 @@ export class DbAddOrder implements IDbAddOrderRepository {
           );
         }
 
-        const productId = product_variable.product_id;
+        const productId = product_variable.product.id;
 
         const product = await this.productRepository.findById(productId);
+
         if (!product) {
           throw new BadRequestException(
             `Product with ${productId} id not found`,
@@ -78,17 +79,17 @@ export class DbAddOrder implements IDbAddOrderRepository {
         const sub_total = item.quantity * product.price;
 
         order_items.push({
-          id: productId,
+          id: product_variable.id,
           quantity: item.quantity,
           sub_total,
-          product: product,
+          product: product_variable,
         });
 
         total += sub_total;
 
         await this.dbAddOrderItem.create({
           order_id: order.id,
-          product_id: productId,
+          product_variables_id: product_variable.id,
           quantity: item.quantity,
           sub_total: sub_total,
         });
@@ -104,21 +105,17 @@ export class DbAddOrder implements IDbAddOrderRepository {
         order.id,
       );
       const updatedOrder = OrderModel.toDto(response);
-
       return {
-        ...updatedOrder,
-        user: UserOrderDto.toDto(validUser),
-        order_items: order.order_items.map((item) => {
-          return {
-            ...OrderItemLocally.toDto(item),
-            product: {
-              ...ProductOrderDto.toDto(item.product),
-              category: {
-                ...CategoryLocallylDto.toDto(item.product.category),
-              },
-            },
-          };
-        }),
+        id: updatedOrder.id,
+        status: updatedOrder.status,
+        total: updatedOrder.total,
+        transaction_id: null,
+        user: {
+          ...validUser,
+          role: undefined,
+          password: undefined,
+          order_items,
+        },
       };
     } catch (error) {
       if (error instanceof BadRequestException) {

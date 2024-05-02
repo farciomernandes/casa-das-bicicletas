@@ -12,12 +12,12 @@ import { DbDeleteOrderItem } from '@/core/application/order_item/db-delete-order
 import { DbUpdateOrderItem } from '@/core/application/order_item/db-update-order_item';
 import { DbAddOrderItem } from '@/core/application/order_item/db-add-order_item';
 import { OrderItemRepository } from '@/core/domain/protocols/repositories/order_item';
-import { ProductTypeOrmRepository } from '@/infra/db/typeorm/repositories/product-typeorm.repository';
-import { Product } from '@/core/domain/models/product.entity';
-import { ProductRepository } from '@/core/domain/protocols/repositories/product';
 import { OrderRepository } from '@/core/domain/protocols/repositories/order';
 import { OrderTypeOrmRepository } from '@/infra/db/typeorm/repositories/order-typeorm.repository';
 import { Order } from '@/core/domain/models/order.entity';
+import { ProductVariablesRepository } from '@/core/domain/protocols/repositories/product_variable';
+import { ProductVariablesTypeOrmRepository } from '@/infra/db/typeorm/repositories/product_variables-typeorm.repository';
+import { ProductVariables } from '@/core/domain/models/product_variables.entity';
 
 export const orderItemProvider: Provider[] = [
   DbAddOrderItem,
@@ -38,15 +38,17 @@ export const orderItemProvider: Provider[] = [
     useClass: OrderItemTypeOrmRepository,
   },
   {
-    provide: ProductTypeOrmRepository,
+    provide: ProductVariablesTypeOrmRepository,
     useFactory: (dataSource: DataSource) => {
-      return new ProductTypeOrmRepository(dataSource.getRepository(Product));
+      return new ProductVariablesTypeOrmRepository(
+        dataSource.getRepository(ProductVariables),
+      );
     },
     inject: [getDataSourceToken()],
   },
   {
-    provide: ProductRepository,
-    useClass: ProductTypeOrmRepository,
+    provide: ProductVariablesRepository,
+    useClass: ProductVariablesTypeOrmRepository,
   },
   {
     provide: OrderTypeOrmRepository,
@@ -67,18 +69,18 @@ export const orderItemProvider: Provider[] = [
     provide: IDbAddOrderItemRepository,
     useFactory: (
       orderItemRepository: OrderItemRepository,
-      productRepository: ProductRepository,
+      productVariablesRepository: ProductVariablesRepository,
       orderRepository: OrderRepository,
     ): DbAddOrderItem => {
       return new DbAddOrderItem(
         orderItemRepository,
-        productRepository,
+        productVariablesRepository,
         orderRepository,
       );
     },
     inject: [
       OrderItemTypeOrmRepository,
-      ProductTypeOrmRepository,
+      ProductVariablesTypeOrmRepository,
       OrderTypeOrmRepository,
     ],
   },

@@ -30,10 +30,15 @@ export class ProductVariablesTypeOrmRepository
     }
   }
 
-  async findById(id: string): Promise<ProductVariables> {
-    return this.ProductVariablesRepository.findOne({ where: { id } });
-  }
+  async findById(id: string): Promise<any> {
+    const queryBuilder =
+      this.ProductVariablesRepository.createQueryBuilder('product_variables');
+    queryBuilder.where('product_variables.id = :id', { id });
 
+    queryBuilder.leftJoinAndSelect('product_variables.product', 'product');
+
+    return await queryBuilder.getOne();
+  }
   async delete(id: string): Promise<void> {
     await this.ProductVariablesRepository.delete(id);
   }

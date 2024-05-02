@@ -31,11 +31,11 @@ export class OrderItem {
   order_id: string;
 
   @ManyToOne(() => Product)
-  @JoinColumn({ name: 'product_id' })
-  product: Product;
+  @JoinColumn({ name: 'product_variables_id' })
+  product_variables: Product;
 
   @Column()
-  product_id: string;
+  product_variables_id: string;
 
   @CreateDateColumn()
   created_at: Date;

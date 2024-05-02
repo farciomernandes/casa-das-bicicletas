@@ -206,11 +206,10 @@ export class OrderItemLocally {
   sub_total: number;
 
   @ApiProperty({
-    type: ProductOrderDto,
     required: true,
   })
   @Expose()
-  product: ProductOrderDto;
+  product_variables: any;
 
   static toDto(payload: OrderItemLocally): OrderItemLocally {
     return plainToClass(OrderItemLocally, payload, {

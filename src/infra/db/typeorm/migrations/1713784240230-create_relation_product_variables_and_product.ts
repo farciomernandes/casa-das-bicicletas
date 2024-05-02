@@ -19,7 +19,7 @@ export class CreateRelationProductVariablesAndProduct1713784240230
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropForeignKey(
       `${SchemasEnum.users}.product_variables`,
-      'FK_product_variables_product_id',
+      'FK_product_variables_id',
     );
   }
 }

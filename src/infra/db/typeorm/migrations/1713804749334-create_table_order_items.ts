@@ -33,7 +33,7 @@ export class CreateTableOrderItems1713804749334 implements MigrationInterface {
             type: 'uuid',
           },
           {
-            name: 'product_id',
+            name: 'product_variables_id',
             type: 'uuid',
           },
           {
@@ -72,9 +72,9 @@ export class CreateTableOrderItems1713804749334 implements MigrationInterface {
     await queryRunner.createForeignKey(
       `${SchemasEnum.users}.order_items`,
       new TableForeignKey({
-        columnNames: ['product_id'],
+        columnNames: ['product_variables_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: `${SchemasEnum.users}.products`,
+        referencedTableName: `${SchemasEnum.users}.product_variables`, // Corrigido aqui
         onDelete: 'CASCADE',
       }),
     );
@@ -87,7 +87,7 @@ export class CreateTableOrderItems1713804749334 implements MigrationInterface {
     );
     await queryRunner.dropForeignKey(
       `${SchemasEnum.users}.order_items`,
-      'FK_order_items_product_id',
+      'FK_order_items_product_variables_id',
     );
     await queryRunner.dropTable('order_items');
   }

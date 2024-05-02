@@ -134,18 +134,18 @@ export const orderProvider: Provider[] = [
     provide: IDbAddOrderItemRepository,
     useFactory: (
       orderItemRepository: OrderItemRepository,
-      productRepository: ProductRepository,
+      productVariablesRepository: ProductVariablesRepository,
       orderRepository: OrderRepository,
     ): DbAddOrderItem => {
       return new DbAddOrderItem(
         orderItemRepository,
-        productRepository,
+        productVariablesRepository,
         orderRepository,
       );
     },
     inject: [
       OrderItemTypeOrmRepository,
-      ProductTypeOrmRepository,
+      ProductVariablesTypeOrmRepository,
       OrderTypeOrmRepository,
     ],
   },

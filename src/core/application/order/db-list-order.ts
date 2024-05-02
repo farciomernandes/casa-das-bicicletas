@@ -10,21 +10,9 @@ import { ProductModelDto } from '@/presentation/dtos/product/product-model.dto';
 export class DbListOrder {
   constructor(private readonly orderRepository: OrderRepository) {}
 
-  async getAll(): Promise<OrderModel[]> {
+  async getAll(): Promise<any> {
     try {
-      const orders = await this.orderRepository.getAll();
-      return orders.map((order) => {
-        return {
-          ...OrderModel.toDto(order),
-          user: UserOrderDto.toDto(order.user),
-          order_items: order.order_items.map((item) => {
-            return {
-              ...OrderItemLocally.toDto(item),
-              product: ProductModelDto.toDto(item.product),
-            };
-          }),
-        };
-      });
+      return await this.orderRepository.getAll();
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }

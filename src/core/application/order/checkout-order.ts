@@ -46,9 +46,19 @@ export class CheckoutOrder implements ICheckoutOrder {
       }
 
       const { transaction_id, status, transaction } =
-        await this.paymentService.process(order, user, payment);
+        await this.paymentService.process(
+          {
+            id: order.id,
+            order_items: order.order_items,
+            status: order.status,
+            total: order.total,
+            user: order.user,
+          },
+          user,
+          payment,
+        );
 
-      await this.dbUpdateOrder.update(
+      const updated = await this.dbUpdateOrder.update(
         {
           ...order,
           transaction_id,
@@ -57,16 +67,7 @@ export class CheckoutOrder implements ICheckoutOrder {
         order.id,
       );
 
-      return {
-        transaction: transaction,
-        user: UserOrderDto.toDto(order.user),
-        order_items: order.order_items.map((item) => {
-          return {
-            ...OrderItemLocally.toDto(item),
-            product: ProductOrderDto.toDto(item.product),
-          };
-        }),
-      };
+      return updated;
     } catch (error) {
       if (error instanceof BadRequestException) {
         throw error;

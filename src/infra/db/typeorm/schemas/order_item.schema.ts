@@ -2,7 +2,7 @@ import { EntitySchema } from 'typeorm';
 import { SchemasEnum } from '../../schema.enum';
 import { OrderItem } from '@/core/domain/models/order_item.entity';
 import { Order } from '@/core/domain/models/order.entity';
-import { Product } from '@/core/domain/models/product.entity';
+import { ProductVariables } from '@/core/domain/models/product_variables.entity';
 
 export const OrderItemSchema = new EntitySchema<OrderItem>({
   schema: SchemasEnum.users,
@@ -28,7 +28,7 @@ export const OrderItemSchema = new EntitySchema<OrderItem>({
       type: 'uuid',
       nullable: false,
     },
-    product_id: {
+    product_variables_id: {
       type: 'uuid',
       nullable: false,
     },
@@ -56,11 +56,11 @@ export const OrderItemSchema = new EntitySchema<OrderItem>({
         referencedColumnName: 'id',
       },
     },
-    product: {
+    product_variables: {
       type: 'many-to-one',
-      target: () => Product,
+      target: () => ProductVariables,
       joinColumn: {
-        name: 'product_id',
+        name: 'product_variables_id',
         referencedColumnName: 'id',
       },
     },

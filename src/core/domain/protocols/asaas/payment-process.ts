@@ -4,7 +4,7 @@ import { UserModelDto } from '@/presentation/dtos/user/user-model.dto';
 
 export abstract class IPaymentProcess {
   abstract process(
-    cart: OrderModel,
+    cart: any,
     user: UserModelDto,
     payment: PaymentDataDto,
   ): Promise<{ transaction_id: string; status: string; transaction: any }>;
