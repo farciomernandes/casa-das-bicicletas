@@ -9,11 +9,6 @@ import { IDbUpdateOrderRepository } from '@/core/domain/protocols/db/order/updat
 import { ICheckoutOrder } from '@/core/domain/protocols/payment/checkout-order';
 import { IPaymentProcess } from '@/core/domain/protocols/asaas/payment-process';
 import { OrderRepository } from '@/core/domain/protocols/repositories/order';
-import {
-  OrderItemLocally,
-  ProductOrderDto,
-  UserOrderDto,
-} from '@/presentation/dtos/order/order-model.dto';
 import { OrderStatusEnum } from '@/shared/enums/order_status.enum';
 
 @Injectable()
