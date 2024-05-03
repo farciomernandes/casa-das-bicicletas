@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { Order } from '@/core/domain/models/order.entity';
 import { IDbListOrderRepository } from '../db/order/list-order-respository';
 import { IDbUpdateOrderRepository } from '../db/order/update-order-repository';
 import { IDbAddOrderRepository } from '../db/order/add-order-repository';
