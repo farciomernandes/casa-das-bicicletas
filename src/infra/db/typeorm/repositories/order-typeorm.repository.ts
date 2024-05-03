@@ -3,6 +3,7 @@ import { Order } from '@/core/domain/models/order.entity';
 import { OrderRepository } from '@/core/domain/protocols/repositories/order';
 import { UpdateOrderDto } from '@/presentation/dtos/order/update-order.dto';
 import { AddOrderDto } from '@/presentation/dtos/order/add-order.dto';
+import { Authenticated } from '@/presentation/dtos/auth/authenticated.dto';
 
 export class OrderTypeOrmRepository implements OrderRepository {
   constructor(private readonly orderRepository: Repository<Order>) {}
@@ -38,13 +39,20 @@ export class OrderTypeOrmRepository implements OrderRepository {
     await this.orderRepository.delete(id);
   }
 
-  async getAll(): Promise<any> {
-    const ordersWithItemsAndProducts = await this.orderRepository
+  async getAll(user?: Authenticated): Promise<any> {
+    let queryBuilder = this.orderRepository
       .createQueryBuilder('order')
       .leftJoinAndSelect('order.user', 'user')
       .leftJoinAndSelect('order.order_items', 'order_items')
-      .leftJoinAndSelect('order_items.product_variables', 'product_variables')
-      .getMany();
+      .leftJoinAndSelect('order_items.product_variables', 'product_variables');
+
+    if (user) {
+      queryBuilder = queryBuilder.where('order.user_id = :userId', {
+        userId: user.id,
+      });
+    }
+
+    const ordersWithItemsAndProducts = await queryBuilder.getMany();
 
     return ordersWithItemsAndProducts;
   }

@@ -76,9 +76,9 @@ export class OrderController {
   @Roles(RolesEnum.ADMIN)
   @UseGuards(RolesGuard)
   @ApiBearerAuth()
-  async getAll(): Promise<OrderModel[]> {
+  async getAll(@User() user: Authenticated): Promise<OrderModel[]> {
     try {
-      return await this.dbListOrder.getAll();
+      return await this.dbListOrder.getAll(user);
     } catch (error) {
       throw new HttpException(error.response, error.status);
     }

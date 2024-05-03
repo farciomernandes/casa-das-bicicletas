@@ -6,13 +6,22 @@ import {
   UserOrderDto,
 } from '@/presentation/dtos/order/order-model.dto';
 import { ProductVariablesModel } from '@/presentation/dtos/product_variable/product_variables-model.dto';
+import { Authenticated } from '@/presentation/dtos/auth/authenticated.dto';
+import { RolesEnum } from '@/shared/enums/roles.enum';
 @Injectable()
 export class DbListOrder {
   constructor(private readonly orderRepository: OrderRepository) {}
 
-  async getAll(): Promise<OrderModel[]> {
+  async getAll(user: Authenticated): Promise<OrderModel[]> {
     try {
-      const orders = await this.orderRepository.getAll();
+      let orders;
+
+      if (user.roles.value == RolesEnum.ADMIN) {
+        orders = await this.orderRepository.getAll(user);
+      } else {
+        orders = await this.orderRepository.getAll();
+      }
+
       return orders.map((order) => {
         return {
           ...OrderModel.toDto(order),

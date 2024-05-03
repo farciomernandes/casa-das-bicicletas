@@ -8,6 +8,7 @@ import { IDbDeleteOrderRepository } from '../db/order/delete-order-repository';
 import { UpdateOrderDto } from '@/presentation/dtos/order/update-order.dto';
 import { AddOrderDto } from '@/presentation/dtos/order/add-order.dto';
 import { OrderModel } from '@/presentation/dtos/order/order-model.dto';
+import { Authenticated } from '@/presentation/dtos/auth/authenticated.dto';
 
 @Injectable()
 export abstract class OrderRepository
@@ -19,7 +20,7 @@ export abstract class OrderRepository
     IDbDeleteOrderRepository
 {
   abstract findById(id: string): Promise<any>;
-  abstract getAll(): Promise<OrderModel[]>;
+  abstract getAll(user?: Authenticated): Promise<OrderModel[]>;
   abstract create(payload: AddOrderDto, user_id: string): Promise<any>;
   abstract delete(id: string): Promise<void>;
   abstract update(payload: UpdateOrderDto, id: string): Promise<OrderModel>;
