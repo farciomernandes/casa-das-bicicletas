@@ -156,6 +156,13 @@ export class OrderItemLocally {
   @Expose()
   product_variables: ProductVariablesModel;
 
+  @ApiProperty({
+    type: String,
+    required: true,
+  })
+  @Expose()
+  product_variables_id: string;
+
   static toDto(payload: OrderItemLocally): OrderItemLocally {
     return plainToClass(OrderItemLocally, payload, {
       excludeExtraneousValues: true,

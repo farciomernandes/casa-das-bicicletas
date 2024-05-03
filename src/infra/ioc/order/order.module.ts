@@ -11,6 +11,7 @@ import { OrderItemRepository } from '@/core/domain/protocols/repositories/order_
 import { ICheckoutOrder } from '@/core/domain/protocols/payment/checkout-order';
 import { IPaymentProcess } from '@/core/domain/protocols/asaas/payment-process';
 import { ProductVariablesRepository } from '@/core/domain/protocols/repositories/product_variable';
+import { IDbFindOrderByIdRepository } from '@/core/domain/protocols/db/order/find-order-by-id-repository';
 
 @Module({
   imports: [],
@@ -22,6 +23,7 @@ import { ProductVariablesRepository } from '@/core/domain/protocols/repositories
     IDbDeleteOrderRepository,
     IDbUpdateOrderRepository,
     IDbAddOrderRepository,
+    IDbFindOrderByIdRepository,
     OrderRepository,
     ProductRepository,
     ProductVariablesRepository,

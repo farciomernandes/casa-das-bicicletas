@@ -32,6 +32,8 @@ import AsaasPaymentService from '@/infra/proxy/asaas/payment.service';
 import { ProductVariablesTypeOrmRepository } from '@/infra/db/typeorm/repositories/product_variables-typeorm.repository';
 import { ProductVariables } from '@/core/domain/models/product_variables.entity';
 import { ProductVariablesRepository } from '@/core/domain/protocols/repositories/product_variable';
+import { DbFindOrderById } from '@/core/application/order/db-find-order-by-id';
+import { IDbFindOrderByIdRepository } from '@/core/domain/protocols/db/order/find-order-by-id-repository';
 
 export const orderProvider: Provider[] = [
   DbAddOrder,
@@ -39,6 +41,7 @@ export const orderProvider: Provider[] = [
   DbDeleteOrder,
   DbUpdateOrder,
   DbAddOrderItem,
+  DbFindOrderById,
   CheckoutOrder,
   {
     provide: OrderTypeOrmRepository,
@@ -150,6 +153,13 @@ export const orderProvider: Provider[] = [
     ],
   },
   {
+    provide: IDbFindOrderByIdRepository,
+    useFactory: (orderRepository: OrderRepository): DbFindOrderById => {
+      return new DbFindOrderById(orderRepository);
+    },
+    inject: [OrderTypeOrmRepository],
+  },
+  {
     provide: IDbAddOrderRepository,
     useFactory: (
       orderRepository: OrderRepository,
@@ -209,10 +219,13 @@ export const orderProvider: Provider[] = [
   },
   {
     provide: IDbUpdateOrderRepository,
-    useFactory: (orderRepository: OrderRepository): DbUpdateOrder => {
-      return new DbUpdateOrder(orderRepository);
+    useFactory: (
+      orderRepository: OrderRepository,
+      productVariablesRepository: ProductVariablesRepository,
+    ): DbUpdateOrder => {
+      return new DbUpdateOrder(orderRepository, productVariablesRepository);
     },
-    inject: [OrderTypeOrmRepository],
+    inject: [OrderTypeOrmRepository, ProductVariablesTypeOrmRepository],
   },
   {
     provide: IDbDeleteOrderRepository,

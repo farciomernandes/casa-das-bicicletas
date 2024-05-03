@@ -32,8 +32,8 @@ export class Order {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @OneToMany(() => OrderItem, (orderItem) => orderItem.order) // Correção aqui
-  order_items: OrderItem[]; // Correção aqui
+  @OneToMany(() => OrderItem, (orderItem) => orderItem.order)
+  order_items: OrderItem[];
 
   @Column()
   user_id: string;

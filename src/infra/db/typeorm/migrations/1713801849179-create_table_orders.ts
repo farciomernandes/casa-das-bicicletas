@@ -23,7 +23,7 @@ export class CreateTableOrder1713801849179 implements MigrationInterface {
           {
             name: 'status',
             type: 'enum',
-            enum: ['PENDING', 'PAID', 'CANCELED'],
+            enum: ['PENDING', 'PAID', 'CANCELED', 'PAID_ERROR_STOCK'],
             default: "'PENDING'",
           },
           {

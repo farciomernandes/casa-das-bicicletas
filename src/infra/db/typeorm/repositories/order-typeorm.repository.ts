@@ -3,7 +3,6 @@ import { Order } from '@/core/domain/models/order.entity';
 import { OrderRepository } from '@/core/domain/protocols/repositories/order';
 import { UpdateOrderDto } from '@/presentation/dtos/order/update-order.dto';
 import { AddOrderDto } from '@/presentation/dtos/order/add-order.dto';
-import { OrderModel } from '@/presentation/dtos/order/order-model.dto';
 
 export class OrderTypeOrmRepository implements OrderRepository {
   constructor(private readonly orderRepository: Repository<Order>) {}
@@ -14,14 +13,18 @@ export class OrderTypeOrmRepository implements OrderRepository {
         where: { id },
       });
 
-      this.orderRepository.merge(order, payload);
-      return this.orderRepository.save(order);
+      await this.orderRepository.merge(order, payload);
+      await this.orderRepository.save(order);
+      return await this.orderRepository.findOneOrFail({
+        where: { id },
+        relations: ['order_items'],
+      });
     } catch (error) {
       throw new Error('Order not found');
     }
   }
 
-  async findById(id: string): Promise<Order> {
+  async findById(id: string): Promise<any> {
     return await this.orderRepository
       .createQueryBuilder('order')
       .leftJoinAndSelect('order.user', 'user')

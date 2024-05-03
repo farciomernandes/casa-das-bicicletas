@@ -18,7 +18,7 @@ export abstract class OrderRepository
     IDbFindOrderByIdRepository,
     IDbDeleteOrderRepository
 {
-  abstract findById(id: string): Promise<Order>;
+  abstract findById(id: string): Promise<any>;
   abstract getAll(): Promise<OrderModel[]>;
   abstract create(payload: AddOrderDto, user_id: string): Promise<any>;
   abstract delete(id: string): Promise<void>;

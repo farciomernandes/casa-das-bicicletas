@@ -3,10 +3,8 @@ import { OrderRepository } from '@/core/domain/protocols/repositories/order';
 import {
   OrderItemLocally,
   OrderModel,
-  ProductOrderDto,
   UserOrderDto,
 } from '@/presentation/dtos/order/order-model.dto';
-import { ProductVariables } from '@/core/domain/models/product_variables.entity';
 import { ProductVariablesModel } from '@/presentation/dtos/product_variable/product_variables-model.dto';
 @Injectable()
 export class DbListOrder {

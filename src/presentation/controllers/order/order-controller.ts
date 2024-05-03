@@ -35,6 +35,7 @@ import { Roles } from '@/shared/decorators/roles.decorator';
 import { RolesEnum } from '@/shared/enums/roles.enum';
 import { User } from '@/shared/decorators/user.decorator';
 import { Authenticated } from '@/presentation/dtos/auth/authenticated.dto';
+import { IDbFindOrderByIdRepository } from '@/core/domain/protocols/db/order/find-order-by-id-repository';
 
 @ApiTags('Order')
 @Controller('api/v1/orders')
@@ -44,6 +45,7 @@ export class OrderController {
     private readonly dbListOrder: IDbListOrderRepository,
     private readonly dbUpdateOrder: IDbUpdateOrderRepository,
     private readonly dbDeleteOrder: IDbDeleteOrderRepository,
+    private readonly dbFindOrderById: IDbFindOrderByIdRepository,
     private readonly checkoutOrder: ICheckoutOrder,
   ) {}
 
@@ -74,9 +76,24 @@ export class OrderController {
   @Roles(RolesEnum.ADMIN)
   @UseGuards(RolesGuard)
   @ApiBearerAuth()
-  async getAll(@User() user: Authenticated): Promise<OrderModel[]> {
+  async getAll(): Promise<OrderModel[]> {
     try {
       return await this.dbListOrder.getAll();
+    } catch (error) {
+      throw new HttpException(error.response, error.status);
+    }
+  }
+
+  @Get(':id')
+  @ApiOkResponse({
+    description: 'Returns Orders.',
+    status: HttpStatus.OK,
+    type: OrderModel,
+  })
+  @ApiBearerAuth()
+  async findById(@Param('id') id: string): Promise<OrderModel> {
+    try {
+      return await this.dbFindOrderById.findById(id);
     } catch (error) {
       throw new HttpException(error.response, error.status);
     }
@@ -138,7 +155,6 @@ export class OrderController {
   async handleWebhook(
     @Body() body: PaymentConfirmedDto,
   ): Promise<{ received: boolean }> {
-    console.log(body);
     switch (body.event) {
       case 'PAYMENT_CONFIRMED':
         const paymentReceived = body.payment;

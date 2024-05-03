@@ -12,7 +12,7 @@ export class OrderItemTypeOrmRepository implements OrderItemRepository {
     try {
       const orderItem = await this.orderItemRepository.findOneOrFail({
         where: { id },
-        relations: ['product'],
+        relations: ['product_variables'],
       });
 
       const sub_total = payload.quantity * 3;
