@@ -85,7 +85,7 @@ export default class AsaasPaymentService
         cpfCnpj: user.cpf,
         postalCode: user.address.zip_code,
         address: user.address.street,
-        addressNumber: user.address.number,
+        addressNumber: Number(user.address.number),
         complement: user.address.complement,
         province: user.address.neighborhood,
         notificationDisabled: true,
@@ -122,7 +122,7 @@ export default class AsaasPaymentService
           billingType: PaymentMethodEnum.CREDIT_CARD,
           creditCard: {
             holderName: payment.creditCardHolder,
-            number: payment.creditCardNumber,
+            number: Number(payment.creditCardNumber),
             expiryMonth: payment.creditCardExpiration?.split('/')[0],
             expiryYear: payment.creditCardExpiration?.split('/')[1],
             ccv: payment.creditCardSecurityCode,

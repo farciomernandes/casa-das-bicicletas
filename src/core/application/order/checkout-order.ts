@@ -67,7 +67,10 @@ export class CheckoutOrder implements ICheckoutOrder {
         order.id,
       );
 
-      return updated;
+      return {
+        ...transaction,
+        ...updated,
+      };
     } catch (error) {
       if (error instanceof BadRequestException) {
         throw error;
