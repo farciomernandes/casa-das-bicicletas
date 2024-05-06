@@ -8,11 +8,12 @@ import {
 import { ProductVariablesModel } from '@/presentation/dtos/product_variable/product_variables-model.dto';
 import { Authenticated } from '@/presentation/dtos/auth/authenticated.dto';
 import { RolesEnum } from '@/shared/enums/roles.enum';
+import { ProductModelDto } from '@/presentation/dtos/product/product-model.dto';
 @Injectable()
 export class DbListOrder {
   constructor(private readonly orderRepository: OrderRepository) {}
 
-  async getAll(user: Authenticated): Promise<OrderModel[]> {
+  async getAll(user: Authenticated): Promise<any[]> {
     try {
       let orders;
 
@@ -29,9 +30,10 @@ export class DbListOrder {
           order_items: order.order_items.map((item) => {
             return {
               ...OrderItemLocally.toDto(item),
-              product_variables: ProductVariablesModel.toDto(
-                item.product_variables,
-              ),
+              product_variables: {
+                ...ProductVariablesModel.toDto(item.product_variables),
+                product: ProductModelDto.toDto(item.product_variables.product),
+              },
             };
           }),
         };
