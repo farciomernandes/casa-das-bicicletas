@@ -16,10 +16,8 @@ export class OrderTypeOrmRepository implements OrderRepository {
 
       await this.orderRepository.merge(order, payload);
       await this.orderRepository.save(order);
-      return await this.orderRepository.findOneOrFail({
-        where: { id },
-        relations: ['order_items'],
-      });
+      const response = await this.findById(id);
+      return response;
     } catch (error) {
       throw new Error('Order not found');
     }
@@ -29,6 +27,7 @@ export class OrderTypeOrmRepository implements OrderRepository {
     return await this.orderRepository
       .createQueryBuilder('order')
       .leftJoinAndSelect('order.user', 'user')
+      .leftJoinAndSelect('order.address', 'addresses')
       .leftJoinAndSelect('order.order_items', 'order_items')
       .leftJoinAndSelect('order_items.product_variables', 'product_variables')
       .where('order.id = :id', { id })
@@ -43,6 +42,7 @@ export class OrderTypeOrmRepository implements OrderRepository {
     let queryBuilder = this.orderRepository
       .createQueryBuilder('order')
       .leftJoinAndSelect('order.user', 'user')
+      .leftJoinAndSelect('order.address', 'addresses')
       .leftJoinAndSelect('order.order_items', 'order_items')
       .leftJoinAndSelect('order_items.product_variables', 'product_variables')
       .leftJoinAndSelect('product_variables.product', 'product');

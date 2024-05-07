@@ -24,13 +24,10 @@ export class CitySeed {
     const resultCites = [];
 
     try {
-      // Get all states
       const { data: states } = await axios.get<StateModelIbge[]>(
         'https://servicodados.ibge.gov.br/api/v1/localidades/estados',
       );
-      // Iterate over each state
       for (const state of states) {
-        // Get cities for each state
         const { data: cities } = await axios.get(
           `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${state.id}/municipios`,
         );

@@ -34,6 +34,9 @@ import { ProductVariables } from '@/core/domain/models/product_variables.entity'
 import { ProductVariablesRepository } from '@/core/domain/protocols/repositories/product_variable';
 import { DbFindOrderById } from '@/core/application/order/db-find-order-by-id';
 import { IDbFindOrderByIdRepository } from '@/core/domain/protocols/db/order/find-order-by-id-repository';
+import { AddressRepository } from '@/core/domain/protocols/repositories/address';
+import { AddressTypeOrmRepository } from '@/infra/db/typeorm/repositories/address-typeorm.repository';
+import { Address } from '@/core/domain/models/address.entity';
 
 export const orderProvider: Provider[] = [
   DbAddOrder,
@@ -68,6 +71,17 @@ export const orderProvider: Provider[] = [
   {
     provide: UserRepository,
     useClass: UserTypeOrmRepository,
+  },
+  {
+    provide: AddressTypeOrmRepository,
+    useFactory: (dataSource: DataSource) => {
+      return new AddressTypeOrmRepository(dataSource.getRepository(Address));
+    },
+    inject: [getDataSourceToken()],
+  },
+  {
+    provide: AddressRepository,
+    useClass: AddressTypeOrmRepository,
   },
   {
     provide: ProductVariablesTypeOrmRepository,
@@ -191,12 +205,14 @@ export const orderProvider: Provider[] = [
       userRepository: UserRepository,
       dbUpdateOrderItem: IDbUpdateOrderRepository,
       paymentService: IPaymentProcess,
+      addressRepository: AddressRepository,
     ): CheckoutOrder => {
       return new CheckoutOrder(
         orderRepository,
         userRepository,
         dbUpdateOrderItem,
         paymentService,
+        addressRepository,
       );
     },
     inject: [
@@ -204,6 +220,7 @@ export const orderProvider: Provider[] = [
       UserTypeOrmRepository,
       DbUpdateOrder,
       AsaasPaymentService,
+      AddressTypeOrmRepository,
     ],
   },
   {

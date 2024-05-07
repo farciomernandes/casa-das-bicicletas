@@ -12,6 +12,7 @@ import { ICheckoutOrder } from '@/core/domain/protocols/payment/checkout-order';
 import { IPaymentProcess } from '@/core/domain/protocols/asaas/payment-process';
 import { ProductVariablesRepository } from '@/core/domain/protocols/repositories/product_variable';
 import { IDbFindOrderByIdRepository } from '@/core/domain/protocols/db/order/find-order-by-id-repository';
+import { AddressRepository } from '@/core/domain/protocols/repositories/address';
 
 @Module({
   imports: [],
@@ -30,6 +31,7 @@ import { IDbFindOrderByIdRepository } from '@/core/domain/protocols/db/order/fin
     OrderItemRepository,
     ICheckoutOrder,
     IPaymentProcess,
+    AddressRepository,
   ],
 })
 export class OrderModule {}

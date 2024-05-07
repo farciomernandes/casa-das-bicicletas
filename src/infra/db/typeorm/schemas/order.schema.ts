@@ -4,6 +4,7 @@ import { SchemasEnum } from '../../schema.enum';
 import { User } from '@/core/domain/models/user.entity';
 import { Order } from '@/core/domain/models/order.entity';
 import { OrderItem } from '@/core/domain/models/order_item.entity';
+import { Address } from '@/core/domain/models/address.entity';
 
 export const OrderSchema = new EntitySchema<Order>({
   schema: SchemasEnum.users,
@@ -28,6 +29,10 @@ export const OrderSchema = new EntitySchema<Order>({
     user_id: {
       type: 'uuid',
       nullable: false,
+    },
+    address_id: {
+      type: 'uuid',
+      nullable: true,
     },
     created_at: {
       type: 'timestamp',
@@ -57,9 +62,17 @@ export const OrderSchema = new EntitySchema<Order>({
     order_items: {
       type: 'one-to-many',
       target: () => OrderItem,
-      inverseSide: 'order', // Nome da propriedade na entidade OrderItem que relaciona com Order
+      inverseSide: 'order',
       joinColumn: {
-        name: 'order_id', // Nome da coluna na entidade OrderItem que referencia o id de Order
+        name: 'order_id',
+      },
+    },
+    address: {
+      type: 'many-to-one',
+      target: () => Address,
+      joinColumn: {
+        name: 'address_id',
+        referencedColumnName: 'id',
       },
     },
   },

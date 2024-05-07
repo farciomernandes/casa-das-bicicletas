@@ -10,6 +10,7 @@ import {
 import { SchemasEnum } from '@/infra/db/schema.enum';
 import { City } from './city.entity';
 import { State } from './state.entity';
+import { Order } from './order.entity'; // Importando a entidade de pedido
 
 @Entity({ name: 'addresses', schema: SchemasEnum.users })
 export class Address {
@@ -31,19 +32,22 @@ export class Address {
   @Column()
   neighborhood: string;
 
-  @Column()
-  city_id: string;
-
   @OneToOne(() => City)
   @JoinColumn({ name: 'city_id' })
   city: City;
 
   @Column()
-  state_id: string;
+  city_id: string;
 
   @OneToOne(() => State)
   @JoinColumn({ name: 'state_id' })
   state: State;
+
+  @Column()
+  state_id: string;
+
+  @OneToOne(() => Order, (order) => order.address)
+  order: Order;
 
   @CreateDateColumn({ name: 'created_at' })
   created_at: Date;

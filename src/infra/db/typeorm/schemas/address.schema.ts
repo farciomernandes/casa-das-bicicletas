@@ -2,6 +2,8 @@ import { EntitySchema } from 'typeorm/entity-schema/EntitySchema';
 import { baseSchema } from '../base/base.schema';
 import { SchemasEnum } from '../../schema.enum';
 import { Address } from '@/core/domain/models/address.entity';
+import { City } from '@/core/domain/models/city.entity'; // Importando a entidade de cidade
+import { State } from '@/core/domain/models/state.entity'; // Importando a entidade de estado
 
 export const AddressSchema = new EntitySchema<Address>({
   schema: SchemasEnum.users,
@@ -42,13 +44,13 @@ export const AddressSchema = new EntitySchema<Address>({
   relations: {
     city: {
       type: 'many-to-one',
-      target: 'City',
+      target: () => City,
       joinColumn: { name: 'city_id' },
       eager: true,
     },
     state: {
       type: 'many-to-one',
-      target: 'State',
+      target: () => State,
       joinColumn: { name: 'state_id' },
       eager: true,
     },

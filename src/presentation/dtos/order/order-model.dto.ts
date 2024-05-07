@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Expose, plainToClass, plainToInstance } from 'class-transformer';
 import { IsOptional } from 'class-validator';
 import { ProductVariablesModel } from '../product_variable/product_variables-model.dto';
+import { AddressModelDto } from '../address/address-model.dto';
 
 export class CategoryLocallylDto {
   @ApiProperty({
@@ -210,6 +211,13 @@ export class OrderModel {
   })
   @Expose()
   user: UserOrderDto;
+
+  @ApiProperty({
+    type: AddressModelDto,
+    required: false,
+  })
+  @Expose()
+  address?: AddressModelDto;
 
   @ApiProperty({
     type: [OrderItemLocally],

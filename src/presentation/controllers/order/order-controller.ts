@@ -26,7 +26,10 @@ import { IDbUpdateOrderRepository } from '@/core/domain/protocols/db/order/updat
 import { AddOrderDto } from '@/presentation/dtos/order/add-order.dto';
 import { UpdateOrderDto } from '@/presentation/dtos/order/update-order.dto';
 import { ICheckoutOrder } from '@/core/domain/protocols/payment/checkout-order';
-import { PaymentDataDto } from '@/presentation/dtos/checkout/process-payment.dto';
+import {
+  CheckoutOrderDto,
+  PaymentDataDto,
+} from '@/presentation/dtos/checkout/process-payment.dto';
 import { PaymentConfirmedDto } from '@/presentation/dtos/order/order-payment-confirmed.dto';
 import { OrderStatusEnum } from '@/shared/enums/order_status.enum';
 import { PaymentCreditCardDto } from '@/presentation/dtos/asaas/payment-credit-card.dto';
@@ -135,7 +138,7 @@ export class OrderController {
   }
 
   @ApiBody({
-    type: PaymentDataDto,
+    type: CheckoutOrderDto,
   })
   @ApiCreatedResponse({ type: PaymentCreditCardDto })
   @Post('checkout/:id')
@@ -145,7 +148,7 @@ export class OrderController {
   @ApiBearerAuth()
   async checkout(
     @Param('id') order_id: string,
-    @Body() payload: PaymentDataDto,
+    @Body() payload: CheckoutOrderDto,
     @User() user: Authenticated,
   ): Promise<any> {
     return await this.checkoutOrder.process(order_id, user.id, payload);

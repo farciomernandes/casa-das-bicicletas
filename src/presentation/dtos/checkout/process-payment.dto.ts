@@ -45,11 +45,27 @@ export class PaymentDataDto {
 
   @ApiProperty({
     type: String,
-    example: 'credit_card',
-    description: 'Método de pagamento (credit_card, boleto, pix)',
+    example: 'CREDIT_CARD',
+    description: 'Método de pagamento (CREDIT_CARD, BOLETO, PIX)',
   })
   @IsEnum(PaymentMethodEnum)
   @Expose()
   @IsOptional()
   method: string;
+}
+
+export class CheckoutOrderDto {
+  @ApiProperty({
+    type: PaymentDataDto,
+    example: PaymentDataDto,
+  })
+  @Expose()
+  payment: PaymentDataDto;
+
+  @ApiProperty({
+    type: String,
+    example: '65bd52691a0f4c3b57819a4b',
+  })
+  @Expose()
+  address_id: string;
 }
