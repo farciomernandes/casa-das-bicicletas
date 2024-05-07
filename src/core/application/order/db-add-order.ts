@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Injectable,
   InternalServerErrorException,
+  Logger,
 } from '@nestjs/common';
 import { IDbAddOrderRepository } from '@/core/domain/protocols/db/order/add-order-repository';
 import { UserRepository } from '@/core/domain/protocols/repositories/user';
@@ -9,10 +10,8 @@ import { OrderRepository } from '@/core/domain/protocols/repositories/order';
 import { AddOrderDto } from '@/presentation/dtos/order/add-order.dto';
 import { IDbAddOrderItemRepository } from '@/core/domain/protocols/db/order_item/add-order_item-repository';
 import {
-  CategoryLocallylDto,
   OrderItemLocally,
   OrderModel,
-  ProductOrderDto,
   UserOrderDto,
 } from '@/presentation/dtos/order/order-model.dto';
 import { ProductRepository } from '@/core/domain/protocols/repositories/product';
@@ -22,6 +21,8 @@ import { ProductVariablesModel } from '@/presentation/dtos/product_variable/prod
 
 @Injectable()
 export class DbAddOrder implements IDbAddOrderRepository {
+  private readonly logger = new Logger(DbAddOrder.name);
+
   constructor(
     private readonly orderRepository: OrderRepository,
     private readonly userRepository: UserRepository,
@@ -32,6 +33,8 @@ export class DbAddOrder implements IDbAddOrderRepository {
 
   async create(payload: AddOrderDto, user_id: string): Promise<OrderModel> {
     try {
+      this.logger.debug('isValid user');
+
       const validUser = await this.userRepository.findById(user_id);
       if (!validUser) {
         throw new BadRequestException(`User with ${user_id} id not found`);
@@ -45,6 +48,7 @@ export class DbAddOrder implements IDbAddOrderRepository {
         },
         user_id,
       );
+      this.logger.debug('order default created');
 
       let total = 0;
 
@@ -120,6 +124,7 @@ export class DbAddOrder implements IDbAddOrderRepository {
         }),
       };
     } catch (error) {
+      this.logger.error(error);
       if (error instanceof BadRequestException) {
         throw error;
       }
