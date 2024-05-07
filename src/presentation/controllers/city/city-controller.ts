@@ -9,6 +9,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -25,6 +26,7 @@ import { IDbUpdateCityRepository } from '@/core/domain/protocols/db/city/update-
 import { City } from '@/core/domain/models/city.entity';
 import { AddCityDto } from '@/presentation/dtos/city/add-city.dto';
 import { UpdateCityDto } from '@/presentation/dtos/city/update-city.dto';
+import { CityParamsDto } from '@/presentation/dtos/city/params-city.dto';
 
 @ApiTags('City')
 @Controller('api/v1/cities')
@@ -56,9 +58,9 @@ export class CityController {
     isArray: true,
   })
   @ApiBearerAuth()
-  async getAll(): Promise<CityModel[]> {
+  async getAll(@Query() querryParams: CityParamsDto): Promise<CityModel[]> {
     try {
-      return await this.dbListCity.getAll();
+      return await this.dbListCity.getAll(querryParams);
     } catch (error) {
       throw new HttpException(error.response, error.status);
     }

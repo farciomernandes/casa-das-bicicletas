@@ -15,12 +15,25 @@ import { StateTypeOrmRepository } from '@/infra/db/typeorm/repositories/state-ty
 import { State } from '@/core/domain/models/state.entity';
 import { CityRepository } from '@/core/domain/protocols/repositories/city';
 import { StateRepository } from '@/core/domain/protocols/repositories/state';
+import { ICitySeed } from '@/core/domain/protocols/db/city/seed-city';
+import { CitySeed } from '@/infra/db/typeorm/seeds/citys.seeds';
 
 export const cityProvider: Provider[] = [
   DbAddCity,
   DbListCity,
   DbDeleteCity,
   DbUpdateCity,
+  CitySeed,
+  {
+    provide: ICitySeed,
+    useFactory: (
+      cityRepository: CityRepository,
+      stateRepository: StateRepository,
+    ): CitySeed => {
+      return new CitySeed(cityRepository, stateRepository);
+    },
+    inject: [CityTypeOrmRepository, StateTypeOrmRepository],
+  },
   {
     provide: CityTypeOrmRepository,
     useFactory: (dataSource: DataSource) => {

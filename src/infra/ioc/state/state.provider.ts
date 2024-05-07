@@ -12,12 +12,22 @@ import { DbDeleteState } from '@/core/application/state/db-delete-state';
 import { DbUpdateState } from '@/core/application/state/db-update-state';
 import { DbAddState } from '@/core/application/state/db-add-state';
 import { StateRepository } from '@/core/domain/protocols/repositories/state';
+import { StateSeed } from '@/infra/db/typeorm/seeds/states.seeds';
+import { IStateSeed } from '@/core/domain/protocols/db/state/seed-state';
 
 export const stateProvider: Provider[] = [
   DbAddState,
   DbListState,
   DbDeleteState,
   DbUpdateState,
+  StateSeed,
+  {
+    provide: IStateSeed,
+    useFactory: (stateRepository: StateRepository): StateSeed => {
+      return new StateSeed(stateRepository);
+    },
+    inject: [StateTypeOrmRepository],
+  },
   {
     provide: StateTypeOrmRepository,
     useFactory: (dataSource: DataSource) => {
