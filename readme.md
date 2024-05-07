@@ -7,12 +7,13 @@
 <br /><br />
 
 > ## Criacação de Migrations
-  - npm run migration:create src/infra/db/typeorm/migrations/NOME_DA_MIGRATION
-  - Configurar o webhook da asaas apontando para o endpoint POST /api/v1/order/payment-webhook
+  * npm run migration:create src/infra/db/typeorm/migrations/NOME_DA_MIGRATION
+  * Configurar o webhook da asaas apontando para o endpoint POST /api/v1/order/payment-webhook
+  * Para rodar as seeds criando a role de administrador e adicionando cidades e estados segundo o IBGE rode npm run seed
 
   > ## Erros comuns
-  - Apagar tsconfig.build.tsbuildinfo caso o build não esteja sendo feito ao rodar npm run build
-  - Verificar a tabela de migrations está vazia
+  * Apagar tsconfig.build.tsbuildinfo caso o build não esteja sendo feito ao rodar npm run build
+  * Verificar a tabela de migrations está vazia
 
 > ## Design Patterns
 
@@ -26,7 +27,6 @@
 * Clean Architecture
 * DDD
 * Conventional Commits
-* Use Cases
 * Continuous Integration
 * Server Side
 * Gateway de pagamentos - Asaas
@@ -39,6 +39,7 @@
 * NPM
 * PostgreSQL
 * Cadastro no Asaas para credenciais e webhook
+* Cadastro na AWS para credenciais e bucket 
 
 [![Code Style: Standard](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
 [![License: GPLv3](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)

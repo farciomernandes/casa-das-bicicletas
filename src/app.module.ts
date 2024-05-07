@@ -98,8 +98,8 @@ export class AppModule implements NestModule {
   ];
 
   private readonly cityEndpoints = [
-    { path: 'api/v1/cities', method: RequestMethod.GET },
     { path: 'api/v1/cities**', method: RequestMethod.PUT },
+    { path: 'api/v1/cities**', method: RequestMethod.POST },
     { path: 'api/v1/cities**', method: RequestMethod.DELETE },
   ];
 
@@ -142,7 +142,6 @@ export class AppModule implements NestModule {
         ...this.product_variableEndpoints,
         ...this.order_itemEndpoints,
         { path: 'api/v1/role', method: RequestMethod.ALL },
-        { path: 'api/v1/admin', method: RequestMethod.ALL },
       );
   }
 }

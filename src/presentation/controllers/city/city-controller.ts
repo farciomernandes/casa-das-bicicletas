@@ -57,10 +57,9 @@ export class CityController {
     type: CityModel,
     isArray: true,
   })
-  @ApiBearerAuth()
-  async getAll(@Query() querryParams: CityParamsDto): Promise<CityModel[]> {
+  async getAll(@Query() queryParams: CityParamsDto): Promise<CityModel[]> {
     try {
-      return await this.dbListCity.getAll(querryParams);
+      return await this.dbListCity.getAll(queryParams);
     } catch (error) {
       throw new HttpException(error.response, error.status);
     }
