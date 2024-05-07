@@ -13,7 +13,7 @@ export class CityParamsDto {
   @ApiProperty({
     type: String,
     example: 'Juazeiro do Norte',
-    required: true,
+    required: false,
   })
   @Expose()
   name: string;
@@ -21,7 +21,7 @@ export class CityParamsDto {
   @ApiProperty({
     type: String,
     example: '65bd52691a0f4c3b57819a4b',
-    required: true,
+    required: false,
   })
   @Expose()
   state_id: string;
