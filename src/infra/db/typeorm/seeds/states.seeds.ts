@@ -121,8 +121,11 @@ export class StateSeed implements IStateSeed {
     ];
 
     for (const state of states) {
-      const data = await this.stateRepository.create(state);
-      resultStates.push(data);
+      const alreadyExists = await this.stateRepository.findByName(state.name);
+      if (!alreadyExists) {
+        const data = await this.stateRepository.create(state);
+        resultStates.push(data);
+      }
     }
 
     return resultStates;

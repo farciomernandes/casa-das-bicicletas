@@ -40,8 +40,13 @@ export class CitySeed {
             name: city.nome,
             state_id: stateOnDatabase.id,
           };
-          const data = await this.cityRepository.create(newCity);
-          resultCites.push(data);
+          const alreadyExists = await this.cityRepository.findByName(
+            newCity.name,
+          );
+          if (!alreadyExists) {
+            const data = await this.cityRepository.create(newCity);
+            resultCites.push(data);
+          }
         }
       }
     } catch (error) {
