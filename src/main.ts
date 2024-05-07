@@ -5,6 +5,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as basicAuth from 'express-basic-auth';
 import { ConfigService } from '@nestjs/config';
 import { AllExceptionsFilter } from './shared/filter/http-exception.filter';
+import logger from 'morgan';
+import * as cors from 'cors';
 
 async function bootstrap() {
   try {
@@ -38,7 +40,8 @@ async function bootstrap() {
       const document = SwaggerModule.createDocument(application, config);
       SwaggerModule.setup(swaggerRoute, application, document);
     };
-
+    app.use(cors());
+    app.use(logger('dev'));
     app.useGlobalPipes(new ValidationPipe());
     setupSwagger(app);
 
