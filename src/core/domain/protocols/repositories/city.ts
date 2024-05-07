@@ -7,6 +7,7 @@ import { IDbUpdateCityRepository } from '../db/city/update-city-repository';
 import { IDbFindCityByValueRepository } from '../db/city/find-city-by-name-repository';
 import { IDbFindCityByIdRepository } from '../db/city/find-city-by-id-repository';
 import { IDbDeleteCityRepository } from '../db/city/delete-city-repository';
+import { CityParamsDto } from '@/presentation/dtos/city/params-city.dto';
 
 @Injectable()
 export abstract class CityRepository
@@ -20,7 +21,7 @@ export abstract class CityRepository
 {
   abstract findById(id: string): Promise<City>;
   abstract findByName(name: string): Promise<City>;
-  abstract getAll(): Promise<City[]>;
+  abstract getAll(querryParams?: CityParamsDto): Promise<City[]>;
   abstract create(payload: Omit<CityModel, 'id'>): Promise<City>;
   abstract delete(id: string): Promise<void>;
   abstract update(payload: Omit<CityModel, 'id'>, id: string): Promise<City>;
