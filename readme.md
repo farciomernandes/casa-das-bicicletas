@@ -18,6 +18,7 @@
   > ## Melhorias para v2
   * Puts devem alterar as imagens
   * Deve verificar status do correio
+  * Não está apagando o objeto anterior do S3 na atualização dos itens
 
 > ## Design Patterns
 
