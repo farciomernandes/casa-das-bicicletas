@@ -15,6 +15,10 @@
   * Apagar tsconfig.build.tsbuildinfo caso o build não esteja sendo feito ao rodar npm run build
   * Verificar a tabela de migrations está vazia
 
+  > ## Melhorias para v2
+  * Puts devem alterar as imagens
+  * Deve verificar status do correio
+
 > ## Design Patterns
 
 * Factory
