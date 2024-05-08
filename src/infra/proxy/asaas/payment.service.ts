@@ -4,7 +4,6 @@ import { AsaasCreateTransaction } from '@/core/domain/protocols/asaas/create-tra
 import { IPaymentProcess } from '@/core/domain/protocols/asaas/payment-process';
 import { AxiosAdapter } from '@/infra/adapters/axios-adapter';
 import { PaymentDataDto } from '@/presentation/dtos/checkout/process-payment.dto';
-import { OrderModel } from '@/presentation/dtos/order/order-model.dto';
 import { UserModelDto } from '@/presentation/dtos/user/user-model.dto';
 import { OrderStatusEnum } from '@/shared/enums/order_status.enum';
 import { PaymentMethodEnum } from '@/shared/enums/payment_method.enum';
@@ -15,6 +14,7 @@ import {
   PaymentDto,
 } from '@/presentation/dtos/asaas/payment-base.dto';
 import { AddressModelDto } from '@/presentation/dtos/address/address-model.dto';
+import { OrderModelDto } from '@/presentation/dtos/order/order-model.dto';
 
 @Injectable()
 export default class AsaasPaymentService
@@ -23,7 +23,7 @@ export default class AsaasPaymentService
   constructor(private readonly axiosAdapter: AxiosAdapter) {}
 
   async process(
-    order: OrderModel,
+    order: OrderModelDto,
     user: UserModelDto,
     payment: PaymentDataDto,
     address: AddressModelDto,

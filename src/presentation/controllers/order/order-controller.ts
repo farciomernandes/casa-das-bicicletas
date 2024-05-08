@@ -20,7 +20,6 @@ import {
 } from '@nestjs/swagger';
 import { IDbAddOrderRepository } from '@/core/domain/protocols/db/order/add-order-repository';
 import { IDbListOrderRepository } from '@/core/domain/protocols/db/order/list-order-respository';
-import { OrderModel } from '@/presentation/dtos/order/order-model.dto';
 import { IDbDeleteOrderRepository } from '@/core/domain/protocols/db/order/delete-order-repository';
 import { IDbUpdateOrderRepository } from '@/core/domain/protocols/db/order/update-order-repository';
 import { AddOrderDto } from '@/presentation/dtos/order/add-order.dto';
@@ -37,6 +36,7 @@ import { Authenticated } from '@/presentation/dtos/auth/authenticated.dto';
 import { IDbFindOrderByIdRepository } from '@/core/domain/protocols/db/order/find-order-by-id-repository';
 
 import { CheckoutOrderModelDto } from '@/presentation/dtos/order/checkout-order.dto';
+import { OrderModelDto } from '@/presentation/dtos/order/order-model.dto';
 
 @ApiTags('Order')
 @Controller('api/v1/orders')
@@ -54,7 +54,7 @@ export class OrderController {
     description: 'Create Order',
     type: AddOrderDto,
   })
-  @ApiCreatedResponse({ type: OrderModel })
+  @ApiCreatedResponse({ type: OrderModelDto })
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @Roles(RolesEnum.ADMIN)
@@ -63,7 +63,7 @@ export class OrderController {
   async create(
     @Body() payload: AddOrderDto,
     @User() user: Authenticated,
-  ): Promise<OrderModel> {
+  ): Promise<OrderModelDto> {
     return await this.dbAddOrder.create(payload, user.id);
   }
 
@@ -71,13 +71,13 @@ export class OrderController {
   @ApiOkResponse({
     description: 'Returns Orders.',
     status: HttpStatus.OK,
-    type: OrderModel,
+    type: OrderModelDto,
     isArray: true,
   })
   @Roles(RolesEnum.ADMIN)
   @UseGuards(RolesGuard)
   @ApiBearerAuth()
-  async getAll(@User() user: Authenticated): Promise<OrderModel[]> {
+  async getAll(@User() user: Authenticated): Promise<OrderModelDto[]> {
     try {
       return await this.dbListOrder.getAll(user);
     } catch (error) {
@@ -89,10 +89,10 @@ export class OrderController {
   @ApiOkResponse({
     description: 'Returns Orders.',
     status: HttpStatus.OK,
-    type: OrderModel,
+    type: OrderModelDto,
   })
   @ApiBearerAuth()
-  async findById(@Param('id') id: string): Promise<OrderModel> {
+  async findById(@Param('id') id: string): Promise<OrderModelDto> {
     try {
       return await this.dbFindOrderById.findById(id);
     } catch (error) {
@@ -107,13 +107,13 @@ export class OrderController {
   @ApiOkResponse({
     description: 'Delete success.',
     status: HttpStatus.OK,
-    type: OrderModel,
+    type: OrderModelDto,
   })
   @ApiBearerAuth()
   async update(
     @Param('id') id: string,
     @Body() payload: UpdateOrderDto,
-  ): Promise<OrderModel> {
+  ): Promise<OrderModelDto> {
     try {
       return await this.dbUpdateOrder.update(payload, id);
     } catch (error) {

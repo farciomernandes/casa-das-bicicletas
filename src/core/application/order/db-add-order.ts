@@ -9,15 +9,10 @@ import { UserRepository } from '@/core/domain/protocols/repositories/user';
 import { OrderRepository } from '@/core/domain/protocols/repositories/order';
 import { AddOrderDto } from '@/presentation/dtos/order/add-order.dto';
 import { IDbAddOrderItemRepository } from '@/core/domain/protocols/db/order_item/add-order_item-repository';
-import {
-  OrderItemLocally,
-  OrderModel,
-  UserOrderDto,
-} from '@/presentation/dtos/order/order-model.dto';
+import { OrderModelDto } from '@/presentation/dtos/order/order-model.dto';
 import { ProductRepository } from '@/core/domain/protocols/repositories/product';
 import { OrderStatusEnum } from '@/shared/enums/order_status.enum';
 import { ProductVariablesRepository } from '@/core/domain/protocols/repositories/product_variable';
-import { ProductVariablesModel } from '@/presentation/dtos/product_variable/product_variables-model.dto';
 
 @Injectable()
 export class DbAddOrder implements IDbAddOrderRepository {
@@ -31,7 +26,7 @@ export class DbAddOrder implements IDbAddOrderRepository {
     private readonly productVariablesRepository: ProductVariablesRepository,
   ) {}
 
-  async create(payload: AddOrderDto, user_id: string): Promise<OrderModel> {
+  async create(payload: AddOrderDto, user_id: string): Promise<OrderModelDto> {
     try {
       const validUser = await this.userRepository.findById(user_id);
       if (!validUser) {
@@ -106,20 +101,9 @@ export class DbAddOrder implements IDbAddOrderRepository {
         },
         order.id,
       );
-      const updatedOrder = OrderModel.toDto(response);
+      const updatedOrder = OrderModelDto.toDto(response);
 
-      return {
-        ...updatedOrder,
-        user: UserOrderDto.toDto(validUser),
-        order_items: order_items.map((item) => {
-          return {
-            ...OrderItemLocally.toDto(item),
-            product_variables: {
-              ...ProductVariablesModel.toDto(item.product.product_variables[0]),
-            },
-          };
-        }),
-      };
+      return OrderModelDto.toDto(updatedOrder);
     } catch (error) {
       this.logger.error(error.message);
       if (error instanceof BadRequestException) {

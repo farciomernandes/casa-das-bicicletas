@@ -1,180 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose, plainToClass, plainToInstance } from 'class-transformer';
+import { Expose, plainToClass } from 'class-transformer';
 import { IsOptional } from 'class-validator';
-import { ProductVariablesModel } from '../product_variable/product_variables-model.dto';
 import { AddressModelDto } from '../address/address-model.dto';
+import { UserModelDto } from '../user/user-model.dto';
+import { OrderItemLocally } from './order-item-locally.dto';
 
-export class CategoryLocallylDto {
+export class OrderModelDto {
   @ApiProperty({
     type: String,
-    example: '65bd52691a0f4c3b57819a4b',
-    required: false,
-  })
-  id: string;
-
-  @ApiProperty({
-    type: String,
-    example: 'Category Name',
-    required: true,
-  })
-  @Expose()
-  name: string;
-
-  @ApiProperty({
-    type: String,
-    example: 'Category Description',
-    required: true,
-  })
-  @Expose()
-  description: string;
-
-  static toDto(payload: CategoryLocallylDto): CategoryLocallylDto {
-    return plainToInstance(CategoryLocallylDto, payload, {
-      excludeExtraneousValues: true,
-    });
-  }
-}
-
-export class UserOrderDto {
-  @ApiProperty({
-    type: String,
-    example: '65bd52691a0f4c3b57819a4b',
-  })
-  @Expose()
-  id: string;
-
-  @ApiProperty({
-    type: String,
-    example: 'example@example.com',
-  })
-  @Expose()
-  email: string;
-
-  @ApiProperty({
-    type: String,
-    example: 'John Doe',
-  })
-  @Expose()
-  name: string;
-
-  @ApiProperty({
-    type: String,
-    example: '12345678900',
-  })
-  @Expose()
-  cpf: string;
-
-  @ApiProperty({
-    type: String,
-    example: '123456789',
-  })
-  @Expose()
-  document: string;
-
-  @ApiProperty({
-    type: String,
-    example: 'Male',
-  })
-  @Expose()
-  sex: string;
-
-  @ApiProperty({
-    type: String,
-    example: '1990-01-01',
-  })
-  @Expose()
-  birthdate: string;
-
-  @ApiProperty({
-    type: String,
-    example: '1234567890',
-  })
-  @Expose()
-  phone: string;
-
-  static toDto(payload: UserOrderDto): UserOrderDto {
-    return plainToClass(UserOrderDto, payload, {
-      excludeExtraneousValues: true,
-    });
-  }
-}
-
-export class ProductOrderDto {
-  @ApiProperty({
-    type: String,
-    example: '994fb2cd-0f39-4a71-b15c-333b7e2ff793',
-  })
-  @Expose()
-  id: string;
-
-  @ApiProperty({
-    type: String,
-    example: 'Product Name',
-  })
-  @Expose()
-  name: string;
-
-  @ApiProperty({
-    type: CategoryLocallylDto,
-    example: CategoryLocallylDto,
-  })
-  @Expose()
-  category: CategoryLocallylDto;
-
-  static toDto(payload: ProductOrderDto): ProductOrderDto {
-    return plainToInstance(ProductOrderDto, payload, {
-      excludeExtraneousValues: true,
-    });
-  }
-}
-
-export class OrderItemLocally {
-  @ApiProperty({
-    type: String,
-    example: 'OrderItem ID',
-  })
-  @Expose()
-  id: string;
-
-  @ApiProperty({
-    type: Number,
-    example: 1,
-  })
-  @Expose()
-  quantity: number;
-
-  @ApiProperty({
-    type: Number,
-    example: 20,
-  })
-  @Expose()
-  sub_total: number;
-
-  @ApiProperty({
-    type: ProductVariablesModel,
-    required: true,
-  })
-  @Expose()
-  product_variables: ProductVariablesModel;
-
-  @ApiProperty({
-    type: String,
-    required: true,
-  })
-  @Expose()
-  product_variables_id: string;
-
-  static toDto(payload: OrderItemLocally): OrderItemLocally {
-    return plainToClass(OrderItemLocally, payload, {
-      excludeExtraneousValues: true,
-    });
-  }
-}
-
-export class OrderModel {
-  @ApiProperty({
-    type: String,
-    example: '65bd52691a0f4c3b57819a4b',
+    example: '4801d530-f7c6-4fb7-a04d-480d3a7adf40',
     required: false,
   })
   @Expose()
@@ -191,7 +25,7 @@ export class OrderModel {
 
   @ApiProperty({
     type: Number,
-    example: 100.5,
+    example: 100,
     required: true,
   })
   @Expose()
@@ -199,57 +33,83 @@ export class OrderModel {
 
   @ApiProperty({
     type: String,
-    example: '65bd52691a0f4c3b57819a4b',
+    example: null,
     required: false,
   })
   @Expose()
-  transaction_id?: string;
+  transaction_id?: string | null;
 
   @ApiProperty({
-    type: UserOrderDto,
+    type: UserModelDto,
     required: true,
   })
   @Expose()
-  user: UserOrderDto;
+  user: UserModelDto;
 
   @ApiProperty({
     type: AddressModelDto,
     required: false,
   })
   @Expose()
+  @IsOptional()
   address?: AddressModelDto;
 
   @ApiProperty({
     type: [OrderItemLocally],
+    isArray: true,
+    description: 'Array of OrderItemLocally',
     example: [
       {
-        id: '65bd52691a0f4c3b57819a4b',
-        quantity: 2,
-        sub_total: 50.75,
-        product: {
-          id: '994fb2cd-0f39-4a71-b15c-333b7e2ff793',
-          name: 'Product Name',
-          category: {
-            id: '65bd52691a0f4c3b57819a4b',
-            name: 'Category Name',
+        id: 'bfd6df5a-53b5-4e6f-af7a-22188425bb2d',
+        quantity: 1,
+        sub_total: '100',
+        order_id: '4801d530-f7c6-4fb7-a04d-480d3a7adf40',
+        product_variables_id: 'b9d0c1d6-b48a-4d7c-ab07-c1abe12681c9',
+        created_at: '2024-05-08T18:05:26.392Z',
+        updated_at: '2024-05-08T18:05:26.392Z',
+        deleted_at: null,
+        product_variables: {
+          id: 'b9d0c1d6-b48a-4d7c-ab07-c1abe12681c9',
+          color: 'red',
+          description: 'Product Description sadsadas',
+          large_description: 'dsadasdasd',
+          price: '100',
+          installment_value: 100,
+          installment_count: 1,
+          discount_price: '2',
+          discount_percent: '10',
+          sku: 'dsadasd',
+          quantity: 10,
+          size: 'large',
+          image_link:
+            'https://casa-das-bicicletas.s3.us-east-2.amazonaws.com/Capturadetelade2024-05-0710-47-38-b4b6e607-cc52-4a9d-be2c-3fb582c9326c.png',
+          created_at: '2024-05-08T18:05:12.449Z',
+          updated_at: '2024-05-08T20:49:34.966Z',
+          product_id: '30c50624-fc36-4c51-8d19-e655196dab8d',
+          type: 'Madeira Top',
+          weight: '1.5',
+          format: 'Violão G',
+          length: '30',
+          height: '20',
+          width: '10',
+          diameter: '10',
+          product: {
+            id: '30c50624-fc36-4c51-8d19-e655196dab8d',
+            name: 'Product Name',
+            category_id: '7b15bace-06c3-4d86-a8dd-30da324f6997',
+            created_date: '2024-05-08T18:04:56.166Z',
+            updated_date: '2024-05-08T18:04:56.166Z',
           },
-          description: 'Product Description',
-          large_description: 'Large Product Description',
-          price: 25.5,
-          discount_price: 20.75,
-          discount_percent: 10,
-          sku: 'SKU123',
         },
       },
     ],
-    isArray: true,
   })
   @Expose()
   @IsOptional()
   order_items: OrderItemLocally[];
 
-  static toDto(payload: OrderModel): OrderModel {
-    return plainToClass(OrderModel, payload, {
+  static toDto(payload: any): OrderModelDto {
+    return plainToClass(OrderModelDto, payload, {
       excludeExtraneousValues: true,
     });
   }

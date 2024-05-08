@@ -2,9 +2,9 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { IDbUpdateOrderRepository } from '@/core/domain/protocols/db/order/update-order-repository';
 import { OrderRepository } from '@/core/domain/protocols/repositories/order';
 import { UpdateOrderDto } from '@/presentation/dtos/order/update-order.dto';
-import { OrderModel } from '@/presentation/dtos/order/order-model.dto';
 import { ProductVariablesRepository } from '@/core/domain/protocols/repositories/product_variable';
 import { OrderStatusEnum } from '@/shared/enums/order_status.enum';
+import { OrderModelDto } from '@/presentation/dtos/order/order-model.dto';
 
 @Injectable()
 export class DbUpdateOrder implements IDbUpdateOrderRepository {
@@ -13,7 +13,7 @@ export class DbUpdateOrder implements IDbUpdateOrderRepository {
     private readonly productVariablesRepository: ProductVariablesRepository,
   ) {}
 
-  async update(payload: UpdateOrderDto, id: string): Promise<OrderModel> {
+  async update(payload: UpdateOrderDto, id: string): Promise<OrderModelDto> {
     try {
       const old_order = await this.orderRepository.findById(id);
       const order = await this.orderRepository.update(payload, id);
@@ -48,7 +48,7 @@ export class DbUpdateOrder implements IDbUpdateOrderRepository {
         }
       }
 
-      return order;
+      return OrderModelDto.toDto(order);
     } catch (error) {
       throw error;
     }

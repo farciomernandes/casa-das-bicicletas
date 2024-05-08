@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ProductModelDto } from '../product/product-model.dto';
-import { UserOrderDto } from '../order/order-model.dto';
 import { CreditCardDto } from './payment-base.dto';
+import { UserModelDto } from '../user/user-model.dto';
 
 class OrderItemDto {
   @ApiProperty({
@@ -177,8 +177,8 @@ export class PaymentCreditCardDto {
   @ApiProperty({ description: 'Informações do pagamento', type: PaymentDto })
   transaction: PaymentDto;
 
-  @ApiProperty({ description: 'Informações do usuário', type: UserOrderDto })
-  user: UserOrderDto;
+  @ApiProperty({ description: 'Informações do usuário', type: UserModelDto })
+  user: UserModelDto;
 
   @ApiProperty({ description: 'Itens do pedido', type: [OrderItemDto] })
   orderItems: OrderItemDto[];
