@@ -104,7 +104,7 @@ export class AppModule implements NestModule {
   ];
 
   private readonly addressEndpoints = [
-    { path: 'api/v1/addresses', method: RequestMethod.GET },
+    { path: 'api/v1/addresses', method: RequestMethod.POST },
     { path: 'api/v1/addresses**', method: RequestMethod.PUT },
     { path: 'api/v1/addresses**', method: RequestMethod.DELETE },
   ];

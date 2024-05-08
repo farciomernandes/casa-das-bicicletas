@@ -17,8 +17,13 @@ export class RoleSeed implements IRoleSeed {
       },
     ];
     for (const role of roles) {
-      const data = await this.roleRepository.create(role);
-      resultRoles.push(data);
+      const alreadyExists = await this.roleRepository.findByValue(role.value);
+      if (!alreadyExists) {
+        const data = await this.roleRepository.create(role);
+        resultRoles.push(data);
+      } else {
+        resultRoles.push(alreadyExists);
+      }
     }
 
     return resultRoles;

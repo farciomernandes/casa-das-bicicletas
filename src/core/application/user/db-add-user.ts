@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Injectable,
   InternalServerErrorException,
+  Logger,
 } from '@nestjs/common';
 import { IDbAddUserRepository } from '@/core/domain/protocols/db/user/add-user-repository';
 import { User } from '@/core/domain/models/user.entity';
@@ -11,6 +12,8 @@ import { AddUserDto } from '@/presentation/dtos/user/add-user.dto';
 
 @Injectable()
 export class DbAddUser implements IDbAddUserRepository {
+  private readonly logger = new Logger(DbAddUser.name);
+
   constructor(
     private readonly userRepository: UserRepository,
     private readonly hasher: IHasher,
@@ -35,6 +38,7 @@ export class DbAddUser implements IDbAddUserRepository {
         password: password_hash,
       });
     } catch (error) {
+      this.logger.error(error.message);
       if (error instanceof BadRequestException) {
         throw error;
       }

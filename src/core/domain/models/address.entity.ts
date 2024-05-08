@@ -6,11 +6,11 @@ import {
   UpdateDateColumn,
   OneToOne,
   JoinColumn,
+  ManyToOne,
 } from 'typeorm';
 import { SchemasEnum } from '@/infra/db/schema.enum';
 import { City } from './city.entity';
-import { State } from './state.entity';
-import { Order } from './order.entity'; // Importando a entidade de pedido
+import { User } from './user.entity';
 
 @Entity({ name: 'addresses', schema: SchemasEnum.users })
 export class Address {
@@ -39,15 +39,12 @@ export class Address {
   @Column()
   city_id: string;
 
-  @OneToOne(() => State)
-  @JoinColumn({ name: 'state_id' })
-  state: State;
+  @ManyToOne(() => User, (user) => user.id)
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 
   @Column()
-  state_id: string;
-
-  @OneToOne(() => Order, (order) => order.address)
-  order: Order;
+  user_id: string;
 
   @CreateDateColumn({ name: 'created_at' })
   created_at: Date;

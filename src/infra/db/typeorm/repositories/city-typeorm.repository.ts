@@ -1,6 +1,9 @@
 import { Repository } from 'typeorm';
 import { City } from '@/core/domain/models/city.entity';
-import { CityModel } from '@/presentation/dtos/city/city-model.dto';
+import {
+  CityListDto,
+  CityModel,
+} from '@/presentation/dtos/city/city-model.dto';
 import { CityRepository } from '@/core/domain/protocols/repositories/city';
 import { CityParamsDto } from '@/presentation/dtos/city/params-city.dto';
 
@@ -31,20 +34,20 @@ export class CityTypeOrmRepository implements CityRepository {
     await this.cityRepository.delete(id);
   }
 
-  async getAll(params?: CityParamsDto): Promise<City[]> {
+  async getAll(params?: CityParamsDto): Promise<CityListDto> {
     const queryBuilder = this.cityRepository.createQueryBuilder('city');
 
-    if (params.id) {
+    if (params && params.id) {
       queryBuilder.andWhere('city.id = :id', { id: params.id });
     }
 
-    if (params.name) {
+    if (params && params.name) {
       queryBuilder.andWhere('city.name LIKE :name', {
         name: `%${params.name}%`,
       });
     }
 
-    if (params.state_id) {
+    if (params && params.state_id) {
       queryBuilder.andWhere('city.state_id = :stateId', {
         stateId: params.state_id,
       });
@@ -52,8 +55,16 @@ export class CityTypeOrmRepository implements CityRepository {
 
     queryBuilder.leftJoinAndSelect('city.state', 'state');
 
-    const cities = await queryBuilder.getMany();
-    return cities;
+    const page = params && params.page ? params.page : 1;
+    const size = params && params.size ? params.size : 10;
+    const skip = (page - 1) * size;
+
+    const [cities, total] = await queryBuilder
+      .skip(skip)
+      .take(size)
+      .getManyAndCount();
+
+    return { cities, total };
   }
 
   async create(payload: Omit<City, 'id'>): Promise<City> {

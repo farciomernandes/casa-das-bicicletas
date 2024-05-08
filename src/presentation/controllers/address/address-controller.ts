@@ -25,6 +25,8 @@ import { IDbUpdateAddressRepository } from '@/core/domain/protocols/db/address/u
 import { Address } from '@/core/domain/models/address.entity';
 import { AddAddressDto } from '@/presentation/dtos/address/add-address.dto';
 import { UploadAddressDto } from '@/presentation/dtos/address/upload-address.dto';
+import { User } from '@/shared/decorators/user.decorator';
+import { Authenticated } from '@/presentation/dtos/auth/authenticated.dto';
 
 @ApiTags('Address')
 @Controller('api/v1/addresses')
@@ -45,9 +47,10 @@ export class AddressController {
   @HttpCode(HttpStatus.CREATED)
   @ApiBearerAuth()
   async create(
-    @Body() payload: Omit<AddressModelDto, 'id'>,
+    @User() user: Authenticated,
+    @Body() payload: Omit<AddAddressDto, 'id'>,
   ): Promise<AddressModelDto> {
-    return await this.dbAddAddress.create(payload);
+    return await this.dbAddAddress.create(payload, user.id);
   }
 
   @Get()

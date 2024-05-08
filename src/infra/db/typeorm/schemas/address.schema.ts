@@ -1,15 +1,15 @@
-import { EntitySchema } from 'typeorm/entity-schema/EntitySchema';
+import { EntitySchema } from 'typeorm';
 import { baseSchema } from '../base/base.schema';
 import { SchemasEnum } from '../../schema.enum';
 import { Address } from '@/core/domain/models/address.entity';
-import { City } from '@/core/domain/models/city.entity'; // Importando a entidade de cidade
-import { State } from '@/core/domain/models/state.entity'; // Importando a entidade de estado
+import { City } from '@/core/domain/models/city.entity';
+import { User } from '@/core/domain/models/user.entity';
 
 export const AddressSchema = new EntitySchema<Address>({
   schema: SchemasEnum.users,
   name: Address.name,
   target: Address,
-  tableName: `addresses`,
+  tableName: 'addresses',
   columns: {
     ...baseSchema,
     zip_code: {
@@ -36,7 +36,7 @@ export const AddressSchema = new EntitySchema<Address>({
       type: 'uuid',
       nullable: false,
     },
-    state_id: {
+    user_id: {
       type: 'uuid',
       nullable: false,
     },
@@ -48,10 +48,10 @@ export const AddressSchema = new EntitySchema<Address>({
       joinColumn: { name: 'city_id' },
       eager: true,
     },
-    state: {
+    user: {
       type: 'many-to-one',
-      target: () => State,
-      joinColumn: { name: 'state_id' },
+      target: () => User,
+      joinColumn: { name: 'user_id' },
       eager: true,
     },
   },

@@ -1,26 +1,25 @@
 import { MigrationInterface, QueryRunner, TableForeignKey } from 'typeorm';
 import { SchemasEnum } from '../../schema.enum';
 
-export class CreateRelationUsersRolesAddresses1713544297485
+export class CreateRelationUsersAddresses1715177324554
   implements MigrationInterface
 {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createForeignKey(
-      `${SchemasEnum.users}.users`,
+      `${SchemasEnum.users}.addresses`,
       new TableForeignKey({
-        columnNames: ['role_id'],
+        columnNames: ['user_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: `${SchemasEnum.users}.roles`,
-        onDelete: 'SET NULL',
-        name: 'fk_users_role_id',
+        referencedTableName: `${SchemasEnum.users}.users`,
+        onDelete: 'CASCADE',
       }),
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropForeignKey(
-      `${SchemasEnum.users}.users`,
-      'fk_users_role_id',
+      `${SchemasEnum.users}.addresses`,
+      'FK_addresses_user_id',
     );
   }
 }

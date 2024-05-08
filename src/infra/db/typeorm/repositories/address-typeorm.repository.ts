@@ -33,8 +33,12 @@ export class AddressTypeOrmRepository implements AddressRepository {
     });
   }
 
-  async create(payload: AddAddressDto): Promise<Address> {
-    const address = this.addressRepository.create(payload);
+  async create(payload: AddAddressDto, user_id: string): Promise<Address> {
+    console.log(payload);
+    const address = this.addressRepository.create({
+      ...payload,
+      user_id,
+    });
     return this.addressRepository.save(address);
   }
 }

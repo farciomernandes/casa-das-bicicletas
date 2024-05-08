@@ -41,10 +41,6 @@ export class CreateAddresses1713465814699 implements MigrationInterface {
             type: 'uuid',
           },
           {
-            name: 'state_id',
-            type: 'uuid',
-          },
-          {
             name: 'created_at',
             type: 'timestamp',
             default: 'now()',

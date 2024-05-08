@@ -21,7 +21,7 @@ export class UserTypeOrmRepository implements UserRepository {
     }
   }
 
-  async findById(id: string): Promise<User> {
+  async findById(id: string): Promise<any> {
     return this.userRepository.findOne({ where: { id } });
   }
 
@@ -29,10 +29,26 @@ export class UserTypeOrmRepository implements UserRepository {
     await this.userRepository.delete(id);
   }
 
-  async getAll(): Promise<User[]> {
-    return this.userRepository.find({
-      relations: ['address'],
-    });
+  async getAll(): Promise<any> {
+    try {
+      const queryBuilder = this.userRepository.createQueryBuilder('users');
+
+      queryBuilder.leftJoinAndSelect('users.role', 'role');
+      queryBuilder.leftJoinAndSelect('users.addresses', 'address');
+
+      const page = 1;
+      const size = 10;
+      const skip = (page - 1) * size;
+
+      const [users, total] = await queryBuilder
+        .skip(skip)
+        .take(size)
+        .getManyAndCount();
+
+      return { users, total };
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async create(payload: Omit<User, 'id'>): Promise<User> {

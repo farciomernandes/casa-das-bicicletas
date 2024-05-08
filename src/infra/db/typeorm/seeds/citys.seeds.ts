@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CityRepository } from '@/core/domain/protocols/repositories/city';
 import axios from 'axios';
 import { StateRepository } from '@/core/domain/protocols/repositories/state';
@@ -15,6 +15,8 @@ interface StateModelIbge {
 }
 @Injectable()
 export class CitySeed {
+  private readonly logger = new Logger(CitySeed.name);
+
   constructor(
     private readonly cityRepository: CityRepository,
     private readonly stateRepository: StateRepository,
@@ -50,7 +52,8 @@ export class CitySeed {
         }
       }
     } catch (error) {
-      console.error('Error seeding cities:', error);
+      console.log(error);
+      this.logger.error(`Error seeding cities: ${error.message}`);
     }
     return resultCites;
   }

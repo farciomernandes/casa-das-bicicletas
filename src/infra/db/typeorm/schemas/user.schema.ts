@@ -1,13 +1,15 @@
+// UserSchema.ts
 import { EntitySchema } from 'typeorm';
 import { baseSchema } from '../base/base.schema';
 import { SchemasEnum } from '../../schema.enum';
 import { User } from '@/core/domain/models/user.entity';
+import { Address } from '@/core/domain/models/address.entity';
 
 export const UserSchema = new EntitySchema<User>({
   schema: SchemasEnum.users,
   name: User.name,
   target: User,
-  tableName: `users`,
+  tableName: 'users',
   columns: {
     ...baseSchema,
     email: {
@@ -46,10 +48,6 @@ export const UserSchema = new EntitySchema<User>({
       type: 'uuid',
       nullable: true,
     },
-    address_id: {
-      type: 'uuid',
-      nullable: false,
-    },
   },
   relations: {
     role: {
@@ -58,11 +56,11 @@ export const UserSchema = new EntitySchema<User>({
       joinColumn: { name: 'role_id' },
       eager: true,
     },
-    address: {
-      type: 'many-to-one',
-      target: 'Address',
-      joinColumn: { name: 'address_id' },
-      eager: true,
+    addresses: {
+      type: 'one-to-many',
+      target: () => Address,
+      inverseSide: 'user',
+      lazy: true,
     },
   },
 });

@@ -63,16 +63,6 @@ export class AddAddressDto {
   @IsUUID()
   city_id: string;
 
-  @ApiProperty({
-    type: String,
-    example: '65bd52691a0f4c3b57819a4b',
-    required: true,
-  })
-  @Expose()
-  @IsNotEmpty()
-  @IsUUID()
-  state_id: string;
-
   static toDto(payload: AddAddressDto): AddAddressDto {
     return plainToInstance(AddAddressDto, payload, {
       excludeExtraneousValues: true,

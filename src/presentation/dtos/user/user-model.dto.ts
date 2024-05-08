@@ -115,15 +115,7 @@ export class UserModelDto {
   @Expose()
   address: AddressModelDto;
 
-  @ApiProperty({
-    type: String,
-    example: '',
-  })
-  @IsOptional()
-  @Expose()
-  address_id?: string;
-
-  static toDto(payload: UserModelDto): UserModelDto {
+  static toDto(payload: any): UserModelDto {
     return plainToClass(UserModelDto, payload, {
       excludeExtraneousValues: true,
     });

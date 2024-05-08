@@ -121,7 +121,7 @@ export class DbAddOrder implements IDbAddOrderRepository {
         }),
       };
     } catch (error) {
-      this.logger.error(error);
+      this.logger.error(error.message);
       if (error instanceof BadRequestException) {
         throw error;
       }

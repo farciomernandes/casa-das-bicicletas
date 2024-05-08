@@ -20,7 +20,10 @@ import {
 } from '@nestjs/swagger';
 import { IDbAddCityRepository } from '@/core/domain/protocols/db/city/add-city-repository';
 import { IDbListCityRepository } from '@/core/domain/protocols/db/city/list-city-respository';
-import { CityModel } from '@/presentation/dtos/city/city-model.dto';
+import {
+  CityListDto,
+  CityModel,
+} from '@/presentation/dtos/city/city-model.dto';
 import { IDbDeleteCityRepository } from '@/core/domain/protocols/db/city/delete-city-repository';
 import { IDbUpdateCityRepository } from '@/core/domain/protocols/db/city/update-city-repository';
 import { City } from '@/core/domain/models/city.entity';
@@ -54,10 +57,10 @@ export class CityController {
   @ApiOkResponse({
     description: 'Returns Citys.',
     status: HttpStatus.OK,
-    type: CityModel,
+    type: CityListDto,
     isArray: true,
   })
-  async getAll(@Query() queryParams: CityParamsDto): Promise<CityModel[]> {
+  async getAll(@Query() queryParams: CityParamsDto): Promise<CityListDto> {
     try {
       return await this.dbListCity.getAll(queryParams);
     } catch (error) {

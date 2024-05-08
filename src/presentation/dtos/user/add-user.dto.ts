@@ -91,14 +91,6 @@ export class AddUserDto {
   @Expose()
   role_id: string;
 
-  @ApiProperty({
-    type: String,
-    example: '65bd52691a0f4c3b57819a4b',
-    required: false,
-  })
-  @Expose()
-  address_id: string;
-
   static toDto(payload: AddUserDto): AddUserDto {
     return plainToClass(AddUserDto, payload, {
       excludeExtraneousValues: true,

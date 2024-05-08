@@ -32,3 +32,28 @@ export class CityModel {
     });
   }
 }
+
+export class CityListDto {
+  @ApiProperty({
+    type: CityModel,
+    example: CityModel,
+    required: true,
+    isArray: true,
+  })
+  @Expose()
+  cities: CityModel[];
+
+  @ApiProperty({
+    type: Number,
+    example: 200,
+    required: true,
+  })
+  @Expose()
+  total: number;
+
+  static toDto(payload: CityListDto): CityListDto {
+    return plainToInstance(CityListDto, payload, {
+      excludeExtraneousValues: true,
+    });
+  }
+}

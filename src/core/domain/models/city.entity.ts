@@ -4,11 +4,10 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToOne, // Certifique-se de importar ManyToOne
+  ManyToOne,
 } from 'typeorm';
 import { SchemasEnum } from '@/infra/db/schema.enum';
-import { State } from './state.entity'; // Importe a entidade State
-
+import { State } from './state.entity';
 @Entity({ name: 'cities', schema: SchemasEnum.users })
 export class City {
   @PrimaryGeneratedColumn('uuid')

@@ -21,9 +21,9 @@ export abstract class UserRepository
     IDbDeleteUserRepository
 {
   abstract findById(id: string): Promise<UserModelDto>;
-  abstract findByEmail(email: string): Promise<User>;
-  abstract getAll(): Promise<User[]>;
-  abstract create(payload: AddUserDto): Promise<User>;
+  abstract findByEmail(email: string): Promise<any>;
+  abstract getAll(): Promise<any>;
+  abstract create(payload: AddUserDto): Promise<any>;
   abstract delete(id: string): Promise<void>;
-  abstract update(payload: UpdateUserDto, id: string): Promise<User>;
+  abstract update(payload: UpdateUserDto, id: string): Promise<any>;
 }

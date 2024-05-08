@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
   OneToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { SchemasEnum } from '@/infra/db/schema.enum';
 import { Address } from './address.entity';
@@ -47,12 +48,11 @@ export class User {
   @JoinColumn({ name: 'role_id' })
   role: Role;
 
-  @Column()
+  @Column({ nullable: true })
   address_id: string;
 
-  @OneToOne(() => Address)
-  @JoinColumn({ name: 'address_id' })
-  address: Address;
+  @OneToMany(() => Address, (address) => address.user)
+  addresses: Address[];
 
   @CreateDateColumn({ name: 'created_at' })
   created_at: Date;

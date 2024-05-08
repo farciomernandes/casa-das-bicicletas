@@ -74,7 +74,7 @@ export class CreateTableOrderItems1713804749334 implements MigrationInterface {
       new TableForeignKey({
         columnNames: ['product_variables_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: `${SchemasEnum.users}.product_variables`, // Corrigido aqui
+        referencedTableName: `${SchemasEnum.users}.product_variables`,
         onDelete: 'CASCADE',
       }),
     );

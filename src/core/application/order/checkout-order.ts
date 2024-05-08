@@ -11,6 +11,7 @@ import { IPaymentProcess } from '@/core/domain/protocols/asaas/payment-process';
 import { OrderRepository } from '@/core/domain/protocols/repositories/order';
 import { OrderStatusEnum } from '@/shared/enums/order_status.enum';
 import { AddressRepository } from '@/core/domain/protocols/repositories/address';
+import { AddressModelDto } from '@/presentation/dtos/address/address-model.dto';
 
 @Injectable()
 export class CheckoutOrder implements ICheckoutOrder {
@@ -58,6 +59,7 @@ export class CheckoutOrder implements ICheckoutOrder {
           },
           user,
           payment.payment,
+          AddressModelDto.toDto(address),
         );
 
       const updated = await this.dbUpdateOrder.update(

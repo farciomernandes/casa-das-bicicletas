@@ -14,6 +14,7 @@ import {
   CreditCardDto,
   PaymentDto,
 } from '@/presentation/dtos/asaas/payment-base.dto';
+import { AddressModelDto } from '@/presentation/dtos/address/address-model.dto';
 
 @Injectable()
 export default class AsaasPaymentService
@@ -25,6 +26,7 @@ export default class AsaasPaymentService
     order: OrderModel,
     user: UserModelDto,
     payment: PaymentDataDto,
+    address: AddressModelDto,
   ): Promise<{
     transaction_id: string;
     status: OrderStatusEnum;
@@ -37,6 +39,7 @@ export default class AsaasPaymentService
         order,
         user,
         payment,
+        address,
       );
 
       if (payment.method == PaymentMethodEnum.PIX) {
@@ -106,6 +109,7 @@ export default class AsaasPaymentService
     order: any,
     user: UserModelDto,
     payment: PaymentDataDto,
+    address: AddressModelDto,
   ): Promise<any> {
     try {
       const baseParams = {
@@ -131,9 +135,9 @@ export default class AsaasPaymentService
             name: user.name,
             email: user.email,
             cpfCnpj: user.cpf,
-            postalCode: user.address.zip_code,
-            addressNumber: user.address.number,
-            addressComplement: user.address.complement,
+            postalCode: address.zip_code,
+            addressNumber: address.number,
+            addressComplement: address.complement,
             phone: user.phone,
             mobilePhone: user.phone,
           },

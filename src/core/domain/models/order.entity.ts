@@ -13,7 +13,7 @@ import { SchemasEnum } from '@/infra/db/schema.enum';
 import { OrderStatusEnum } from '@/shared/enums/order_status.enum';
 import { User } from './user.entity';
 import { OrderItem } from './order_item.entity';
-import { Address } from './address.entity'; // Importando a entidade de endereço
+import { Address } from './address.entity';
 
 @Entity({ name: 'orders', schema: SchemasEnum.users })
 export class Order {
@@ -29,7 +29,7 @@ export class Order {
   @Column({ nullable: true })
   transaction_id?: string;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { lazy: true })
   @JoinColumn({ name: 'user_id' })
   user: User;
 

@@ -16,6 +16,10 @@ export class CreateTableUsers1713542760484 implements MigrationInterface {
             default: 'uuid_generate_v4()',
           },
           {
+            name: 'role_id',
+            type: 'uuid',
+          },
+          {
             name: 'email',
             type: 'varchar',
             isUnique: true,
@@ -47,15 +51,6 @@ export class CreateTableUsers1713542760484 implements MigrationInterface {
           {
             name: 'phone',
             type: 'varchar',
-          },
-          {
-            name: 'role_id',
-            type: 'uuid',
-            isNullable: true,
-          },
-          {
-            name: 'address_id',
-            type: 'uuid',
           },
           {
             name: 'created_at',
