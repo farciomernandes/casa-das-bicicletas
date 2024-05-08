@@ -15,10 +15,13 @@
   * Apagar tsconfig.build.tsbuildinfo caso o build não esteja sendo feito ao rodar npm run build
   * Verificar a tabela de migrations está vazia
 
-  > ## Melhorias para v2
+  > ## Melhorias pendentes
   * Puts devem alterar as imagens
   * Deve verificar status do correio
   * Não está apagando o objeto anterior do S3 na atualização dos itens
+  * User está retornando paginação com apenas os 10 items estáticos
+  * User não deve alterar no PUT os valores enviados como undefined
+  * Product deve pode alterar o category_id
 
 > ## Design Patterns
 

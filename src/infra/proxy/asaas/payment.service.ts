@@ -30,7 +30,7 @@ export default class AsaasPaymentService
   ): Promise<{
     transaction_id: string;
     status: OrderStatusEnum;
-    transaction: any;
+    transaction: PixTransactionDto | BoletoTransactionDto | PaymentDto;
   }> {
     try {
       const user_id = await this.createCustomer(user);

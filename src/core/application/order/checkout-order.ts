@@ -12,6 +12,7 @@ import { OrderRepository } from '@/core/domain/protocols/repositories/order';
 import { OrderStatusEnum } from '@/shared/enums/order_status.enum';
 import { AddressRepository } from '@/core/domain/protocols/repositories/address';
 import { AddressModelDto } from '@/presentation/dtos/address/address-model.dto';
+import { CheckoutOrderModelDto } from '@/presentation/dtos/order/checkout-order.dto';
 
 @Injectable()
 export class CheckoutOrder implements ICheckoutOrder {
@@ -27,7 +28,7 @@ export class CheckoutOrder implements ICheckoutOrder {
     order_id: string,
     user_id: string,
     payment: CheckoutOrderDto,
-  ): Promise<any> {
+  ): Promise<CheckoutOrderModelDto> {
     try {
       const user = await this.userRepository.findById(user_id);
       if (!user) {
@@ -73,8 +74,8 @@ export class CheckoutOrder implements ICheckoutOrder {
       );
 
       return {
-        ...transaction,
-        ...updated,
+        transaction,
+        order: updated,
       };
     } catch (error) {
       if (error instanceof BadRequestException) {
