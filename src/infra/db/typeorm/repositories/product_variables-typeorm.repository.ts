@@ -8,31 +8,40 @@ export class ProductVariablesTypeOrmRepository
   implements ProductVariablesRepository
 {
   constructor(
-    private readonly ProductVariablesRepository: Repository<ProductVariables>,
+    private readonly productVariablesRepository: Repository<ProductVariables>,
   ) {}
 
   async update(
     payload: UpdateProductVariablesModel,
     id: string,
+    image_link?: string,
   ): Promise<ProductVariables> {
     try {
-      const ProductVariables =
-        await this.ProductVariablesRepository.findOneOrFail({
+      const productVariables =
+        await this.productVariablesRepository.findOneOrFail({
           where: { id },
         });
 
-      this.ProductVariablesRepository.merge(ProductVariables, payload);
+      const updateProductvariable = {
+        ...payload,
+        image_link,
+      };
 
-      const save = await this.ProductVariablesRepository.save(ProductVariables);
+      this.productVariablesRepository.merge(
+        productVariables,
+        updateProductvariable,
+      );
+
+      const save = await this.productVariablesRepository.save(productVariables);
       return save;
     } catch (error) {
-      throw new Error('ProductVariables not found');
+      throw new Error('ProductVariables error');
     }
   }
 
   async findById(id: string): Promise<any> {
     const queryBuilder =
-      this.ProductVariablesRepository.createQueryBuilder('product_variables');
+      this.productVariablesRepository.createQueryBuilder('product_variables');
     queryBuilder.where('product_variables.id = :id', { id });
 
     queryBuilder.leftJoinAndSelect('product_variables.product', 'product');
@@ -40,17 +49,17 @@ export class ProductVariablesTypeOrmRepository
     return await queryBuilder.getOne();
   }
   async delete(id: string): Promise<void> {
-    await this.ProductVariablesRepository.delete(id);
+    await this.productVariablesRepository.delete(id);
   }
 
   async getAll(): Promise<ProductVariables[]> {
-    return this.ProductVariablesRepository.find();
+    return this.productVariablesRepository.find();
   }
 
   async create(
     payload: Omit<AddProductVariablesModel, 'image_link'>,
   ): Promise<ProductVariables> {
-    const ProductVariables = this.ProductVariablesRepository.create(payload);
-    return this.ProductVariablesRepository.save(ProductVariables);
+    const ProductVariables = this.productVariablesRepository.create(payload);
+    return this.productVariablesRepository.save(ProductVariables);
   }
 }

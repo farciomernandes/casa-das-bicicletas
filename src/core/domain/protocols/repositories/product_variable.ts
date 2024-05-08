@@ -24,7 +24,8 @@ export abstract class ProductVariablesRepository
   ): Promise<ProductVariables>;
   abstract delete(id: string): Promise<void>;
   abstract update(
-    payload: UpdateProductVariablesModel,
+    payload: Omit<UpdateProductVariablesModel, 'image_link'>,
     id: string,
+    image_link?: any,
   ): Promise<ProductVariables>;
 }

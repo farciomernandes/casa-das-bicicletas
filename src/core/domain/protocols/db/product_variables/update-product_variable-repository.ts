@@ -3,7 +3,8 @@ import { UpdateProductVariablesModel } from '@/presentation/dtos/product_variabl
 
 export abstract class IDbUpdateProductVariablesRepository {
   abstract update(
-    payload: UpdateProductVariablesModel,
+    payload: Omit<UpdateProductVariablesModel, 'image_link'>,
     id: string,
+    image_link?: any,
   ): Promise<ProductVariables>;
 }

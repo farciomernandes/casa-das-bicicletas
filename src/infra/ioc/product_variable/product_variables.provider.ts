@@ -94,11 +94,12 @@ export const productVariablesProvider: Provider[] = [
   {
     provide: IDbUpdateProductVariablesRepository,
     useFactory: (
-      ProductVariablesRepository: ProductVariablesRepository,
+      productVariablesRepository: ProductVariablesRepository,
+      s3Upload: S3UploadImage,
     ): DbUpdateProductVariables => {
-      return new DbUpdateProductVariables(ProductVariablesRepository);
+      return new DbUpdateProductVariables(productVariablesRepository, s3Upload);
     },
-    inject: [ProductVariablesTypeOrmRepository],
+    inject: [ProductVariablesTypeOrmRepository, S3Storage],
   },
   {
     provide: IDbDeleteProductVariablesRepository,

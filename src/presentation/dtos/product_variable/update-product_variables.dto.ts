@@ -78,8 +78,9 @@ export class UpdateProductVariablesModel {
   size: string;
 
   @ApiProperty({
-    type: String,
-    description: 'Image url',
+    type: 'string',
+    format: 'binary',
+    description: 'Image file',
   })
   @Expose()
   image_link: string;

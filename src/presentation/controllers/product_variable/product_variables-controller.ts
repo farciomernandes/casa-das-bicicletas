@@ -59,22 +59,9 @@ export class ProductVariablesController {
     return await this.dbAddProductVariables.create(payload, image_link);
   }
 
-  @Get()
-  @ApiOkResponse({
-    description: 'Returns ProductVariabless.',
-    status: HttpStatus.OK,
-    type: ProductVariablesModel,
-    isArray: true,
-  })
-  @ApiBearerAuth()
-  async getAll(): Promise<ProductVariables[]> {
-    try {
-      return await this.dbListProductVariables.getAll();
-    } catch (error) {
-      throw new HttpException(error.response, error.status);
-    }
-  }
-
+  @ApiCreatedResponse({ type: UpdateProductVariablesModel })
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('image_link', multerConfig))
   @Put(':id')
   @ApiBody({
     type: UpdateProductVariablesModel,
@@ -87,10 +74,31 @@ export class ProductVariablesController {
   @ApiBearerAuth()
   async update(
     @Param('id') id: string,
-    @Body() payload: UpdateProductVariablesModel,
+    @Body() payload: Omit<UpdateProductVariablesModel, 'image_link'>,
+    @UploadedFile() image_link: Express.Multer.File,
   ): Promise<ProductVariables> {
     try {
-      return await this.dbUpdateProductVariables.update(payload, id);
+      return await this.dbUpdateProductVariables.update(
+        payload,
+        id,
+        image_link,
+      );
+    } catch (error) {
+      throw new HttpException(error.response, error.status);
+    }
+  }
+
+  @Get()
+  @ApiOkResponse({
+    description: 'Returns ProductVariabless.',
+    status: HttpStatus.OK,
+    type: ProductVariablesModel,
+    isArray: true,
+  })
+  @ApiBearerAuth()
+  async getAll(): Promise<ProductVariables[]> {
+    try {
+      return await this.dbListProductVariables.getAll();
     } catch (error) {
       throw new HttpException(error.response, error.status);
     }
