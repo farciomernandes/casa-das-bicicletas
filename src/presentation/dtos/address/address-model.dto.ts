@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, plainToInstance } from 'class-transformer';
 import { IsNotEmpty, IsString } from 'class-validator';
-import { UserModelDto } from '../user/user-model.dto';
 import { CityModel } from '../city/city-model.dto';
 
 export class AddressModelDto {
@@ -70,9 +69,24 @@ export class AddressModelDto {
   @Expose()
   city: CityModel;
 
+  @ApiProperty({
+    type: String,
+    example: '12345-678',
+    required: true,
+  })
+  @Expose()
+  @IsString()
+  @IsNotEmpty()
+  user_id: string;
+
   static toDto(payload: AddressModelDto): AddressModelDto {
-    return plainToInstance(AddressModelDto, payload, {
+    const addressObj = plainToInstance(AddressModelDto, payload, {
       excludeExtraneousValues: true,
     });
+
+    return {
+      ...addressObj,
+      city: CityModel.toDto(payload.city),
+    };
   }
 }

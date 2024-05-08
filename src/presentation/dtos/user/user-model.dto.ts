@@ -25,16 +25,6 @@ export class UserModelDto {
 
   @ApiProperty({
     type: String,
-    example: 'password',
-    required: true,
-  })
-  @Expose()
-  @IsString()
-  @IsNotEmpty()
-  password: string;
-
-  @ApiProperty({
-    type: String,
     example: 'John Doe',
     required: true,
   })
@@ -99,14 +89,6 @@ export class UserModelDto {
   })
   @Expose()
   role: RoleModel;
-
-  @ApiProperty({
-    type: String,
-    example: '',
-  })
-  @IsOptional()
-  @Expose()
-  role_id?: string;
 
   @ApiProperty({
     type: AddressModelDto,

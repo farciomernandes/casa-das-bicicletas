@@ -3,6 +3,7 @@ import { Address } from '@/core/domain/models/address.entity';
 import { AddressRepository } from '@/core/domain/protocols/repositories/address';
 import { UploadAddressDto } from '@/presentation/dtos/address/upload-address.dto';
 import { AddAddressDto } from '@/presentation/dtos/address/add-address.dto';
+import { AddressModelDto } from '@/presentation/dtos/address/address-model.dto';
 
 export class AddressTypeOrmRepository implements AddressRepository {
   constructor(private readonly addressRepository: Repository<Address>) {}
@@ -28,13 +29,12 @@ export class AddressTypeOrmRepository implements AddressRepository {
   }
 
   async getAll(): Promise<Address[]> {
-    return this.addressRepository.find({
+    return await this.addressRepository.find({
       relations: ['city'],
     });
   }
 
   async create(payload: AddAddressDto, user_id: string): Promise<Address> {
-    console.log(payload);
     const address = this.addressRepository.create({
       ...payload,
       user_id,
