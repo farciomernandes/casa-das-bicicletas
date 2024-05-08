@@ -42,8 +42,17 @@ export class OrderItemLocally {
   product_variables_id: string;
 
   static toDto(payload: OrderItemLocally): OrderItemLocally {
-    return plainToClass(OrderItemLocally, payload, {
+    const order_item = plainToClass(OrderItemLocally, payload, {
       excludeExtraneousValues: true,
     });
+
+    const product_variables = ProductVariablesModel.toDto(
+      payload.product_variables,
+    );
+
+    return {
+      ...order_item,
+      product_variables,
+    };
   }
 }

@@ -1,5 +1,5 @@
-import { ProductVariables } from '@/core/domain/models/product_variables.entity';
+import { ProductVariablesModel } from '@/presentation/dtos/product_variable/product_variables-model.dto';
 
 export abstract class IDbFindProductVariableByIdRepository {
-  abstract findById(id: string): Promise<ProductVariables>;
+  abstract findById(id: string): Promise<ProductVariablesModel>;
 }

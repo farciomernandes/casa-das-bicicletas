@@ -22,7 +22,7 @@ export abstract class UserRepository
 {
   abstract findById(id: string): Promise<UserModelDto>;
   abstract findByEmail(email: string): Promise<User>;
-  abstract getAll(): Promise<UserModelDto[]>;
+  abstract getAll(): Promise<{ users: UserModelDto[]; total: number }>;
   abstract create(payload: AddUserDto): Promise<UserModelDto>;
   abstract delete(id: string): Promise<void>;
   abstract update(payload: UpdateUserDto, id: string): Promise<UserModelDto>;

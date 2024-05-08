@@ -23,15 +23,17 @@ export class UserTypeOrmRepository implements UserRepository {
     }
   }
 
-  async findById(id: string): Promise<any> {
-    return this.userRepository.findOne({ where: { id } });
+  async findById(id: string): Promise<UserModelDto> {
+    const user = await this.userRepository.findOne({ where: { id } });
+
+    return UserModelDto.toDto(user);
   }
 
   async delete(id: string): Promise<void> {
     await this.userRepository.delete(id);
   }
 
-  async getAll(): Promise<any> {
+  async getAll(): Promise<{ users: UserModelDto[]; total: number }> {
     try {
       const queryBuilder = this.userRepository.createQueryBuilder('users');
 
@@ -47,7 +49,7 @@ export class UserTypeOrmRepository implements UserRepository {
         .take(size)
         .getManyAndCount();
 
-      return { users, total };
+      return { users: users.map((user) => UserModelDto.toDto(user)), total };
     } catch (error) {
       console.log(error);
     }

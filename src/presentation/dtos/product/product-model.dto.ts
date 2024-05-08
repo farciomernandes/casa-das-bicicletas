@@ -47,8 +47,18 @@ export class ProductModelDto {
   product_variables: ProductVariablesModel[];
 
   static toDto(payload: any): ProductModelDto {
-    return plainToClass(ProductModelDto, payload, {
+    const product = plainToClass(ProductModelDto, payload, {
       excludeExtraneousValues: true,
     });
+    const category = CategoryModelDto.toDto(payload.category);
+    const product_variables = payload.product_variables.map((variable) =>
+      ProductVariablesModel.toDto(variable),
+    );
+
+    return {
+      ...product,
+      category,
+      product_variables,
+    };
   }
 }

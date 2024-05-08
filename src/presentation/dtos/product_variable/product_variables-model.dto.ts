@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, plainToInstance } from 'class-transformer';
 import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { ProductModelDto } from '../product/product-model.dto';
 
 export class ProductVariablesModel {
   @ApiProperty({
@@ -106,7 +107,7 @@ export class ProductVariablesModel {
     required: true,
   })
   @Expose()
-  weight: string;
+  weight: number;
 
   @ApiProperty({
     type: String,
@@ -122,7 +123,7 @@ export class ProductVariablesModel {
     required: true,
   })
   @Expose()
-  length: string;
+  length: number;
 
   @ApiProperty({
     type: String,
@@ -130,7 +131,7 @@ export class ProductVariablesModel {
     required: true,
   })
   @Expose()
-  height: string;
+  height: number;
 
   @ApiProperty({
     type: String,
@@ -138,7 +139,7 @@ export class ProductVariablesModel {
     required: true,
   })
   @Expose()
-  width: string;
+  width: number;
 
   @ApiProperty({
     type: String,
@@ -146,7 +147,7 @@ export class ProductVariablesModel {
     required: true,
   })
   @Expose()
-  diameter: string;
+  diameter: number;
 
   @ApiProperty({
     example: 'link1',
@@ -167,7 +168,17 @@ export class ProductVariablesModel {
   @IsUUID()
   product_id: string;
 
-  static toDto(payload: ProductVariablesModel): ProductVariablesModel {
+  @ApiProperty({
+    type: ProductModelDto,
+    example: ProductModelDto,
+    required: false,
+  })
+  @Expose()
+  @IsNotEmpty()
+  @IsUUID()
+  product?: Omit<ProductModelDto, 'product_variables'>;
+
+  static toDto(payload: any): ProductVariablesModel {
     return plainToInstance(ProductVariablesModel, payload, {
       excludeExtraneousValues: true,
     });

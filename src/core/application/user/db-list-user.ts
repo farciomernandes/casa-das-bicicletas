@@ -7,11 +7,9 @@ import { UserModelDto } from '@/presentation/dtos/user/user-model.dto';
 export class DbListUser implements IDbListUserRepository {
   constructor(private readonly userRepository: UserRepository) {}
 
-  async getAll(): Promise<UserModelDto[]> {
+  async getAll(): Promise<{ users: UserModelDto[]; total: number }> {
     try {
-      const users = await this.userRepository.getAll();
-
-      return users.map((user) => UserModelDto.toDto(user));
+      return await this.userRepository.getAll();
     } catch (error) {
       return error;
     }

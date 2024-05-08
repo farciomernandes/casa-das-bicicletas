@@ -4,6 +4,7 @@ import { ProductRepository } from '@/core/domain/protocols/repositories/product'
 import { AddProductModelDto } from '@/presentation/dtos/product/add-product.dto';
 import { UpdateProductModelDto } from '@/presentation/dtos/product/update-product.dto';
 import { ProductParamsDTO } from '@/presentation/dtos/product/params-product.dto';
+import { ProductModelDto } from '@/presentation/dtos/product/product-model.dto';
 
 export class ProductTypeOrmRepository implements ProductRepository {
   constructor(private readonly productRepository: Repository<Product>) {}
@@ -39,7 +40,7 @@ export class ProductTypeOrmRepository implements ProductRepository {
     await this.productRepository.delete(id);
   }
 
-  async getAll(params: ProductParamsDTO): Promise<any[]> {
+  async getAll(params: ProductParamsDTO): Promise<ProductModelDto[]> {
     const queryBuilder = this.productRepository.createQueryBuilder('product');
 
     if (params.id) {
@@ -59,7 +60,6 @@ export class ProductTypeOrmRepository implements ProductRepository {
     }
 
     if (params.price) {
-      // Use join para acessar product_variables e aplicar condição de preço
       queryBuilder.innerJoin('product.product_variables', 'product_variables');
       queryBuilder.andWhere('product_variables.price = :price', {
         price: params.price,
@@ -67,7 +67,6 @@ export class ProductTypeOrmRepository implements ProductRepository {
     }
 
     if (params.sku) {
-      // Use join para acessar product_variables e aplicar condição de SKU
       queryBuilder.innerJoin('product.product_variables', 'product_variables');
       queryBuilder.andWhere('product_variables.sku = :sku', {
         sku: params.sku,
@@ -89,7 +88,7 @@ export class ProductTypeOrmRepository implements ProductRepository {
     );
 
     const products = await queryBuilder.getMany();
-    return products;
+    return products.map((product) => ProductModelDto.toDto(product));
   }
 
   async create(payload: AddProductModelDto): Promise<Product> {

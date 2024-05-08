@@ -1,6 +1,8 @@
 import { ProductVariables } from '@/core/domain/models/product_variables.entity';
 import { ProductVariablesRepository } from '@/core/domain/protocols/repositories/product_variable';
+import { ProductModelDto } from '@/presentation/dtos/product/product-model.dto';
 import { AddProductVariablesModel } from '@/presentation/dtos/product_variable/add-product_variables.dto';
+import { ProductVariablesModel } from '@/presentation/dtos/product_variable/product_variables-model.dto';
 import { UpdateProductVariablesModel } from '@/presentation/dtos/product_variable/update-product_variables.dto';
 import { Repository } from 'typeorm';
 
@@ -39,14 +41,16 @@ export class ProductVariablesTypeOrmRepository
     }
   }
 
-  async findById(id: string): Promise<any> {
+  async findById(id: string): Promise<ProductVariablesModel> {
     const queryBuilder =
       this.productVariablesRepository.createQueryBuilder('product_variables');
     queryBuilder.where('product_variables.id = :id', { id });
 
     queryBuilder.leftJoinAndSelect('product_variables.product', 'product');
 
-    return await queryBuilder.getOne();
+    const product = await queryBuilder.getOne();
+
+    return ProductVariablesModel.toDto(product);
   }
   async delete(id: string): Promise<void> {
     await this.productVariablesRepository.delete(id);

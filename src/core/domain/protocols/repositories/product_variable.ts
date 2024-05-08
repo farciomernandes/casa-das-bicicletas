@@ -7,6 +7,7 @@ import { IDbDeleteProductVariablesRepository } from '../db/product_variables/del
 import { IDbListProductVariablesRepository } from '../db/product_variables/list-product_variables-respository';
 import { IDbFindProductVariableByIdRepository } from '../db/product_variables/find-product_variables-by-id-repository';
 import { IDbUpdateProductVariablesRepository } from '../db/product_variables/update-product_variable-repository';
+import { ProductVariablesModel } from '@/presentation/dtos/product_variable/product_variables-model.dto';
 
 @Injectable()
 export abstract class ProductVariablesRepository
@@ -17,7 +18,7 @@ export abstract class ProductVariablesRepository
     IDbFindProductVariableByIdRepository,
     IDbDeleteProductVariablesRepository
 {
-  abstract findById(id: string): Promise<ProductVariables>;
+  abstract findById(id: string): Promise<ProductVariablesModel>;
   abstract getAll(): Promise<ProductVariables[]>;
   abstract create(
     payload: Omit<AddProductVariablesModel, 'id'>,

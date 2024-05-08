@@ -42,7 +42,10 @@ export class DbUpdateOrder implements IDbUpdateOrderRepository {
           }
 
           await this.productVariablesRepository.update(
-            { ...productVariables, quantity: updatedQuantity },
+            {
+              ...productVariables,
+              quantity: updatedQuantity,
+            },
             productVariables.id,
           );
         }

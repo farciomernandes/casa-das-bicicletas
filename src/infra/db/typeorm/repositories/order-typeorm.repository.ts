@@ -9,7 +9,7 @@ import { OrderModelDto } from '@/presentation/dtos/order/order-model.dto';
 export class OrderTypeOrmRepository implements OrderRepository {
   constructor(private readonly orderRepository: Repository<Order>) {}
 
-  async update(payload: UpdateOrderDto, id: string): Promise<any> {
+  async update(payload: UpdateOrderDto, id: string): Promise<OrderModelDto> {
     try {
       const order = await this.orderRepository.findOneOrFail({
         where: { id },
@@ -18,14 +18,14 @@ export class OrderTypeOrmRepository implements OrderRepository {
       await this.orderRepository.merge(order, payload);
       await this.orderRepository.save(order);
       const response = await this.findById(id);
-      return response;
+      return OrderModelDto.toDto(response);
     } catch (error) {
       throw new Error('Order not found');
     }
   }
 
-  async findById(id: string): Promise<any> {
-    return await this.orderRepository
+  async findById(id: string): Promise<OrderModelDto> {
+    const order = await this.orderRepository
       .createQueryBuilder('order')
       .leftJoinAndSelect('order.user', 'user')
       .leftJoinAndSelect('order.address', 'addresses')
@@ -33,13 +33,15 @@ export class OrderTypeOrmRepository implements OrderRepository {
       .leftJoinAndSelect('order_items.product_variables', 'product_variables')
       .where('order.id = :id', { id })
       .getOne();
+
+    return OrderModelDto.toDto(order);
   }
 
   async delete(id: string): Promise<void> {
     await this.orderRepository.delete(id);
   }
 
-  async getAll(user?: Authenticated): Promise<any> {
+  async getAll(user?: Authenticated): Promise<OrderModelDto[]> {
     let queryBuilder = this.orderRepository
       .createQueryBuilder('order')
       .leftJoinAndSelect('order.user', 'user')
@@ -56,7 +58,9 @@ export class OrderTypeOrmRepository implements OrderRepository {
 
     const ordersWithItemsAndProducts = await queryBuilder.getMany();
 
-    return ordersWithItemsAndProducts;
+    return ordersWithItemsAndProducts.map((order) =>
+      OrderModelDto.toDto(order),
+    );
   }
 
   async create(payload: AddOrderDto, user_id: string): Promise<OrderModelDto> {

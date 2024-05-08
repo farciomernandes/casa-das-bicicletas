@@ -109,8 +109,21 @@ export class OrderModelDto {
   order_items: OrderItemLocally[];
 
   static toDto(payload: any): OrderModelDto {
-    return plainToClass(OrderModelDto, payload, {
+    const order = plainToClass(OrderModelDto, payload, {
       excludeExtraneousValues: true,
     });
+
+    const order_items = payload.order_items.map((item) =>
+      OrderItemLocally.toDto(item),
+    );
+
+    const address = AddressModelDto.toDto(payload.address);
+    const user = UserModelDto.toDto(payload.user);
+    return {
+      ...order,
+      order_items,
+      address,
+      user,
+    };
   }
 }

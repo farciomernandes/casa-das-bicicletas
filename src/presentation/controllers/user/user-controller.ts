@@ -19,7 +19,10 @@ import {
 } from '@nestjs/swagger';
 import { IDbAddUserRepository } from '@/core/domain/protocols/db/user/add-user-repository';
 import { IDbListUserRepository } from '@/core/domain/protocols/db/user/list-user-respository';
-import { UserModelDto } from '@/presentation/dtos/user/user-model.dto';
+import {
+  GetAllUsersDto,
+  UserModelDto,
+} from '@/presentation/dtos/user/user-model.dto';
 import { IDbDeleteUserRepository } from '@/core/domain/protocols/db/user/delete-user-repository';
 import { IDbUpdateUserRepository } from '@/core/domain/protocols/db/user/update-user-repository';
 import { User } from '@/core/domain/models/user.entity';
@@ -44,7 +47,7 @@ export class UserController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiBearerAuth()
-  async create(@Body() payload: AddUserDto): Promise<any> {
+  async create(@Body() payload: AddUserDto): Promise<UserModelDto> {
     return await this.dbAddUser.create(payload);
   }
 
@@ -52,11 +55,11 @@ export class UserController {
   @ApiOkResponse({
     description: 'Returns Users.',
     status: HttpStatus.OK,
-    type: UserModelDto,
+    type: GetAllUsersDto,
     isArray: true,
   })
   @ApiBearerAuth()
-  async getAll(): Promise<UserModelDto[]> {
+  async getAll(): Promise<{ users: UserModelDto[]; total: number }> {
     try {
       return await this.dbListUser.getAll();
     } catch (error) {
