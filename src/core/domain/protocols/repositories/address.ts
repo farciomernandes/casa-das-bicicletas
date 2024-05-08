@@ -7,7 +7,6 @@ import { IDbUpdateAddressRepository } from '../db/address/update-address-reposit
 import { IDbFindAddressByIdRepository } from '../db/address/find-address-by-id-repository';
 import { IDbDeleteAddressRepository } from '../db/address/delete-address-repository';
 import { UploadAddressDto } from '@/presentation/dtos/address/upload-address.dto';
-import { AddAddressDto } from '@/presentation/dtos/address/add-address.dto';
 
 @Injectable()
 export abstract class AddressRepository
@@ -20,7 +19,7 @@ export abstract class AddressRepository
 {
   abstract findById(id: string): Promise<Address>;
   abstract getAll(): Promise<AddressModelDto[]>;
-  abstract create(payload: any, user_id: string): Promise<any>;
+  abstract create(payload: any, user_id: string): Promise<AddressModelDto>;
   abstract delete(id: string): Promise<void>;
   abstract update(payload: UploadAddressDto, id: string): Promise<Address>;
 }

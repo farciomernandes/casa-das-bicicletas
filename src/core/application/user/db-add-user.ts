@@ -5,10 +5,10 @@ import {
   Logger,
 } from '@nestjs/common';
 import { IDbAddUserRepository } from '@/core/domain/protocols/db/user/add-user-repository';
-import { User } from '@/core/domain/models/user.entity';
 import { UserRepository } from '@/core/domain/protocols/repositories/user';
 import { IHasher } from '@/core/domain/protocols/cryptography/hasher';
 import { AddUserDto } from '@/presentation/dtos/user/add-user.dto';
+import { UserModelDto } from '@/presentation/dtos/user/user-model.dto';
 
 @Injectable()
 export class DbAddUser implements IDbAddUserRepository {
@@ -19,7 +19,7 @@ export class DbAddUser implements IDbAddUserRepository {
     private readonly hasher: IHasher,
   ) {}
 
-  async create(payload: AddUserDto): Promise<User> {
+  async create(payload: AddUserDto): Promise<UserModelDto> {
     try {
       const alreadyExists = await this.userRepository.findByEmail(
         payload.email,

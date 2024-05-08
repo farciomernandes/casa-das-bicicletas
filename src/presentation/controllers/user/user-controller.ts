@@ -77,7 +77,7 @@ export class UserController {
   async update(
     @Param('id') id: string,
     @Body() payload: UpdateUserDto,
-  ): Promise<User> {
+  ): Promise<UserModelDto> {
     try {
       return await this.dbUpdateUser.update(payload, id);
     } catch (error) {

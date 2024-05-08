@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '@/core/domain/models/user.entity';
 import { IDbAddUserRepository } from '../db/user/add-user-repository';
 import { IDbUpdateUserRepository } from '../db/user/update-user-repository';
 import { IDbFindUserByIdRepository } from '../db/user/find-user-by-id-repository';
@@ -9,6 +8,7 @@ import { IDbFindUserByEmailRepository } from '../db/user/find-user-by-email-repo
 import { UpdateUserDto } from '@/presentation/dtos/user/update-user.dto';
 import { AddUserDto } from '@/presentation/dtos/user/add-user.dto';
 import { UserModelDto } from '@/presentation/dtos/user/user-model.dto';
+import { User } from '../../models/user.entity';
 
 @Injectable()
 export abstract class UserRepository
@@ -21,9 +21,9 @@ export abstract class UserRepository
     IDbDeleteUserRepository
 {
   abstract findById(id: string): Promise<UserModelDto>;
-  abstract findByEmail(email: string): Promise<any>;
-  abstract getAll(): Promise<any>;
-  abstract create(payload: AddUserDto): Promise<any>;
+  abstract findByEmail(email: string): Promise<User>;
+  abstract getAll(): Promise<UserModelDto[]>;
+  abstract create(payload: AddUserDto): Promise<UserModelDto>;
   abstract delete(id: string): Promise<void>;
-  abstract update(payload: UpdateUserDto, id: string): Promise<any>;
+  abstract update(payload: UpdateUserDto, id: string): Promise<UserModelDto>;
 }

@@ -2,20 +2,22 @@ import { Repository } from 'typeorm';
 import { User } from '@/core/domain/models/user.entity';
 import { UserRepository } from '@/core/domain/protocols/repositories/user';
 import { UpdateUserDto } from '@/presentation/dtos/user/update-user.dto';
+import { UserModelDto } from '@/presentation/dtos/user/user-model.dto';
 
 export class UserTypeOrmRepository implements UserRepository {
   constructor(private readonly userRepository: Repository<User>) {}
   async findByEmail(email: string): Promise<User> {
     return this.userRepository.findOne({ where: { email } });
   }
-  async update(payload: UpdateUserDto, id: string): Promise<User> {
+  async update(payload: UpdateUserDto, id: string): Promise<UserModelDto> {
     try {
       const user = await this.userRepository.findOneOrFail({
         where: { id },
       });
 
       this.userRepository.merge(user, payload);
-      return this.userRepository.save(user);
+      const savedUser = await this.userRepository.save(user);
+      return UserModelDto.toDto(savedUser);
     } catch (error) {
       throw new Error('User not found');
     }
@@ -51,8 +53,10 @@ export class UserTypeOrmRepository implements UserRepository {
     }
   }
 
-  async create(payload: Omit<User, 'id'>): Promise<User> {
-    const User = this.userRepository.create(payload);
-    return this.userRepository.save(User);
+  async create(payload: Omit<User, 'id'>): Promise<UserModelDto> {
+    const user = this.userRepository.create(payload);
+    const savedUser = this.userRepository.save(user);
+
+    return UserModelDto.toDto(savedUser);
   }
 }

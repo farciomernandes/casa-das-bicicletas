@@ -4,6 +4,7 @@ import { OrderRepository } from '@/core/domain/protocols/repositories/order';
 import { UpdateOrderDto } from '@/presentation/dtos/order/update-order.dto';
 import { AddOrderDto } from '@/presentation/dtos/order/add-order.dto';
 import { Authenticated } from '@/presentation/dtos/auth/authenticated.dto';
+import { OrderModelDto } from '@/presentation/dtos/order/order-model.dto';
 
 export class OrderTypeOrmRepository implements OrderRepository {
   constructor(private readonly orderRepository: Repository<Order>) {}
@@ -58,8 +59,10 @@ export class OrderTypeOrmRepository implements OrderRepository {
     return ordersWithItemsAndProducts;
   }
 
-  async create(payload: AddOrderDto, user_id: string): Promise<Order> {
+  async create(payload: AddOrderDto, user_id: string): Promise<OrderModelDto> {
     const order = this.orderRepository.create({ ...payload, user_id });
-    return this.orderRepository.save(order);
+    const orderSaved = await this.orderRepository.save(order);
+
+    return OrderModelDto.toDto(await this.findById(orderSaved.id));
   }
 }
