@@ -23,3 +23,20 @@ export class LoginDto {
   @MinLength(8)
   password: string;
 }
+
+export class AuthenticatedDto {
+  @ApiProperty({
+    type: String,
+    example: '12345678900',
+    required: true,
+  })
+  @Expose()
+  access_token: string;
+
+  @ApiProperty({
+    type: String,
+    example: 'John Doe',
+  })
+  @IsString()
+  name: string;
+}

@@ -1,6 +1,6 @@
 import { IAuth } from '@/core/domain/protocols/auth/auth';
 import { Authenticated } from '@/presentation/dtos/auth/authenticated.dto';
-import { LoginDto } from '@/presentation/dtos/auth/login.dto';
+import { AuthenticatedDto, LoginDto } from '@/presentation/dtos/auth/login.dto';
 
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger';
@@ -15,7 +15,7 @@ export class AuthController {
   })
   @ApiOkResponse({
     status: HttpStatus.OK,
-    type: Authenticated,
+    type: AuthenticatedDto,
   })
   @Post()
   @HttpCode(HttpStatus.CREATED)
