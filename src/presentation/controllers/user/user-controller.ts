@@ -20,12 +20,12 @@ import {
 import { IDbAddUserRepository } from '@/core/domain/protocols/db/user/add-user-repository';
 import { IDbListUserRepository } from '@/core/domain/protocols/db/user/list-user-respository';
 import {
+  CreateUserDto,
   GetAllUsersDto,
   UserModelDto,
 } from '@/presentation/dtos/user/user-model.dto';
 import { IDbDeleteUserRepository } from '@/core/domain/protocols/db/user/delete-user-repository';
 import { IDbUpdateUserRepository } from '@/core/domain/protocols/db/user/update-user-repository';
-import { User } from '@/core/domain/models/user.entity';
 import { AddUserDto } from '@/presentation/dtos/user/add-user.dto';
 import { UpdateUserDto } from '@/presentation/dtos/user/update-user.dto';
 
@@ -43,11 +43,11 @@ export class UserController {
     description: 'Create User',
     type: AddUserDto,
   })
-  @ApiCreatedResponse({ type: UserModelDto })
+  @ApiCreatedResponse({ type: CreateUserDto })
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiBearerAuth()
-  async create(@Body() payload: AddUserDto): Promise<UserModelDto> {
+  async create(@Body() payload: AddUserDto): Promise<CreateUserDto> {
     return await this.dbAddUser.create(payload);
   }
 
