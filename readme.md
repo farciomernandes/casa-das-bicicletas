@@ -22,6 +22,8 @@
   * User está retornando paginação com apenas os 10 items estáticos
   * User não deve alterar no PUT os valores enviados como undefined
   * Product deve pode alterar o category_id
+  * Get Product com parametro discount=true deve retornar produtos com pelo menos um product_variable com desconto
+  * Get Product, retornar paginação, numero de pagina e total de items
 
 > ## Design Patterns
 
