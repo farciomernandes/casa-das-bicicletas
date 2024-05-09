@@ -28,6 +28,9 @@ import { IDbDeleteUserRepository } from '@/core/domain/protocols/db/user/delete-
 import { IDbUpdateUserRepository } from '@/core/domain/protocols/db/user/update-user-repository';
 import { AddUserDto } from '@/presentation/dtos/user/add-user.dto';
 import { UpdateUserDto } from '@/presentation/dtos/user/update-user.dto';
+import { Authenticated } from '@/presentation/dtos/auth/authenticated.dto';
+import { User } from '@/shared/decorators/user.decorator';
+import { IDbFindUserByIdRepository } from '@/core/domain/protocols/db/user/find-user-by-id-repository';
 
 @ApiTags('User')
 @Controller('api/v1/users')
@@ -37,6 +40,7 @@ export class UserController {
     private readonly dbListUser: IDbListUserRepository,
     private readonly dbUpdateUser: IDbUpdateUserRepository,
     private readonly dbDeleteUser: IDbDeleteUserRepository,
+    private readonly dbFindByIdUser: IDbFindUserByIdRepository,
   ) {}
 
   @ApiBody({
@@ -62,6 +66,21 @@ export class UserController {
   async getAll(): Promise<{ users: UserModelDto[]; total: number }> {
     try {
       return await this.dbListUser.getAll();
+    } catch (error) {
+      throw new HttpException(error.response, error.status);
+    }
+  }
+
+  @Get('me')
+  @ApiOkResponse({
+    description: 'Returns authenticated user.',
+    status: HttpStatus.OK,
+    type: UserModelDto,
+  })
+  @ApiBearerAuth()
+  async me(@User() user: Authenticated): Promise<UserModelDto> {
+    try {
+      return await this.dbFindByIdUser.findById(user.id);
     } catch (error) {
       throw new HttpException(error.response, error.status);
     }

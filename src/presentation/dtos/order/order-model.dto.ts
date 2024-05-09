@@ -117,7 +117,10 @@ export class OrderModelDto {
       OrderItemLocally.toDto(item),
     );
 
-    const address = AddressModelDto.toDto(payload.address);
+    let address = null;
+    if (payload.address) {
+      address = AddressModelDto.toDto(payload.address);
+    }
     const user = UserModelDto.toDto(payload.user);
     return {
       ...order,

@@ -19,12 +19,15 @@ import { BcryptAdapter } from '@/infra/adapters/bcrypt-adapter';
 import { RoleRepository } from '@/core/domain/protocols/repositories/role';
 import { RoleTypeOrmRepository } from '@/infra/db/typeorm/repositories/role-typeorm.repository';
 import { Role } from '@/core/domain/models/role.entity';
+import { DbFindUserById } from '@/core/application/user/db-find-user-by-id';
+import { IDbFindUserByIdRepository } from '@/core/domain/protocols/db/user/find-user-by-id-repository';
 
 export const userProvider: Provider[] = [
   DbAddUser,
   DbListUser,
   DbDeleteUser,
   DbUpdateUser,
+  DbFindUserById,
   BcryptAdapter,
   {
     provide: UserTypeOrmRepository,
@@ -74,6 +77,13 @@ export const userProvider: Provider[] = [
     provide: IDbListUserRepository,
     useFactory: (userRepository: UserRepository): DbListUser => {
       return new DbListUser(userRepository);
+    },
+    inject: [UserTypeOrmRepository],
+  },
+  {
+    provide: IDbFindUserByIdRepository,
+    useFactory: (userRepository: UserRepository): DbFindUserById => {
+      return new DbFindUserById(userRepository);
     },
     inject: [UserTypeOrmRepository],
   },

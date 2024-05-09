@@ -24,7 +24,17 @@ export class UserTypeOrmRepository implements UserRepository {
   }
 
   async findById(id: string): Promise<UserModelDto> {
-    const user = await this.userRepository.findOne({ where: { id } });
+    const user = await this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.role', 'role')
+      .leftJoinAndSelect('user.addresses', 'addresses')
+      .addSelect('addresses.city')
+      .where('user.id = :id', { id })
+      .getOne();
+
+    if (!user) {
+      return undefined;
+    }
 
     return UserModelDto.toDto(user);
   }

@@ -93,18 +93,27 @@ export class UserModelDto {
   @ApiProperty({
     type: AddressModelDto,
     example: AddressModelDto,
+    isArray: true,
   })
   @Expose()
-  address: AddressModelDto;
+  addresses: AddressModelDto[];
 
   static toDto(payload: any): UserModelDto {
     const user = plainToClass(UserModelDto, payload, {
       excludeExtraneousValues: true,
     });
+    const addresses: AddressModelDto[] = [];
+    if (payload.__addresses__.length > 0) {
+      payload.__addresses__.map((item) => {
+        addresses.push(AddressModelDto.toDto(item));
+      });
+    }
+
     const role = RoleModel.toDto(payload.role);
 
     return {
       ...user,
+      addresses,
       role,
     };
   }

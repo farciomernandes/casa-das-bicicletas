@@ -33,7 +33,7 @@ export default class AsaasPaymentService
     transaction: PixTransactionDto | BoletoTransactionDto | PaymentDto;
   }> {
     try {
-      const user_id = await this.createCustomer(user);
+      const user_id = await this.createCustomer(user, address);
       const response = await this.createTransaction(
         user_id,
         order,
@@ -71,7 +71,10 @@ export default class AsaasPaymentService
     }
   }
 
-  async createCustomer(user: UserModelDto): Promise<string> {
+  async createCustomer(
+    user: UserModelDto,
+    address: AddressModelDto,
+  ): Promise<string> {
     try {
       const userResponse = await this.axiosAdapter.get(
         `/customers?email=${user.email}`,
@@ -86,11 +89,11 @@ export default class AsaasPaymentService
         email: user.email,
         mobilePhone: user.phone,
         cpfCnpj: user.cpf,
-        postalCode: user.address.zip_code,
-        address: user.address.street,
-        addressNumber: Number(user.address.number),
-        complement: user.address.complement,
-        province: user.address.neighborhood,
+        postalCode: address.zip_code,
+        address: address.street,
+        addressNumber: Number(address.number),
+        complement: address.complement,
+        province: address.neighborhood,
         notificationDisabled: true,
       };
 

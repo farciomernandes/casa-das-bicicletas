@@ -29,6 +29,7 @@ export class DbAddOrder implements IDbAddOrderRepository {
   async create(payload: AddOrderDto, user_id: string): Promise<OrderModelDto> {
     try {
       const validUser = await this.userRepository.findById(user_id);
+
       if (!validUser) {
         throw new BadRequestException(`User with ${user_id} id not found`);
       }
@@ -101,6 +102,7 @@ export class DbAddOrder implements IDbAddOrderRepository {
         },
         order.id,
       );
+
       const updatedOrder = OrderModelDto.toDto(response);
 
       return OrderModelDto.toDto(updatedOrder);
