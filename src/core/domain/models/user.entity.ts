@@ -4,9 +4,9 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToOne,
   JoinColumn,
   OneToMany,
+  ManyToOne,
 } from 'typeorm';
 import { SchemasEnum } from '@/infra/db/schema.enum';
 import { Address } from './address.entity';
@@ -44,7 +44,7 @@ export class User {
   @Column({ nullable: true })
   role_id: string;
 
-  @OneToOne(() => Role)
+  @ManyToOne(() => Role)
   @JoinColumn({ name: 'role_id' })
   role: Role;
 

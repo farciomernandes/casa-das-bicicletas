@@ -3,9 +3,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { User } from './user.entity';
 
 @Entity({ name: 'roles', schema: SchemasEnum.users })
 export class Role {
@@ -17,6 +19,9 @@ export class Role {
 
   @Column()
   label: string;
+
+  @OneToMany(() => User, (user) => user.role)
+  user: User;
 
   @CreateDateColumn()
   created_at: Date;
