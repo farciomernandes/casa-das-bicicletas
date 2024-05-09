@@ -9,6 +9,7 @@ import { UserRepository } from '@/core/domain/protocols/repositories/user';
 import { IHasher } from '@/core/domain/protocols/cryptography/hasher';
 import { AddUserDto } from '@/presentation/dtos/user/add-user.dto';
 import { UserModelDto } from '@/presentation/dtos/user/user-model.dto';
+import { RoleRepository } from '@/core/domain/protocols/repositories/role';
 
 @Injectable()
 export class DbAddUser implements IDbAddUserRepository {
@@ -17,10 +18,24 @@ export class DbAddUser implements IDbAddUserRepository {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly hasher: IHasher,
+    private readonly roleRepository: RoleRepository,
   ) {}
 
   async create(payload: AddUserDto): Promise<UserModelDto> {
     try {
+      if (!payload.role_id) {
+        const role_id = await this.roleRepository.findByValue('CUSTOMER');
+        if (!role_id) {
+          const customer = await this.roleRepository.create({
+            label: 'Usuário cliente ',
+            value: 'CUSTOMER',
+          });
+
+          payload.role_id = customer.id;
+        } else {
+          payload.role_id = role_id.id;
+        }
+      }
       const alreadyExists = await this.userRepository.findByEmail(
         payload.email,
       );

@@ -16,6 +16,9 @@ import { UserRepository } from '@/core/domain/protocols/repositories/user';
 import { IDbListUserRepository } from '@/core/domain/protocols/db/user/list-user-respository';
 import { IHasher } from '@/core/domain/protocols/cryptography/hasher';
 import { BcryptAdapter } from '@/infra/adapters/bcrypt-adapter';
+import { RoleRepository } from '@/core/domain/protocols/repositories/role';
+import { RoleTypeOrmRepository } from '@/infra/db/typeorm/repositories/role-typeorm.repository';
+import { Role } from '@/core/domain/models/role.entity';
 
 export const userProvider: Provider[] = [
   DbAddUser,
@@ -39,6 +42,17 @@ export const userProvider: Provider[] = [
     useClass: UserTypeOrmRepository,
   },
   {
+    provide: RoleTypeOrmRepository,
+    useFactory: (dataSource: DataSource) => {
+      return new RoleTypeOrmRepository(dataSource.getRepository(Role));
+    },
+    inject: [getDataSourceToken()],
+  },
+  {
+    provide: RoleRepository,
+    useClass: RoleTypeOrmRepository,
+  },
+  {
     provide: CityTypeOrmRepository,
     useFactory: (dataSource: DataSource) => {
       return new CityTypeOrmRepository(dataSource.getRepository(City));
@@ -50,10 +64,11 @@ export const userProvider: Provider[] = [
     useFactory: (
       userRepository: UserRepository,
       hasher: IHasher,
+      roleRepository: RoleRepository,
     ): DbAddUser => {
-      return new DbAddUser(userRepository, hasher);
+      return new DbAddUser(userRepository, hasher, roleRepository);
     },
-    inject: [UserTypeOrmRepository, BcryptAdapter],
+    inject: [UserTypeOrmRepository, BcryptAdapter, RoleTypeOrmRepository],
   },
   {
     provide: IDbListUserRepository,
