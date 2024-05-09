@@ -33,10 +33,12 @@ export class DbAddUser implements IDbAddUserRepository {
 
       const password_hash = await this.hasher.hash(payload.password);
 
-      return await this.userRepository.create({
+      const createdUser = await this.userRepository.create({
         ...payload,
         password: password_hash,
       });
+
+      return createdUser;
     } catch (error) {
       this.logger.error(error.message);
       if (error instanceof BadRequestException) {

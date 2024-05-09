@@ -57,8 +57,7 @@ export class UserTypeOrmRepository implements UserRepository {
 
   async create(payload: Omit<User, 'id'>): Promise<UserModelDto> {
     const user = this.userRepository.create(payload);
-    const savedUser = this.userRepository.save(user);
-
+    const savedUser = await this.userRepository.save(user);
     return UserModelDto.toDto(savedUser);
   }
 }
