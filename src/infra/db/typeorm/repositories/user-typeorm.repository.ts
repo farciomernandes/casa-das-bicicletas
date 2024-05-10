@@ -2,7 +2,11 @@ import { Repository } from 'typeorm';
 import { User } from '@/core/domain/models/user.entity';
 import { UserRepository } from '@/core/domain/protocols/repositories/user';
 import { UpdateUserDto } from '@/presentation/dtos/user/update-user.dto';
-import { UserModelDto } from '@/presentation/dtos/user/user-model.dto';
+import {
+  GetAllUsersDto,
+  UserModelDto,
+  UserParamsDto,
+} from '@/presentation/dtos/user/user-model.dto';
 
 export class UserTypeOrmRepository implements UserRepository {
   constructor(private readonly userRepository: Repository<User>) {}
@@ -43,25 +47,40 @@ export class UserTypeOrmRepository implements UserRepository {
     await this.userRepository.delete(id);
   }
 
-  async getAll(): Promise<{ users: UserModelDto[]; total: number }> {
+  async getAll(params: UserParamsDto): Promise<GetAllUsersDto> {
     try {
       const queryBuilder = this.userRepository.createQueryBuilder('users');
 
       queryBuilder.leftJoinAndSelect('users.role', 'role');
       queryBuilder.leftJoinAndSelect('users.addresses', 'address');
 
-      const page = 1;
-      const size = 10;
-      const skip = (page - 1) * size;
+      if (params.name) {
+        queryBuilder.where('users.name LIKE :name', {
+          name: `%${params.name}%`,
+        });
+      }
+
+      if (params.cpf) {
+        queryBuilder.andWhere('users.cpf = :cpf', { cpf: params.cpf });
+      }
+
+      const skip = (params.page - 1) * params.limit;
 
       const [users, total] = await queryBuilder
         .skip(skip)
-        .take(size)
+        .take(params.limit)
         .getManyAndCount();
 
-      return { users: users.map((user) => UserModelDto.toDto(user)), total };
+      const totalPages = Math.ceil(total / params.limit);
+
+      return {
+        users: users.map((user) => UserModelDto.toDto(user)),
+        pages: totalPages,
+        total,
+      };
     } catch (error) {
       console.log(error);
+      throw new Error('Erro ao buscar usuários.');
     }
   }
 

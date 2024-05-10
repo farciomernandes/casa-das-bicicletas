@@ -9,6 +9,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -23,6 +24,7 @@ import {
   CreateUserDto,
   GetAllUsersDto,
   UserModelDto,
+  UserParamsDto,
 } from '@/presentation/dtos/user/user-model.dto';
 import { IDbDeleteUserRepository } from '@/core/domain/protocols/db/user/delete-user-repository';
 import { IDbUpdateUserRepository } from '@/core/domain/protocols/db/user/update-user-repository';
@@ -60,12 +62,11 @@ export class UserController {
     description: 'Returns Users.',
     status: HttpStatus.OK,
     type: GetAllUsersDto,
-    isArray: true,
   })
   @ApiBearerAuth()
-  async getAll(): Promise<{ users: UserModelDto[]; total: number }> {
+  async getAll(@Query() queryParams: UserParamsDto): Promise<GetAllUsersDto> {
     try {
-      return await this.dbListUser.getAll();
+      return await this.dbListUser.getAll(queryParams);
     } catch (error) {
       throw new HttpException(error.response, error.status);
     }

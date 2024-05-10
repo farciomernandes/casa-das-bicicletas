@@ -6,7 +6,11 @@ import { IDbFindOrderByIdRepository } from '../db/order/find-order-by-id-reposit
 import { IDbDeleteOrderRepository } from '../db/order/delete-order-repository';
 import { UpdateOrderDto } from '@/presentation/dtos/order/update-order.dto';
 import { AddOrderDto } from '@/presentation/dtos/order/add-order.dto';
-import { OrderModelDto } from '@/presentation/dtos/order/order-model.dto';
+import {
+  GetAllOrdersDto,
+  OrderModelDto,
+  OrderParamsDto,
+} from '@/presentation/dtos/order/order-model.dto';
 import { Authenticated } from '@/presentation/dtos/auth/authenticated.dto';
 
 @Injectable()
@@ -18,8 +22,11 @@ export abstract class OrderRepository
     IDbFindOrderByIdRepository,
     IDbDeleteOrderRepository
 {
+  abstract getAll(
+    params: OrderParamsDto,
+    user?: Authenticated,
+  ): Promise<GetAllOrdersDto>;
   abstract findById(id: string): Promise<OrderModelDto>;
-  abstract getAll(user?: Authenticated): Promise<OrderModelDto[]>;
   abstract create(
     payload: AddOrderDto,
     user_id: string,

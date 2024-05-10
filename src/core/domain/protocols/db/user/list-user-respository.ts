@@ -1,5 +1,8 @@
-import { UserModelDto } from '@/presentation/dtos/user/user-model.dto';
+import {
+  GetAllUsersDto,
+  UserParamsDto,
+} from '@/presentation/dtos/user/user-model.dto';
 
 export abstract class IDbListUserRepository {
-  abstract getAll(): Promise<{ users: UserModelDto[]; total: number }>;
+  abstract getAll(params: UserParamsDto): Promise<GetAllUsersDto>;
 }

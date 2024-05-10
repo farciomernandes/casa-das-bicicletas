@@ -9,6 +9,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -36,7 +37,11 @@ import { Authenticated } from '@/presentation/dtos/auth/authenticated.dto';
 import { IDbFindOrderByIdRepository } from '@/core/domain/protocols/db/order/find-order-by-id-repository';
 
 import { CheckoutOrderModelDto } from '@/presentation/dtos/order/checkout-order.dto';
-import { OrderModelDto } from '@/presentation/dtos/order/order-model.dto';
+import {
+  GetAllOrdersDto,
+  OrderModelDto,
+  OrderParamsDto,
+} from '@/presentation/dtos/order/order-model.dto';
 
 @ApiTags('Order')
 @Controller('api/v1/orders')
@@ -71,15 +76,17 @@ export class OrderController {
   @ApiOkResponse({
     description: 'Returns Orders.',
     status: HttpStatus.OK,
-    type: OrderModelDto,
-    isArray: true,
+    type: GetAllOrdersDto,
   })
   @Roles(RolesEnum.ADMIN)
   @UseGuards(RolesGuard)
   @ApiBearerAuth()
-  async getAll(@User() user: Authenticated): Promise<OrderModelDto[]> {
+  async getAll(
+    @User() user: Authenticated,
+    @Query() queryParams: OrderParamsDto,
+  ): Promise<GetAllOrdersDto> {
     try {
-      return await this.dbListOrder.getAll(user);
+      return await this.dbListOrder.getAll(queryParams, user);
     } catch (error) {
       throw new HttpException(error.response, error.status);
     }
