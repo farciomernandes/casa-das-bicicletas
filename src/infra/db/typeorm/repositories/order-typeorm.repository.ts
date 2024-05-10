@@ -63,6 +63,12 @@ export class OrderTypeOrmRepository implements OrderRepository {
       });
     }
 
+    if (params.id) {
+      queryBuilder = queryBuilder.andWhere('order.id = :id', {
+        id: params.id,
+      });
+    }
+
     if (params.status) {
       queryBuilder = queryBuilder.andWhere('order.status = :status', {
         status: params.status,

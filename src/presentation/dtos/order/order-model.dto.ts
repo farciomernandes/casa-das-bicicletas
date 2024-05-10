@@ -135,6 +135,14 @@ export class OrderModelDto {
 
 export class OrderParamsDto {
   @ApiProperty({
+    type: String,
+    example: '4801d530-f7c6-4fb7-a04d-480d3a7adf40',
+    required: false,
+  })
+  @Expose()
+  id: string;
+
+  @ApiProperty({
     example: 10,
     description: 'Número máximo de resultados por página',
     required: true,
