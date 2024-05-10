@@ -18,13 +18,22 @@ export class ProductTypeOrmRepository implements ProductRepository {
 
   async update(payload: UpdateProductModelDto, id: string): Promise<Product> {
     try {
-      const product = await this.productRepository.findOneOrFail({
-        where: { id },
-      });
+      const { name, category_id } = payload;
 
-      this.productRepository.merge(product, payload);
-      return this.productRepository.save(product);
+      const query = `
+        UPDATE users.products
+        SET
+          name = COALESCE($1, name), 
+          category_id = COALESCE($2, category_id)
+        WHERE
+          id = $3
+      `;
+
+      await this.productRepository.query(query, [name, category_id, id]);
+
+      return this.productRepository.findOneOrFail({ where: { id } });
     } catch (error) {
+      console.log(error);
       throw new Error('Error updating product');
     }
   }
@@ -75,6 +84,12 @@ export class ProductTypeOrmRepository implements ProductRepository {
         sku: params.sku,
       });
     }
+
+    queryBuilder.leftJoinAndSelect('product.category', 'category');
+    queryBuilder.leftJoinAndSelect(
+      'product.product_variables',
+      'product_variables',
+    );
 
     const [products, total] = await queryBuilder.getManyAndCount();
 

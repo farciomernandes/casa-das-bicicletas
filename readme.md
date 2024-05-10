@@ -20,8 +20,8 @@
   * Deve verificar status do correio
   * Não está apagando o objeto anterior do S3 na atualização dos itens
   * User está retornando paginação com apenas os 10 items estáticos
-  * User não deve alterar no PUT os valores enviados como undefined
-  * Product deve pode alterar o category_id
+  * ~~User não deve alterar no PUT os valores enviados como undefined~~
+  * ~~Product deve pode alterar o category_id~~
   * Get Product com parametro discount=true deve retornar produtos com pelo menos um product_variable com desconto
   * ~~Get Product, retornar paginação, e total de items~~
   * ~~Get Users filtragem por nome e cpf~~
