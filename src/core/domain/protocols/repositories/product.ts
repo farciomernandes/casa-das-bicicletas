@@ -6,7 +6,7 @@ import { IDbUpdateProductRepository } from '../db/product/update-product-reposit
 import { IDbFindProductByIdRepository } from '../db/product/find-product-by-id-repository';
 import { IDbDeleteProductRepository } from '../db/product/delete-product-repository';
 import { AddProductModelDto } from '@/presentation/dtos/product/add-product.dto';
-import { ProductModelDto } from '@/presentation/dtos/product/product-model.dto';
+import { GetAllProductsDto } from '@/presentation/dtos/product/product-model.dto';
 import { UpdateProductModelDto } from '@/presentation/dtos/product/update-product.dto';
 import { IDbFindProductByNameRepository } from '../db/product/find-product-by-name-repository';
 import { ProductParamsDTO } from '@/presentation/dtos/product/params-product.dto';
@@ -23,7 +23,7 @@ export abstract class ProductRepository
 {
   abstract findById(id: string): Promise<Product>;
   abstract findByName(name: string): Promise<Product>;
-  abstract getAll(params: ProductParamsDTO): Promise<ProductModelDto[]>;
+  abstract getAll(params: ProductParamsDTO): Promise<GetAllProductsDto>;
   abstract create(payload: AddProductModelDto): Promise<Product>;
   abstract delete(id: string): Promise<void>;
   abstract update(payload: UpdateProductModelDto, id: string): Promise<Product>;

@@ -19,15 +19,15 @@
   * Puts CATEGORY deve alterar as imagens
   * Deve verificar status do correio
   * Não está apagando o objeto anterior do S3 na atualização dos itens
-  * User está retornando paginação com apenas os 10 items estáticos
-  * User não deve alterar no PUT os valores enviados como undefined
-  * Product deve pode alterar o category_id
+  * ~~User está retornando paginação com apenas os 10 items estáticos~~
+  * ~~User não deve alterar no PUT os valores enviados como undefined~~
+  * ~~Product deve pode alterar o category_id~~
   * Get Product com parametro discount=true deve retornar produtos com pelo menos um product_variable com desconto
-  * Get Product, retornar paginação, numero de pagina e total de items
+  * ~~Get Product, retornar paginação, e total de items~~
   * ~~Get Users filtragem por nome e cpf~~
   * ~~Get Order com paginação, total de items e total de paginas, parametros: name(nome do customer), status(status do order)~~
   * Get Order realizar calculo do total usando price e o discount_price se existir discount_percent
-  * Tornar possivel status do order igual a null
+  * ~~Tornar possivel status do order igual a null~~
 
 > ## Design Patterns
 

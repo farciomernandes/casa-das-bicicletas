@@ -78,10 +78,13 @@ export const productProvider: Provider[] = [
   },
   {
     provide: IDbUpdateProductRepository,
-    useFactory: (productRepository: ProductRepository): DbUpdateProduct => {
-      return new DbUpdateProduct(productRepository);
+    useFactory: (
+      productRepository: ProductRepository,
+      categoryRepository: CategoryRepository,
+    ): DbUpdateProduct => {
+      return new DbUpdateProduct(productRepository, categoryRepository);
     },
-    inject: [ProductTypeOrmRepository],
+    inject: [ProductTypeOrmRepository, CategoryTypeOrmRepository],
   },
   {
     provide: IDbDeleteProductRepository,

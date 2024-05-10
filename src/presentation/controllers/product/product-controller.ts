@@ -24,7 +24,10 @@ import { IDbDeleteProductRepository } from '@/core/domain/protocols/db/product/d
 import { IDbUpdateProductRepository } from '@/core/domain/protocols/db/product/update-product-repository';
 import { Product } from '@/core/domain/models/product.entity';
 import { AddProductModelDto } from '@/presentation/dtos/product/add-product.dto';
-import { ProductModelDto } from '@/presentation/dtos/product/product-model.dto';
+import {
+  GetAllProductsDto,
+  ProductModelDto,
+} from '@/presentation/dtos/product/product-model.dto';
 import { UpdateProductModelDto } from '@/presentation/dtos/product/update-product.dto';
 import { ProductParamsDTO } from '@/presentation/dtos/product/params-product.dto';
 
@@ -56,13 +59,12 @@ export class ProductController {
   @ApiOkResponse({
     description: 'Returns Products.',
     status: HttpStatus.OK,
-    type: ProductModelDto,
-    isArray: true,
+    type: GetAllProductsDto,
   })
   @ApiBearerAuth()
   async getAll(
     @Query() queryParams: ProductParamsDTO,
-  ): Promise<ProductModelDto[]> {
+  ): Promise<GetAllProductsDto> {
     try {
       return await this.dbListProduct.getAll(queryParams);
     } catch (error) {

@@ -1,11 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, plainToClass } from 'class-transformer';
-import {
-  IsNotEmpty,
-  IsString,
-  IsNumber,
-  ValidateNested,
-} from 'class-validator';
+import { IsNotEmpty, IsString, ValidateNested } from 'class-validator';
 import { CategoryModelDto } from '../category/category-model.dto';
 import { ProductVariablesModel } from '../product_variable/product_variables-model.dto';
 
@@ -60,5 +55,34 @@ export class ProductModelDto {
       category,
       product_variables,
     };
+  }
+}
+
+export class GetAllProductsDto {
+  @ApiProperty({
+    type: Number,
+    example: 20,
+    required: false,
+  })
+  @Expose()
+  total: number;
+
+  @ApiProperty({
+    type: [ProductModelDto],
+    example: ProductModelDto,
+  })
+  @Expose()
+  products: ProductModelDto[];
+
+  @ApiProperty({
+    example: 3,
+    description: 'Número total de páginas',
+  })
+  pages: number;
+
+  static toDto(payload: any): GetAllProductsDto {
+    return plainToClass(GetAllProductsDto, payload, {
+      excludeExtraneousValues: true,
+    });
   }
 }
