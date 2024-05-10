@@ -25,6 +25,7 @@
   * Get Product com parametro discount=true deve retornar produtos com pelo menos um product_variable com desconto
   * Get Product, retornar paginação, numero de pagina e total de items
   * Get Users filtragem por nome e cpf
+  * Get Order com paginação, total de items e total de paginas, parametros: name(nome do customer), status(status do order)
 
 > ## Design Patterns
 
