@@ -130,11 +130,17 @@ export class GetAllUsersDto {
   total: number;
 
   @ApiProperty({
-    type: UserModelDto,
+    type: [UserModelDto],
     example: UserModelDto,
   })
   @Expose()
-  users: UserModelDto;
+  users: UserModelDto[];
+
+  @ApiProperty({
+    example: 3,
+    description: 'Número total de páginas',
+  })
+  pages: number;
 
   static toDto(payload: any): GetAllUsersDto {
     return plainToClass(GetAllUsersDto, payload, {
@@ -221,4 +227,35 @@ export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   phone: string;
+}
+
+export class UserParamsDto {
+  @ApiProperty({
+    type: String,
+    example: '01496012399',
+    description: 'Cpf do usuário',
+    required: false,
+  })
+  cpf?: string;
+
+  @ApiProperty({
+    example: 'John Doe',
+    description: 'Nome do usuário associado ao pedido',
+    required: false,
+  })
+  name?: string;
+
+  @ApiProperty({
+    example: 1,
+    description: 'Número da página desejada',
+    required: true,
+  })
+  page: number;
+
+  @ApiProperty({
+    example: 10,
+    description: 'Número máximo de resultados por página',
+    required: true,
+  })
+  limit: number;
 }

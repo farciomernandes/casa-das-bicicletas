@@ -24,8 +24,8 @@
   * Product deve pode alterar o category_id
   * Get Product com parametro discount=true deve retornar produtos com pelo menos um product_variable com desconto
   * Get Product, retornar paginação, numero de pagina e total de items
-  * Get Users filtragem por nome e cpf
-  * Get Order com paginação, total de items e total de paginas, parametros: name(nome do customer), status(status do order)
+  * ~~Get Users filtragem por nome e cpf~~
+  * ~~Get Order com paginação, total de items e total de paginas, parametros: name(nome do customer), status(status do order)~~
   * Get Order realizar calculo do total usando price e o discount_price se existir discount_percent
 
 > ## Design Patterns
