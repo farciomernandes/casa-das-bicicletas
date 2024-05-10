@@ -4,7 +4,10 @@ import { ProductRepository } from '@/core/domain/protocols/repositories/product'
 import { AddProductModelDto } from '@/presentation/dtos/product/add-product.dto';
 import { UpdateProductModelDto } from '@/presentation/dtos/product/update-product.dto';
 import { ProductParamsDTO } from '@/presentation/dtos/product/params-product.dto';
-import { ProductModelDto } from '@/presentation/dtos/product/product-model.dto';
+import {
+  GetAllProductsDto,
+  ProductModelDto,
+} from '@/presentation/dtos/product/product-model.dto';
 
 export class ProductTypeOrmRepository implements ProductRepository {
   constructor(private readonly productRepository: Repository<Product>) {}
@@ -40,7 +43,7 @@ export class ProductTypeOrmRepository implements ProductRepository {
     await this.productRepository.delete(id);
   }
 
-  async getAll(params: ProductParamsDTO): Promise<ProductModelDto[]> {
+  async getAll(params: ProductParamsDTO): Promise<GetAllProductsDto> {
     const queryBuilder = this.productRepository.createQueryBuilder('product');
 
     if (params.id) {
@@ -73,22 +76,15 @@ export class ProductTypeOrmRepository implements ProductRepository {
       });
     }
 
-    if (params.limit) {
-      queryBuilder.take(params.limit);
-    }
+    const [products, total] = await queryBuilder.getManyAndCount();
 
-    if (params.page) {
-      queryBuilder.skip((Number(params.page) - 1) * params.limit);
-    }
+    const totalPages = Math.ceil(total / params.limit);
 
-    queryBuilder.leftJoinAndSelect('product.category', 'category');
-    queryBuilder.leftJoinAndSelect(
-      'product.product_variables',
-      'product_variables',
-    );
-
-    const products = await queryBuilder.getMany();
-    return products.map((product) => ProductModelDto.toDto(product));
+    return {
+      products: products.map((product) => ProductModelDto.toDto(product)),
+      pages: totalPages,
+      total,
+    };
   }
 
   async create(payload: AddProductModelDto): Promise<Product> {

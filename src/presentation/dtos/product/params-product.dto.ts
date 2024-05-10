@@ -37,7 +37,7 @@ export class ProductParamsDTO {
   @ApiProperty({
     type: Number,
     example: 1,
-    required: false,
+    required: true,
   })
   @Expose()
   page: number;
@@ -45,7 +45,7 @@ export class ProductParamsDTO {
   @ApiProperty({
     type: Number,
     example: 8,
-    required: false,
+    required: true,
   })
   @Expose()
   limit: number;
