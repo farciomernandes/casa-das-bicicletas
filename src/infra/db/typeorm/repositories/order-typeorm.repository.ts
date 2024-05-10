@@ -70,7 +70,7 @@ export class OrderTypeOrmRepository implements OrderRepository {
     }
 
     if (params.name) {
-      queryBuilder = queryBuilder.andWhere('user.name LIKE :name', {
+      queryBuilder = queryBuilder.andWhere('user.name ILIKE :name', {
         name: `%${params.name}%`,
       });
     }

@@ -54,7 +54,7 @@ export class ProductTypeOrmRepository implements ProductRepository {
     }
 
     if (params.name) {
-      queryBuilder.andWhere('product.name LIKE :name', {
+      queryBuilder.andWhere('product.name ILIKE :name', {
         name: `%${params.name}%`,
       });
     }
