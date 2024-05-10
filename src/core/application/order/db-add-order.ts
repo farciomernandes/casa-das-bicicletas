@@ -37,7 +37,7 @@ export class DbAddOrder implements IDbAddOrderRepository {
       const order = await this.orderRepository.create(
         {
           total: 0,
-          status: OrderStatusEnum.PENDING,
+          status: null,
           order_items: [],
         },
         user_id,
