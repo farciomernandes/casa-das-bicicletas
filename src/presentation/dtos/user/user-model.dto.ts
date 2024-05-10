@@ -103,7 +103,8 @@ export class UserModelDto {
       excludeExtraneousValues: true,
     });
     const addresses: AddressModelDto[] = [];
-    if (payload.__addresses__.length > 0) {
+
+    if (payload.__addresses__?.length > 0) {
       payload.__addresses__.map((item) => {
         addresses.push(AddressModelDto.toDto(item));
       });

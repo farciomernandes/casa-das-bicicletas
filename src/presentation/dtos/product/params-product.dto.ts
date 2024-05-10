@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, plainToClass } from 'class-transformer';
-import { IsString, IsNumber, IsUUID } from 'class-validator';
 
 export class ProductParamsDTO {
   @ApiProperty({

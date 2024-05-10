@@ -121,7 +121,9 @@ export class OrderModelDto {
     if (payload.address) {
       address = AddressModelDto.toDto(payload.address);
     }
+
     const user = UserModelDto.toDto(payload.user);
+
     return {
       ...order,
       order_items,
