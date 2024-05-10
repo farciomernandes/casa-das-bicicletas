@@ -132,3 +132,53 @@ export class OrderModelDto {
     };
   }
 }
+
+export class OrderParamsDto {
+  @ApiProperty({
+    example: 10,
+    description: 'Número máximo de resultados por página',
+    required: true,
+  })
+  limit: number;
+
+  @ApiProperty({
+    example: 1,
+    description: 'Número da página desejada',
+    required: true,
+  })
+  page: number;
+
+  @ApiProperty({
+    example: 'pending',
+    description: 'Status do pedido a ser filtrado',
+    required: false,
+  })
+  status?: string;
+
+  @ApiProperty({
+    example: 'John Doe',
+    description: 'Nome do usuário associado ao pedido',
+    required: false,
+  })
+  name?: string;
+}
+
+export class GetAllOrdersDto {
+  @ApiProperty({
+    type: [OrderModelDto],
+    description: 'Lista de pedidos retornados',
+  })
+  orders: OrderModelDto[];
+
+  @ApiProperty({
+    example: 3,
+    description: 'Número total de páginas',
+  })
+  pages: number;
+
+  @ApiProperty({
+    example: 25,
+    description: 'Número total de resultados',
+  })
+  total: number;
+}
