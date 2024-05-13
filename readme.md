@@ -18,7 +18,7 @@
   > ## Melhorias pendentes
   * ~~Puts CATEGORY deve alterar as imagens~~
   * Deve verificar status do correio
-  * Não está apagando o objeto anterior do S3 na atualização dos itens
+  * ~~Deve apgar o objeto anterior do S3 na atualização dos itens~~
   * ~~User está retornando paginação com apenas os 10 items estáticos~~
   * ~~User não deve alterar no PUT os valores enviados como undefined~~
   * ~~Product deve pode alterar o category_id~~
@@ -29,6 +29,7 @@
   * ~~Get Order realizar calculo do total usando price e o discount_price se existir discount_percent~~
   * ~~Tornar possivel status do order igual a null~~
   * Get Order, retornar tambem: product (name e id) dentro de product_variables e city em address
+  * Considerar os juros quando o parcelamento for aplicado
 
 > ## Design Patterns
 

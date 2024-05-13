@@ -3,13 +3,13 @@ import { IDbUpdateCategoryRepository } from '@/core/domain/protocols/db/category
 import { Category } from '@/core/domain/models/category.entity';
 import { CategoryRepository } from '@/core/domain/protocols/repositories/category';
 import { UpdateCategoryDto } from '@/presentation/dtos/category/update-category.dto';
-import { S3UploadImage } from '@/core/domain/protocols/aws/s3-upload-image';
+import { S3Repository } from '@/core/domain/protocols/aws/s3-repository';
 
 @Injectable()
 export class DbUpdateCategory implements IDbUpdateCategoryRepository {
   constructor(
     private readonly categoryRepository: CategoryRepository,
-    private readonly s3Upload: S3UploadImage,
+    private readonly s3Repository: S3Repository,
   ) {}
 
   async update(
@@ -25,7 +25,8 @@ export class DbUpdateCategory implements IDbUpdateCategoryRepository {
       }
       let objectUrl = alreadyExists.image_link;
       if (image_link) {
-        objectUrl = await this.s3Upload.saveFile(image_link);
+        await this.s3Repository.deleteBucket(alreadyExists.image_link);
+        objectUrl = await this.s3Repository.saveFile(image_link);
       }
 
       return await this.categoryRepository.update(payload, id, objectUrl);

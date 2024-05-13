@@ -6,14 +6,14 @@ import {
 import { IDbAddCategoryRepository } from '@/core/domain/protocols/db/category/add-category-repository';
 import { Category } from '@/core/domain/models/category.entity';
 import { CategoryRepository } from '@/core/domain/protocols/repositories/category';
-import { S3UploadImage } from '@/core/domain/protocols/aws/s3-upload-image';
 import { AddCategoryDto } from '@/presentation/dtos/category/add-category.dto';
+import { S3Repository } from '@/core/domain/protocols/aws/s3-repository';
 
 @Injectable()
 export class DbAddCategory implements IDbAddCategoryRepository {
   constructor(
     private readonly categoryRepository: CategoryRepository,
-    private readonly s3Upload: S3UploadImage,
+    private readonly s3Repository: S3Repository,
   ) {}
 
   async create(
@@ -30,7 +30,7 @@ export class DbAddCategory implements IDbAddCategoryRepository {
           `Category with ${payload.name} name already exists`,
         );
       }
-      const objectUrl = await this.s3Upload.saveFile(image_link);
+      const objectUrl = await this.s3Repository.saveFile(image_link);
 
       return await this.categoryRepository.create({
         ...payload,

@@ -1,7 +1,6 @@
 import { Provider } from '@nestjs/common';
 import { getDataSourceToken } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
-import { S3UploadImage } from '@/core/domain/protocols/aws/s3-upload-image';
 import { S3Storage } from '@/infra/proxy/s3-storage';
 import { ConfigService } from '@nestjs/config';
 import { ProductRepository } from '@/core/domain/protocols/repositories/product';
@@ -18,6 +17,7 @@ import { IDbAddProductVariablesRepository } from '@/core/domain/protocols/db/pro
 import { IDbListProductVariablesRepository } from '@/core/domain/protocols/db/product_variables/list-product_variables-respository';
 import { IDbUpdateProductVariablesRepository } from '@/core/domain/protocols/db/product_variables/update-product_variable-repository';
 import { IDbDeleteProductVariablesRepository } from '@/core/domain/protocols/db/product_variables/delete-product_variables-repository';
+import { S3Repository } from '@/core/domain/protocols/aws/s3-repository';
 
 export const productVariablesProvider: Provider[] = [
   DbAddProductVariables,
@@ -60,7 +60,7 @@ export const productVariablesProvider: Provider[] = [
     inject: [ConfigService],
   },
   {
-    provide: S3UploadImage,
+    provide: S3Repository,
     useClass: S3Storage,
   },
   {
@@ -68,12 +68,12 @@ export const productVariablesProvider: Provider[] = [
     useFactory: (
       ProductVariablesRepository: ProductVariablesRepository,
       productRepository: ProductRepository,
-      s3Upload: S3UploadImage,
+      s3Repository: S3Repository,
     ): DbAddProductVariables => {
       return new DbAddProductVariables(
         ProductVariablesRepository,
         productRepository,
-        s3Upload,
+        s3Repository,
       );
     },
     inject: [
@@ -95,9 +95,12 @@ export const productVariablesProvider: Provider[] = [
     provide: IDbUpdateProductVariablesRepository,
     useFactory: (
       productVariablesRepository: ProductVariablesRepository,
-      s3Upload: S3UploadImage,
+      s3Repository: S3Repository,
     ): DbUpdateProductVariables => {
-      return new DbUpdateProductVariables(productVariablesRepository, s3Upload);
+      return new DbUpdateProductVariables(
+        productVariablesRepository,
+        s3Repository,
+      );
     },
     inject: [ProductVariablesTypeOrmRepository, S3Storage],
   },

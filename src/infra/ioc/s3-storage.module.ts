@@ -1,17 +1,12 @@
 import { Module } from '@nestjs/common';
 import { S3Storage } from '../proxy/s3-storage';
-import { S3UploadImage } from '@/core/domain/protocols/aws/s3-upload-image';
-import { S3DeleteImage } from '@/core/domain/protocols/aws/s3-delete-image';
+import { S3Repository } from '@/core/domain/protocols/aws/s3-repository';
 
 @Module({
   imports: [S3Storage],
   providers: [
     {
-      provide: S3UploadImage,
-      useClass: S3Storage,
-    },
-    {
-      provide: S3DeleteImage,
+      provide: S3Repository,
       useClass: S3Storage,
     },
   ],

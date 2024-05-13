@@ -12,10 +12,9 @@ import { DbUpdateCategory } from '@/core/application/category/db-update-category
 import { CategoryRepository } from '@/core/domain/protocols/repositories/category';
 import { DbAddCategory } from '@/core/application/category/db-add-category';
 import { IDbAddCategoryRepository } from '@/core/domain/protocols/db/category/add-category-repository';
-import { S3UploadImage } from '@/core/domain/protocols/aws/s3-upload-image';
 import { S3Storage } from '@/infra/proxy/s3-storage';
 import { ConfigService } from '@nestjs/config';
-import { S3DeleteImage } from '@/core/domain/protocols/aws/s3-delete-image';
+import { S3Repository } from '@/core/domain/protocols/aws/s3-repository';
 
 export const categoryProvider: Provider[] = [
   DbListCategory,
@@ -41,11 +40,7 @@ export const categoryProvider: Provider[] = [
     inject: [ConfigService],
   },
   {
-    provide: S3UploadImage,
-    useClass: S3Storage,
-  },
-  {
-    provide: S3DeleteImage,
+    provide: S3Repository,
     useClass: S3Storage,
   },
   {
@@ -59,9 +54,9 @@ export const categoryProvider: Provider[] = [
     provide: IDbUpdateCategoryRepository,
     useFactory: (
       categoryRepository: CategoryRepository,
-      s3Upload: S3UploadImage,
+      s3Repository: S3Repository,
     ): DbUpdateCategory => {
-      return new DbUpdateCategory(categoryRepository, s3Upload);
+      return new DbUpdateCategory(categoryRepository, s3Repository);
     },
     inject: [CategoryTypeOrmRepository, S3Storage],
   },
@@ -69,9 +64,9 @@ export const categoryProvider: Provider[] = [
     provide: IDbDeleteCategoryRepository,
     useFactory: (
       categoryRepository: CategoryRepository,
-      s3Delete: S3DeleteImage,
+      s3Repository: S3Repository,
     ): DbDeleteCategory => {
-      return new DbDeleteCategory(categoryRepository, s3Delete);
+      return new DbDeleteCategory(categoryRepository, s3Repository);
     },
     inject: [CategoryTypeOrmRepository, S3Storage],
   },
@@ -79,9 +74,9 @@ export const categoryProvider: Provider[] = [
     provide: IDbAddCategoryRepository,
     useFactory: (
       categoryRepository: CategoryRepository,
-      s3Upload: S3UploadImage,
+      s3Repository: S3Repository,
     ): DbAddCategory => {
-      return new DbAddCategory(categoryRepository, s3Upload);
+      return new DbAddCategory(categoryRepository, s3Repository);
     },
     inject: [CategoryTypeOrmRepository, S3Storage],
   },

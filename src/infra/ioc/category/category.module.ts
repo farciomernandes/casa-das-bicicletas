@@ -5,8 +5,7 @@ import { IDbDeleteCategoryRepository } from '@/core/domain/protocols/db/category
 import { IDbUpdateCategoryRepository } from '@/core/domain/protocols/db/category/update-category-repository';
 import { CategoryController } from '@/presentation/controllers/category/category-controller';
 import { CategoryRepository } from '@/core/domain/protocols/repositories/category';
-import { S3UploadImage } from '@/core/domain/protocols/aws/s3-upload-image';
-import { S3DeleteImage } from '@/core/domain/protocols/aws/s3-delete-image';
+import { S3Repository } from '@/core/domain/protocols/aws/s3-repository';
 
 @Module({
   imports: [],
@@ -17,8 +16,7 @@ import { S3DeleteImage } from '@/core/domain/protocols/aws/s3-delete-image';
     IDbDeleteCategoryRepository,
     IDbUpdateCategoryRepository,
     CategoryRepository,
-    S3UploadImage,
-    S3DeleteImage,
+    S3Repository,
   ],
 })
 export class CategoryModule {}

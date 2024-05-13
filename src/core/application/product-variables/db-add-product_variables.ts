@@ -3,19 +3,19 @@ import {
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { S3UploadImage } from '@/core/domain/protocols/aws/s3-upload-image';
 import { ProductRepository } from '@/core/domain/protocols/repositories/product';
 import { ProductVariablesRepository } from '@/core/domain/protocols/repositories/product_variable';
 import { IDbAddProductVariablesRepository } from '@/core/domain/protocols/db/product_variables/add-product_variables-repository';
 import { AddProductVariablesModel } from '@/presentation/dtos/product_variable/add-product_variables.dto';
 import { ProductVariables } from '@/core/domain/models/product_variables.entity';
+import { S3Repository } from '@/core/domain/protocols/aws/s3-repository';
 
 @Injectable()
 export class DbAddProductVariables implements IDbAddProductVariablesRepository {
   constructor(
     private readonly productVariablesRepository: ProductVariablesRepository,
     private readonly productRepository: ProductRepository,
-    private readonly s3Upload: S3UploadImage,
+    private readonly s3Repository: S3Repository,
   ) {}
 
   async create(
@@ -32,7 +32,7 @@ export class DbAddProductVariables implements IDbAddProductVariablesRepository {
           `Product with ${payload.product_id} id not found.`,
         );
       }
-      const objectUrl = await this.s3Upload.saveFile(image_link);
+      const objectUrl = await this.s3Repository.saveFile(image_link);
 
       return this.productVariablesRepository.create({
         ...payload,
