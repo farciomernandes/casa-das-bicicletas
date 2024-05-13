@@ -22,7 +22,7 @@
   * ~~User está retornando paginação com apenas os 10 items estáticos~~
   * ~~User não deve alterar no PUT os valores enviados como undefined~~
   * ~~Product deve pode alterar o category_id~~
-  * Get Product com parametro discount=true deve retornar produtos com pelo menos um product_variable com desconto
+  * ~~Get Product com parametro discount=true deve retornar produtos com pelo menos um product_variable com desconto~~
   * ~~Get Product, retornar paginação, e total de items~~
   * ~~Get Users filtragem por nome e cpf~~
   * ~~Get Order com paginação, total de items e total de paginas, parametros: name(nome do customer), status(status do order)~~

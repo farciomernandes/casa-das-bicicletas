@@ -58,6 +58,14 @@ export class ProductParamsDTO {
   @Expose()
   sku: string;
 
+  @ApiProperty({
+    type: String,
+    example: true,
+    required: false,
+  })
+  @Expose()
+  discount: boolean;
+
   static toDTO(payload: any): ProductParamsDTO {
     return plainToClass(ProductParamsDTO, payload, {
       excludeExtraneousValues: true,
