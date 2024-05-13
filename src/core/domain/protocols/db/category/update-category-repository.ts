@@ -1,9 +1,10 @@
-import { CategoryModelDto } from '@/presentation/dtos/category/category-model.dto';
 import { Category } from '@/core/domain/models/category.entity';
+import { UpdateCategoryDto } from '@/presentation/dtos/category/update-category.dto';
 
 export abstract class IDbUpdateCategoryRepository {
   abstract update(
-    payload: Omit<CategoryModelDto, 'id'>,
+    payload: Omit<UpdateCategoryDto, 'image_link'>,
     id: string,
+    image_link: Express.Multer.File,
   ): Promise<Category>;
 }

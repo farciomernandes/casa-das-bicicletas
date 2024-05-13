@@ -11,7 +11,6 @@ import { AddOrderDto } from '@/presentation/dtos/order/add-order.dto';
 import { IDbAddOrderItemRepository } from '@/core/domain/protocols/db/order_item/add-order_item-repository';
 import { OrderModelDto } from '@/presentation/dtos/order/order-model.dto';
 import { ProductRepository } from '@/core/domain/protocols/repositories/product';
-import { OrderStatusEnum } from '@/shared/enums/order_status.enum';
 import { ProductVariablesRepository } from '@/core/domain/protocols/repositories/product_variable';
 
 @Injectable()

@@ -28,6 +28,7 @@ import { AddCategoryDto } from '@/presentation/dtos/category/add-category.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import multerConfig from '@/infra/config/multer';
 import { IDbAddCategoryRepository } from '@/core/domain/protocols/db/category/add-category-repository';
+import { UpdateCategoryDto } from '@/presentation/dtos/category/update-category.dto';
 
 @ApiTags('Category')
 @Controller('api/v1/categories')
@@ -81,8 +82,10 @@ export class CategoryController {
   }
 
   @Put(':id')
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('image_link', multerConfig))
   @ApiBody({
-    type: AddCategoryDto,
+    type: UpdateCategoryDto,
   })
   @ApiOkResponse({
     description: 'Delete success.',
@@ -93,9 +96,10 @@ export class CategoryController {
   async update(
     @Param('id') id: string,
     @Body() payload: Omit<CategoryModelDto, 'id'>,
+    @UploadedFile() image_link: Express.Multer.File,
   ): Promise<Category> {
     try {
-      return await this.dbUpdateCategory.update(payload, id);
+      return await this.dbUpdateCategory.update(payload, id, image_link);
     } catch (error) {
       throw new HttpException(error.response, error.status);
     }

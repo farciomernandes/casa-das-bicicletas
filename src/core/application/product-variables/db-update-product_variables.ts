@@ -27,7 +27,10 @@ export class DbUpdateProductVariables
           `Product Variables with ${id} id not found.`,
         );
       }
-      const objectUrl = await this.s3Upload.saveFile(image_link);
+      let objectUrl = alreadyExists.image_link;
+      if (image_link) {
+        objectUrl = await this.s3Upload.saveFile(image_link);
+      }
 
       return await this.productVariablesRepository.update(
         payload,

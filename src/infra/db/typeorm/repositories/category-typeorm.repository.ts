@@ -11,16 +11,22 @@ export class CategoryTypeOrmRepository implements CategoryRepository {
   async update(
     payload: Omit<CategoryModelDto, 'id'>,
     id: string,
+    image_link?: string,
   ): Promise<Category> {
     try {
       const category = await this.categoryRepository.findOneOrFail({
         where: { id },
       });
 
-      this.categoryRepository.merge(category, payload);
+      const updateCategory = {
+        ...payload,
+        image_link,
+      };
+
+      this.categoryRepository.merge(category, updateCategory);
       return this.categoryRepository.save(category);
     } catch (error) {
-      throw new Error('Category not found');
+      throw new Error('Error to update category');
     }
   }
 

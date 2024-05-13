@@ -16,7 +16,7 @@
   * Verificar a tabela de migrations está vazia
 
   > ## Melhorias pendentes
-  * Puts CATEGORY deve alterar as imagens
+  * ~~Puts CATEGORY deve alterar as imagens~~
   * Deve verificar status do correio
   * Não está apagando o objeto anterior do S3 na atualização dos itens
   * ~~User está retornando paginação com apenas os 10 items estáticos~~

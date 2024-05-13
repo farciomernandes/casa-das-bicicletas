@@ -57,10 +57,13 @@ export const categoryProvider: Provider[] = [
   },
   {
     provide: IDbUpdateCategoryRepository,
-    useFactory: (categoryRepository: CategoryRepository): DbUpdateCategory => {
-      return new DbUpdateCategory(categoryRepository);
+    useFactory: (
+      categoryRepository: CategoryRepository,
+      s3Upload: S3UploadImage,
+    ): DbUpdateCategory => {
+      return new DbUpdateCategory(categoryRepository, s3Upload);
     },
-    inject: [CategoryTypeOrmRepository],
+    inject: [CategoryTypeOrmRepository, S3Storage],
   },
   {
     provide: IDbDeleteCategoryRepository,

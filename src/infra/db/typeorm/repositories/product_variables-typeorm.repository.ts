@@ -1,6 +1,5 @@
 import { ProductVariables } from '@/core/domain/models/product_variables.entity';
 import { ProductVariablesRepository } from '@/core/domain/protocols/repositories/product_variable';
-import { ProductModelDto } from '@/presentation/dtos/product/product-model.dto';
 import { AddProductVariablesModel } from '@/presentation/dtos/product_variable/add-product_variables.dto';
 import { ProductVariablesModel } from '@/presentation/dtos/product_variable/product_variables-model.dto';
 import { UpdateProductVariablesModel } from '@/presentation/dtos/product_variable/update-product_variables.dto';
@@ -37,7 +36,7 @@ export class ProductVariablesTypeOrmRepository
       const save = await this.productVariablesRepository.save(productVariables);
       return save;
     } catch (error) {
-      throw new Error('ProductVariables error');
+      throw new Error('Error to update ProductVariables');
     }
   }
 

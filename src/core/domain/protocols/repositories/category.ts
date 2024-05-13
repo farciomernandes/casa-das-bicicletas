@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Category } from '@/core/domain/models/category.entity';
-import { CategoryModelDto } from '@/presentation/dtos/category/category-model.dto';
 import { IDbListCategoryRepository } from '../db/category/list-category-respository';
 import { IDbUpdateCategoryRepository } from '../db/category/update-category-repository';
 import { IDbFindCategoryByIdRepository } from '../db/category/find-category-by-id-repository';
 import { IDbDeleteCategoryRepository } from '../db/category/delete-category-repository';
 import { IDbFindCategoryByNameRepository } from '../db/category/find-category-by-name-repository';
 import { AddCategoryDto } from '@/presentation/dtos/category/add-category.dto';
+import { UpdateCategoryDto } from '@/presentation/dtos/category/update-category.dto';
 
 @Injectable()
 export abstract class CategoryRepository
@@ -23,7 +23,8 @@ export abstract class CategoryRepository
   abstract create(payload: AddCategoryDto): Promise<Category>;
   abstract delete(id: string): Promise<void>;
   abstract update(
-    payload: Omit<AddCategoryDto, 'image_link'>,
+    payload: Omit<UpdateCategoryDto, 'image_link'>,
     id: string,
+    image_link?: any,
   ): Promise<Category>;
 }
