@@ -25,92 +25,151 @@ export class DbAddOrder implements IDbAddOrderRepository {
     private readonly productVariablesRepository: ProductVariablesRepository,
   ) {}
 
-  async create(payload: AddOrderDto, user_id: string): Promise<OrderModelDto> {
+  async create(payload: AddOrderDto, userId: string): Promise<OrderModelDto> {
     try {
-      const validUser = await this.userRepository.findById(user_id);
-
-      if (!validUser) {
-        throw new BadRequestException(`User with ${user_id} id not found`);
-      }
-
-      const order = await this.orderRepository.create(
-        {
-          total: 0,
-          status: null,
-          order_items: [],
-        },
-        user_id,
-      );
-
-      let total = 0;
-
-      const order_items: any[] = [];
-
-      for (const item of payload.order_items) {
-        const product_variable = await this.productVariablesRepository.findById(
-          item.product_variables_id,
-        );
-
-        if (!product_variable) {
-          throw new BadRequestException(
-            `Product for variable_id ${item.product_variables_id} not found`,
-          );
-        }
-
-        if (item.quantity > product_variable.quantity) {
-          throw new BadRequestException(
-            `Quantity of ${item.quantity} exceeds available quantity (${product_variable.quantity}) for product variable ${item.product_variables_id}`,
-          );
-        }
-
-        const productId = product_variable.product.id;
-
-        const product = await this.productRepository.findById(productId);
-
-        if (!product) {
-          throw new BadRequestException(
-            `Product with ${productId} id not found`,
-          );
-        }
-
-        const sub_total = item.quantity * product_variable.price;
-
-        order_items.push({
-          id: product_variable.id,
-          quantity: item.quantity,
-          sub_total,
-          product: product,
-        });
-
-        total += sub_total;
-
-        await this.dbAddOrderItem.create({
-          order_id: order.id,
-          product_variables_id: product_variable.id,
-          quantity: item.quantity,
-          sub_total: sub_total,
-        });
-      }
-
-      order.order_items = order_items;
-
-      const response = await this.orderRepository.update(
-        {
-          status: order.status,
-          total,
-        },
+      const user = await this.getUser(userId);
+      const order = await this.createOrder(user);
+      const orderItems = await this.createOrderItems(
+        payload.order_items,
         order.id,
       );
-
-      const updatedOrder = OrderModelDto.toDto(response);
-
-      return OrderModelDto.toDto(updatedOrder);
+      const total = this.calculateTotal(orderItems);
+      await this.updateOrderTotal(order.id, total);
+      order.order_items = orderItems;
+      return OrderModelDto.toDto(order);
     } catch (error) {
-      this.logger.error(error.message);
-      if (error instanceof BadRequestException) {
-        throw error;
-      }
-      throw new InternalServerErrorException(error.message);
+      this.handleException(error);
     }
+  }
+
+  private async getUser(userId: string) {
+    const user = await this.userRepository.findById(userId);
+    if (!user) {
+      throw new BadRequestException(`User with ${userId} id not found`);
+    }
+    return user;
+  }
+
+  private async createOrder(user: any) {
+    const order = await this.orderRepository.create(
+      { total: 0, status: null, order_items: [] },
+      user.id,
+    );
+    return order;
+  }
+
+  private async createOrderItems(orderItemsPayload: any[], orderId: string) {
+    const orderItems: any[] = [];
+    for (const item of orderItemsPayload) {
+      const productVariable = await this.getProductVariable(
+        item.product_variables_id,
+      );
+      this.validateQuantity(
+        item.quantity,
+        productVariable.quantity,
+        productVariable.id,
+      );
+      const product = await this.getProduct(productVariable.product.id);
+      const subTotal = this.calculateSubtotal(
+        item.quantity,
+        productVariable.price,
+        productVariable.discount_percent,
+      );
+      orderItems.push({
+        id: productVariable.id,
+        quantity: item.quantity,
+        sub_total: subTotal,
+        product: product,
+      });
+      await this.createDbOrderItem(
+        orderId,
+        productVariable.id,
+        item.quantity,
+        subTotal,
+      );
+    }
+    return orderItems;
+  }
+
+  private async getProductVariable(productVariableId: string) {
+    const productVariable = await this.productVariablesRepository.findById(
+      productVariableId,
+    );
+    if (!productVariable) {
+      throw new BadRequestException(
+        `Product for variable_id ${productVariableId} not found`,
+      );
+    }
+    return productVariable;
+  }
+
+  private validateQuantity(
+    quantity: number,
+    availableQuantity: number,
+    productVariableId: string,
+  ) {
+    if (quantity > availableQuantity) {
+      throw new BadRequestException(
+        `Quantity of ${quantity} exceeds available quantity (${availableQuantity}) for product variable ${productVariableId}`,
+      );
+    }
+  }
+
+  private async getProduct(productId: string) {
+    const product = await this.productRepository.findById(productId);
+    if (!product) {
+      throw new BadRequestException(`Product with ${productId} id not found`);
+    }
+    return product;
+  }
+
+  private calculateSubtotal(
+    quantity: number,
+    price: number,
+    discountPercent: number,
+  ) {
+    let subTotal = quantity * price;
+    if (discountPercent) {
+      const discountAmount = (subTotal * discountPercent) / 100;
+      subTotal -= discountAmount;
+    }
+    return subTotal;
+  }
+
+  private calculateTotal(orderItems: any[]) {
+    let total = 0;
+    for (const item of orderItems) {
+      total += item.sub_total;
+    }
+    return total;
+  }
+
+  private async createDbOrderItem(
+    orderId: string,
+    productVariableId: string,
+    quantity: number,
+    subTotal: number,
+  ) {
+    await this.dbAddOrderItem.create({
+      order_id: orderId,
+      product_variables_id: productVariableId,
+      quantity: quantity,
+      sub_total: subTotal,
+    });
+  }
+
+  private async updateOrderTotal(
+    orderId: string,
+    total: number,
+  ): Promise<void> {
+    await this.orderRepository.update({ total, status: null }, orderId);
+  }
+
+  private handleException(error: Error) {
+    this.logger.error(error.message);
+    if (error instanceof BadRequestException) {
+      throw error;
+    }
+    throw new InternalServerErrorException(error.message);
   }
 }

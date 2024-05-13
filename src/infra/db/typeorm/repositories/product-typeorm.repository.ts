@@ -86,7 +86,7 @@ export class ProductTypeOrmRepository implements ProductRepository {
     }
 
     if (params.discount !== undefined) {
-      const discountValue = params.discount ? 1 : 0; // Convertendo o booleano para 1 ou 0
+      const discountValue = params.discount ? 1 : 0;
       queryBuilder.innerJoin('product.product_variables', 'product_variables');
       queryBuilder.andWhere('product_variables.discount = :discount', {
         discount: discountValue,
