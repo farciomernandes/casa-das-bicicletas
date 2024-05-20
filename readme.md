@@ -16,8 +16,16 @@
   * Verificar a tabela de migrations está vazia
 
   > ## Melhorias pendentes
-  * ~~Puts CATEGORY deve alterar as imagens~~
+
   * Deve verificar status do correio
+  * Get Order, retornar tambem: product (name e id) dentro de product_variables e city em address
+  * Onde adicionar a informação de parcelamento? Qual entidade? Qual fluxo?
+  * Considerar os juros quando o parcelamento for aplicado
+
+  
+  > ## Melhorias aplicadas
+  
+  * ~~Cria endpoint POST orders/calculate_interest para retornar os juros de um valor da order~~
   * ~~Deve apgar o objeto anterior do S3 na atualização dos itens~~
   * ~~User está retornando paginação com apenas os 10 items estáticos~~
   * ~~User não deve alterar no PUT os valores enviados como undefined~~
@@ -28,8 +36,8 @@
   * ~~Get Order com paginação, total de items e total de paginas, parametros: name(nome do customer), status(status do order)~~
   * ~~Get Order realizar calculo do total usando price e o discount_price se existir discount_percent~~
   * ~~Tornar possivel status do order igual a null~~
-  * Get Order, retornar tambem: product (name e id) dentro de product_variables e city em address
-  * Considerar os juros quando o parcelamento for aplicado
+  * ~~Adiciona status de envio no order chamado "shipping_status" com ENUM('PROCESSING', 'SENT' e null)
+  * ~~Puts CATEGORY deve alterar as imagens~~
 
 > ## Design Patterns
 

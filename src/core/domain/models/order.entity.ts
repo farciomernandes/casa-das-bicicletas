@@ -14,6 +14,7 @@ import { OrderStatusEnum } from '@/shared/enums/order_status.enum';
 import { User } from './user.entity';
 import { OrderItem } from './order_item.entity';
 import { Address } from './address.entity';
+import { ShippingStatusEnum } from '@/shared/enums/shipping_status.enum';
 
 @Entity({ name: 'orders', schema: SchemasEnum.users })
 export class Order {
@@ -22,6 +23,9 @@ export class Order {
 
   @Column({ type: 'enum', enum: OrderStatusEnum })
   status: string;
+
+  @Column({ type: 'enum', enum: ShippingStatusEnum, nullable: true })
+  shipping_status: string;
 
   @Column()
   total: number;

@@ -42,6 +42,11 @@ import {
   OrderModelDto,
   OrderParamsDto,
 } from '@/presentation/dtos/order/order-model.dto';
+import {
+  CalculateInterestDTO,
+  InterestResultDTO,
+} from '@/presentation/dtos/helpers/calculate-interest.dto';
+import { IInterestCalculator } from '@/core/domain/protocols/helpers/interest-calculator';
 
 @ApiTags('Order')
 @Controller('api/v1/orders')
@@ -53,6 +58,7 @@ export class OrderController {
     private readonly dbDeleteOrder: IDbDeleteOrderRepository,
     private readonly dbFindOrderById: IDbFindOrderByIdRepository,
     private readonly checkoutOrder: ICheckoutOrder,
+    private readonly calculateInterest: IInterestCalculator,
   ) {}
 
   @ApiBody({
@@ -140,6 +146,19 @@ export class OrderController {
     } catch (error) {
       throw new HttpException(error.response, error.status);
     }
+  }
+
+  @ApiBody({
+    description: 'Calculate Interest',
+    type: CalculateInterestDTO,
+  })
+  @ApiCreatedResponse({ type: [InterestResultDTO] })
+  @Post('calculate_interest')
+  @HttpCode(HttpStatus.OK)
+  async calculate_feels(
+    @Body() payload: CalculateInterestDTO,
+  ): Promise<InterestResultDTO[]> {
+    return this.calculateInterest.calculateInterest(payload);
   }
 
   @ApiBody({

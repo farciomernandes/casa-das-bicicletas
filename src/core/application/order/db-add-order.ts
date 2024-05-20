@@ -52,7 +52,7 @@ export class DbAddOrder implements IDbAddOrderRepository {
 
   private async createOrder(user: any) {
     const order = await this.orderRepository.create(
-      { total: 0, status: null, order_items: [] },
+      { total: 0, status: null, order_items: [], shipping_status: null },
       user.id,
     );
     return order;

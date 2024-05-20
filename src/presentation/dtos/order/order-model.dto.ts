@@ -24,6 +24,14 @@ export class OrderModelDto {
   status: string;
 
   @ApiProperty({
+    type: String,
+    example: 'PROCESSING',
+    enum: ['PROCESSING', 'SENT', null],
+  })
+  @Expose()
+  shipping_status: string;
+
+  @ApiProperty({
     type: Number,
     example: 100,
     required: true,
@@ -162,6 +170,13 @@ export class OrderParamsDto {
     required: false,
   })
   status?: string;
+
+  @ApiProperty({
+    example: 'PROCESSING',
+    description: 'Status de envio de um pedido',
+    required: false,
+  })
+  shipping_status?: string;
 
   @ApiProperty({
     example: 'John Doe',

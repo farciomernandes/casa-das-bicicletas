@@ -75,6 +75,15 @@ export class OrderTypeOrmRepository implements OrderRepository {
       });
     }
 
+    if (params.shipping_status) {
+      queryBuilder = queryBuilder.andWhere(
+        'order.shipping_status = :shipping_status',
+        {
+          shipping_status: params.shipping_status,
+        },
+      );
+    }
+
     if (params.name) {
       queryBuilder = queryBuilder.andWhere('user.name ILIKE :name', {
         name: `%${params.name}%`,

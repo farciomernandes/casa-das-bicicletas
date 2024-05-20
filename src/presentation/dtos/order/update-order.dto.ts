@@ -14,6 +14,15 @@ export class UpdateOrderDto {
   status: string;
 
   @ApiProperty({
+    type: String,
+    example: 'PROCESSING',
+    enum: ['PROCESSING', 'SENT', null],
+    required: false,
+  })
+  @Expose()
+  shipping_status?: string;
+
+  @ApiProperty({
     type: Number,
     example: 100.5,
     required: false,

@@ -16,7 +16,12 @@ export const OrderSchema = new EntitySchema<Order>({
     status: {
       type: 'enum',
       enum: ['PENDING', 'PAID', 'CANCELED'],
-      nullable: false,
+      nullable: true,
+    },
+    shipping_status: {
+      type: 'enum',
+      enum: ['PROCESSING', 'SENT', null],
+      nullable: true,
     },
     total: {
       type: 'numeric',

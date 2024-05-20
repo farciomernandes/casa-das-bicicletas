@@ -13,6 +13,7 @@ import { IPaymentProcess } from '@/core/domain/protocols/asaas/payment-process';
 import { ProductVariablesRepository } from '@/core/domain/protocols/repositories/product_variable';
 import { IDbFindOrderByIdRepository } from '@/core/domain/protocols/db/order/find-order-by-id-repository';
 import { AddressRepository } from '@/core/domain/protocols/repositories/address';
+import { IInterestCalculator } from '@/core/domain/protocols/helpers/interest-calculator';
 
 @Module({
   imports: [],
@@ -32,6 +33,7 @@ import { AddressRepository } from '@/core/domain/protocols/repositories/address'
     ICheckoutOrder,
     IPaymentProcess,
     AddressRepository,
+    IInterestCalculator,
   ],
 })
 export class OrderModule {}

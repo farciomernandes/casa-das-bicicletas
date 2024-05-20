@@ -37,6 +37,8 @@ import { IDbFindOrderByIdRepository } from '@/core/domain/protocols/db/order/fin
 import { AddressRepository } from '@/core/domain/protocols/repositories/address';
 import { AddressTypeOrmRepository } from '@/infra/db/typeorm/repositories/address-typeorm.repository';
 import { Address } from '@/core/domain/models/address.entity';
+import { IInterestCalculator } from '@/core/domain/protocols/helpers/interest-calculator';
+import { InterestCalculator } from '@/shared/helpers/caculate-interest';
 
 export const orderProvider: Provider[] = [
   DbAddOrder,
@@ -82,6 +84,10 @@ export const orderProvider: Provider[] = [
   {
     provide: AddressRepository,
     useClass: AddressTypeOrmRepository,
+  },
+  {
+    provide: IInterestCalculator,
+    useClass: InterestCalculator,
   },
   {
     provide: ProductVariablesTypeOrmRepository,
