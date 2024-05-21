@@ -21,8 +21,10 @@ export class DbDeleteCategory implements IDbDeleteCategoryRepository {
       if (!category) {
         throw new BadRequestException(`Category not found`);
       }
+      if (category.image_link) {
+        await this.s3Repository.deleteBucket(category.image_link);
+      }
 
-      await this.s3Repository.deleteBucket(category.image_link);
       await this.categoryRepository.delete(id);
     } catch (error) {
       if (error instanceof BadRequestException) {

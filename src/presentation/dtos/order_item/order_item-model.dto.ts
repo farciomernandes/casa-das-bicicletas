@@ -58,6 +58,14 @@ export class OrderItemDto {
   @Expose()
   product_id: string;
 
+  @ApiProperty({
+    type: Date,
+    example: Date.now(),
+    required: true,
+  })
+  @Expose()
+  created_at: Date;
+
   static toDto(payload: any): OrderItemDto {
     return plainToClass(OrderItemDto, payload, {
       excludeExtraneousValues: true,

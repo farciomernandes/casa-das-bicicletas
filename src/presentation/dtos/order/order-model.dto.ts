@@ -116,6 +116,14 @@ export class OrderModelDto {
   @IsOptional()
   order_items: OrderItemLocally[];
 
+  @ApiProperty({
+    type: Date,
+    example: Date.now(),
+    required: true,
+  })
+  @Expose()
+  created_at: Date;
+
   static toDto(payload: any): OrderModelDto {
     const order = plainToClass(OrderModelDto, payload, {
       excludeExtraneousValues: true,

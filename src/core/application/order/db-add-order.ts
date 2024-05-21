@@ -64,6 +64,7 @@ export class DbAddOrder implements IDbAddOrderRepository {
       const productVariable = await this.getProductVariable(
         item.product_variables_id,
       );
+
       this.validateQuantity(
         item.quantity,
         productVariable.quantity,

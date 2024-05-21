@@ -55,7 +55,8 @@ export class OrderTypeOrmRepository implements OrderRepository {
       .leftJoinAndSelect('order.address', 'addresses')
       .leftJoinAndSelect('order.order_items', 'order_items')
       .leftJoinAndSelect('order_items.product_variables', 'product_variables')
-      .leftJoinAndSelect('product_variables.product', 'product');
+      .leftJoinAndSelect('product_variables.product', 'product')
+      .leftJoinAndSelect('addresses.city', 'city');
 
     if (user) {
       queryBuilder = queryBuilder.where('order.user_id = :userId', {

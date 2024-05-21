@@ -68,8 +68,6 @@ export class OrderController {
   @ApiCreatedResponse({ type: OrderModelDto })
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  @Roles(RolesEnum.ADMIN)
-  @UseGuards(RolesGuard)
   @ApiBearerAuth()
   async create(
     @Body() payload: AddOrderDto,

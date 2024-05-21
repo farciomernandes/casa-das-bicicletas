@@ -17,10 +17,13 @@
 
   > ## Melhorias pendentes
 
+  * Retornar nome do produto GET /orders
   * Deve verificar status do correio
   * Get Order, retornar tambem: product (name e id) dentro de product_variables e city em address
   * Onde adicionar a informação de parcelamento? Qual entidade? Qual fluxo?
   * Considerar os juros quando o parcelamento for aplicado
+  * Verificar se bucket existe ou não antes de apagar ou atualizar. Category e Product_variable
+  * Permitir apagar imagem do S3 quando apagar product_variable
 
   
   > ## Melhorias aplicadas

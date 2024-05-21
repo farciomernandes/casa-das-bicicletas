@@ -41,6 +41,14 @@ export class OrderItemLocally {
   @Expose()
   product_variables_id: string;
 
+  @ApiProperty({
+    type: Date,
+    example: Date.now(),
+    required: true,
+  })
+  @Expose()
+  created_at: Date;
+
   static toDto(payload: OrderItemLocally): OrderItemLocally {
     const order_item = plainToClass(OrderItemLocally, payload, {
       excludeExtraneousValues: true,

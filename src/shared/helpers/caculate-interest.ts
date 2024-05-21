@@ -12,17 +12,21 @@ export class InterestCalculator implements IInterestCalculator {
     totalValue,
     installments,
   }: CalculateInterestDTO): InterestResultDTO[] {
-    const proportionalPercentage = totalValue * this.percentage;
-
     const interestArray: InterestResultDTO[] = Array.from(
       { length: installments },
       (_, i) => {
-        const totalInterest = this.fixedFee + proportionalPercentage * (i + 1);
+        const quantity = i + 1;
+        let totalInterest = 0;
+        if (quantity > 1) {
+          totalInterest =
+            this.fixedFee + totalValue * this.percentage * quantity;
+        }
         const totalValueWithInterest = totalValue + totalInterest;
+        const valuePerInstallment = totalValueWithInterest / quantity;
 
         return {
-          quantity: i + 1,
-          value: parseFloat(totalInterest.toFixed(2)),
+          quantity,
+          value: parseFloat(valuePerInstallment.toFixed(2)),
           total: parseFloat(totalValueWithInterest.toFixed(2)),
         };
       },
