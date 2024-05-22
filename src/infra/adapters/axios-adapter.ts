@@ -10,8 +10,7 @@ export class AxiosAdapter {
     this.api = axios.create({
       baseURL: configService.get<string>('ASAAS_API_URL'),
       headers: {
-        access_token:
-          '$aact_YTU5YTE0M2M2N2I4MTliNzk0YTI5N2U5MzdjNWZmNDQ6OjAwMDAwMDAwMDAwMDAwNzkyNDM6OiRhYWNoXzQxYTg2ODJlLTRhNjEtNDYzOS05MzFlLWZhMzE3MDljYmI2NQ==',
+        access_token: configService.get<string>('ASAAS_API_ACCESS_TOKEN'),
       },
     });
   }

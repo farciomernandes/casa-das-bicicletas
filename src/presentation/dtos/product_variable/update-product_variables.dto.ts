@@ -73,6 +73,7 @@ export class UpdateProductVariablesModel {
   @ApiProperty({
     type: String,
     example: 'large',
+    description: 'cm',
   })
   @Expose()
   size: string;
@@ -95,7 +96,7 @@ export class UpdateProductVariablesModel {
   @ApiProperty({
     type: Number,
     example: 1.5,
-    description: 'Peso',
+    description: 'Peso em kg',
   })
   @Expose()
   weight: number;
@@ -111,7 +112,7 @@ export class UpdateProductVariablesModel {
   @ApiProperty({
     type: Number,
     example: 30,
-    description: 'Comprimento',
+    description: 'Comprimento em cm',
   })
   @Expose()
   length: number;
@@ -119,7 +120,7 @@ export class UpdateProductVariablesModel {
   @ApiProperty({
     type: Number,
     example: 20,
-    description: 'Altura',
+    description: 'Altura em cm',
   })
   @Expose()
   height: number;
@@ -127,7 +128,7 @@ export class UpdateProductVariablesModel {
   @ApiProperty({
     type: Number,
     example: 10,
-    description: 'Largura',
+    description: 'Largura em cm',
   })
   @Expose()
   width: number;
@@ -135,7 +136,7 @@ export class UpdateProductVariablesModel {
   @ApiProperty({
     type: Number,
     example: 10,
-    description: 'Diametro',
+    description: 'Diametro em cm',
   })
   @Expose()
   diameter: number;

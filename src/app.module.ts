@@ -25,6 +25,7 @@ import { ProductModule } from './infra/ioc/product/product.module';
 import { OrderModule } from './infra/ioc/order/order.module';
 import { OrderItemModule } from './infra/ioc/order_item/order_item.module';
 import { AuthModule } from './infra/ioc/auth/auth.module';
+import { ShippingModule } from './infra/ioc/shipping/shipping.module';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { AuthModule } from './infra/ioc/auth/auth.module';
     ProductVariablesModule,
     OrderModule,
     OrderItemModule,
+    ShippingModule,
   ],
   controllers: [RoleController],
   providers: [

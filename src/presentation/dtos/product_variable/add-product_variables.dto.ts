@@ -102,6 +102,7 @@ export class AddProductVariablesModel {
   @ApiProperty({
     type: String,
     example: 'large',
+    description: 'cm',
     required: true,
   })
   @Expose()
@@ -140,6 +141,7 @@ export class AddProductVariablesModel {
     type: Number,
     example: 1.5,
     required: true,
+    description: 'kg',
   })
   @Expose()
   @IsNumber()
@@ -158,6 +160,7 @@ export class AddProductVariablesModel {
     type: Number,
     example: 30,
     required: true,
+    description: 'cm',
   })
   @Expose()
   @IsNumber()
@@ -167,6 +170,7 @@ export class AddProductVariablesModel {
     type: Number,
     example: 20,
     required: true,
+    description: 'cm',
   })
   @Expose()
   @IsNumber()
@@ -176,6 +180,7 @@ export class AddProductVariablesModel {
     type: Number,
     example: 10,
     required: true,
+    description: 'cm',
   })
   @Expose()
   @IsNumber()
@@ -185,6 +190,7 @@ export class AddProductVariablesModel {
     type: Number,
     example: 10,
     required: true,
+    description: 'cm',
   })
   @Expose()
   @IsNumber()

@@ -89,6 +89,7 @@ export class ProductVariablesModel {
     type: String,
     example: 'large',
     required: true,
+    description: 'cm',
   })
   @Expose()
   size: string;
@@ -105,6 +106,7 @@ export class ProductVariablesModel {
     type: String,
     example: '1.4',
     required: true,
+    description: 'kg',
   })
   @Expose()
   weight: number;
@@ -121,6 +123,7 @@ export class ProductVariablesModel {
     type: String,
     example: '30',
     required: true,
+    description: 'cm',
   })
   @Expose()
   length: number;
@@ -129,6 +132,7 @@ export class ProductVariablesModel {
     type: String,
     example: '40',
     required: true,
+    description: 'cm',
   })
   @Expose()
   height: number;
@@ -137,6 +141,7 @@ export class ProductVariablesModel {
     type: String,
     example: '10',
     required: true,
+    description: 'cm',
   })
   @Expose()
   width: number;
