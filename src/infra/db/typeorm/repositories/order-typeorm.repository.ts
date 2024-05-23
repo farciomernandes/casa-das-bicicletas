@@ -35,7 +35,7 @@ export class OrderTypeOrmRepository implements OrderRepository {
       .leftJoinAndSelect('order.address', 'addresses')
       .leftJoinAndSelect('order.order_items', 'order_items')
       .leftJoinAndSelect('order_items.product_variables', 'product_variables')
-      .leftJoinAndSelect('order.shipping', 'shippings')
+      .leftJoinAndSelect('order.shippings', 'shippings')
       .where('order.id = :id', { id })
       .getOne();
 
@@ -58,7 +58,7 @@ export class OrderTypeOrmRepository implements OrderRepository {
       .leftJoinAndSelect('order_items.product_variables', 'product_variables')
       .leftJoinAndSelect('product_variables.product', 'product')
       .leftJoinAndSelect('addresses.city', 'city')
-      .leftJoinAndSelect('order.shipping', 'shipping');
+      .leftJoinAndSelect('order.shippings', 'shippings');
 
     if (user) {
       queryBuilder = queryBuilder.where('order.user_id = :userId', {

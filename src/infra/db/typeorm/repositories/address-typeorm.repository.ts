@@ -3,7 +3,6 @@ import { Address } from '@/core/domain/models/address.entity';
 import { AddressRepository } from '@/core/domain/protocols/repositories/address';
 import { UploadAddressDto } from '@/presentation/dtos/address/upload-address.dto';
 import { AddAddressDto } from '@/presentation/dtos/address/add-address.dto';
-import { AddressModelDto } from '@/presentation/dtos/address/address-model.dto';
 
 export class AddressTypeOrmRepository implements AddressRepository {
   constructor(private readonly addressRepository: Repository<Address>) {}

@@ -3,13 +3,16 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { IDbUpdateShippingRepository } from '@/core/domain/protocols/db/shipping/update-shipping-repository';
 import { ShippingRepository } from '@/core/domain/protocols/repositories/shipping';
 import { UpdateShippingDto } from '@/presentation/dtos/shipping/update-shipping.dto';
-import { Shipping } from '@/core/domain/models/shipping.entity';
+import { ShippingModelDto } from '@/presentation/dtos/shipping/shipping-model.dto';
 
 @Injectable()
 export class DbUpdateShipping implements IDbUpdateShippingRepository {
   constructor(private readonly shippingRepository: ShippingRepository) {}
 
-  async update(payload: UpdateShippingDto, id: string): Promise<Shipping> {
+  async update(
+    payload: UpdateShippingDto,
+    id: string,
+  ): Promise<ShippingModelDto> {
     try {
       const alreadyExists = await this.shippingRepository.findById(id);
 

@@ -10,7 +10,10 @@ export class ShippingTypeOrmRepository implements ShippingRepository {
   async findByName(name: string): Promise<Shipping> {
     return this.shippingRepository.findOne({ where: { name } });
   }
-  async update(payload: UpdateShippingDto, id: string): Promise<Shipping> {
+  async update(
+    payload: UpdateShippingDto,
+    id: string,
+  ): Promise<ShippingModelDto> {
     try {
       const shipping = await this.shippingRepository.findOneOrFail({
         where: { id },
@@ -24,26 +27,29 @@ export class ShippingTypeOrmRepository implements ShippingRepository {
         shipping,
         ShippingModelDto.toDto(updateShipping),
       );
-      return this.shippingRepository.save(shipping);
+      return ShippingModelDto.toDto(this.shippingRepository.save(shipping));
     } catch (error) {
       throw new Error('Error to update Shipping');
     }
   }
 
-  async findById(id: string): Promise<Shipping> {
-    return this.shippingRepository.findOne({ where: { id } });
+  async findById(id: string): Promise<ShippingModelDto> {
+    return ShippingModelDto.toDto(
+      this.shippingRepository.findOne({ where: { id } }),
+    );
   }
 
   async delete(id: string): Promise<void> {
     await this.shippingRepository.delete(id);
   }
 
-  async getAll(): Promise<Shipping[]> {
-    return this.shippingRepository.find();
+  async getAll(): Promise<ShippingModelDto[]> {
+    const response = await this.shippingRepository.find();
+    return response.map((item) => ShippingModelDto.toDto(item));
   }
 
-  async create(payload: AddShippingDto): Promise<Shipping> {
+  async create(payload: AddShippingDto): Promise<ShippingModelDto> {
     const shipping = this.shippingRepository.create(payload);
-    return this.shippingRepository.save(shipping);
+    return ShippingModelDto.toDto(this.shippingRepository.save(shipping));
   }
 }

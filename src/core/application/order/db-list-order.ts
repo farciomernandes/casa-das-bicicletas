@@ -5,7 +5,6 @@ import { Authenticated } from '@/presentation/dtos/auth/authenticated.dto';
 import { RolesEnum } from '@/shared/enums/roles.enum';
 import {
   GetAllOrdersDto,
-  OrderModelDto,
   OrderParamsDto,
 } from '@/presentation/dtos/order/order-model.dto';
 @Injectable()
@@ -25,7 +24,7 @@ export class DbListOrder {
       }
 
       return {
-        orders: response.orders.map((order) => OrderModelDto.toDto(order)),
+        orders: response.orders,
         pages: response.pages,
         total: response.total,
       };

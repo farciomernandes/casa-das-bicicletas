@@ -1,4 +1,3 @@
-import { Shipping } from '@/core/domain/models/shipping.entity';
 import { IDbAddShippingRepository } from '@/core/domain/protocols/db/shipping/add-shipping-repository';
 import { IDbDeleteShippingRepository } from '@/core/domain/protocols/db/shipping/delete-shipping-repository';
 import { IDbListShippingRepository } from '@/core/domain/protocols/db/shipping/list-shipping-respository';
@@ -94,7 +93,7 @@ export class ShippingController {
   async update(
     @Param('id') id: string,
     @Body() payload: UpdateShippingDto,
-  ): Promise<Shipping> {
+  ): Promise<ShippingModelDto> {
     try {
       return await this.dbUpdateShipping.update(payload, id);
     } catch (error) {
@@ -131,11 +130,13 @@ export class ShippingController {
   async calculateShipping(
     @Param('order_id') order_id: string,
     @Query('to_postal_code') to_postal_code: string,
+    @Query('from_postal_code') from_postal_code: string,
   ) {
     try {
       const result = await this.shippingCalculate.calculateShipping(
         order_id,
         to_postal_code,
+        from_postal_code,
       );
       return result;
     } catch (error) {

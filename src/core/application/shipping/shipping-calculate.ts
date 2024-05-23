@@ -18,6 +18,7 @@ export class ShippingCalculate implements IShippingCalculate {
   async calculateShipping(
     order_id: string,
     to_postal_code: string,
+    from_postal_code: string,
   ): Promise<ShippingOptionDto[]> {
     try {
       const order = await this.orderRepository.findById(order_id);
@@ -31,6 +32,7 @@ export class ShippingCalculate implements IShippingCalculate {
       return await this.shippingService.calculateShipping(
         order,
         to_postal_code,
+        from_postal_code,
       );
     } catch (error) {
       if (error instanceof BadRequestException) {

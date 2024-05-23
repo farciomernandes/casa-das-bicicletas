@@ -36,6 +36,7 @@ export class DbAddOrder implements IDbAddOrderRepository {
       const total = this.calculateTotal(orderItems);
       await this.updateOrderTotal(order.id, total);
       order.order_items = orderItems;
+      order.total = total;
       return OrderModelDto.toDto(order);
     } catch (error) {
       this.handleException(error);
@@ -51,11 +52,15 @@ export class DbAddOrder implements IDbAddOrderRepository {
   }
 
   private async createOrder(user: any) {
-    const order = await this.orderRepository.create(
-      { total: 0, status: null, order_items: [] },
-      user.id,
-    );
-    return order;
+    try {
+      const order = await this.orderRepository.create(
+        { total: 0, status: null, order_items: [] },
+        user.id,
+      );
+      return order;
+    } catch (error) {
+      return error;
+    }
   }
 
   private async createOrderItems(orderItemsPayload: any[], orderId: string) {

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, plainToInstance } from 'class-transformer';
-import { IsNotEmpty, IsString, IsDate } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class ShippingModelDto {
   @ApiProperty({
@@ -17,9 +17,59 @@ export class ShippingModelDto {
     required: true,
   })
   @Expose()
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   name: string;
+
+  @ApiProperty({
+    type: Number,
+    example: 10.5,
+    required: true,
+  })
+  @Expose()
+  @IsNotEmpty()
+  price: number;
+
+  @ApiProperty({
+    type: Number,
+    example: 5,
+    required: true,
+    description: 'Maximum time to deliver the product',
+  })
+  @Expose()
+  @IsNotEmpty()
+  max_delivery_time: number;
+
+  @ApiProperty({
+    type: Number,
+    example: 2,
+    required: true,
+    description: 'Minimum time to deliver the product',
+  })
+  @Expose()
+  @IsNotEmpty()
+  min_delivery_time: number;
+
+  @ApiProperty({
+    type: String,
+    example: 'Company Name',
+    required: true,
+    description: 'Company name that shipping product',
+  })
+  @Expose()
+  @IsNotEmpty()
+  @IsString()
+  company_name: string;
+
+  @ApiProperty({
+    type: String,
+    example: 'https://example.com/company_logo.png',
+    required: true,
+  })
+  @Expose()
+  @IsNotEmpty()
+  @IsString()
+  company_picture: string;
 
   @ApiProperty({
     type: String,
@@ -31,18 +81,18 @@ export class ShippingModelDto {
   status?: string;
 
   @ApiProperty({
-    type: Date,
-    example: '2024-05-25T10:30:00Z',
+    type: String,
+    example: '994fb2cd-0f39-4a71-b15c-333b7e2ff793',
     required: true,
   })
   @Expose()
-  @IsDate()
-  @IsNotEmpty()
-  created_at: Date;
+  order_id: string;
 
   static toDto(payload: any): ShippingModelDto {
-    return plainToInstance(ShippingModelDto, payload, {
+    const saved = plainToInstance(ShippingModelDto, payload, {
       excludeExtraneousValues: true,
     });
+
+    return saved;
   }
 }

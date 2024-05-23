@@ -22,8 +22,9 @@
   * Get Order, retornar tambem: product (name e id) dentro de product_variables e city em address
   * Onde adicionar a informação de parcelamento? Qual entidade? Qual fluxo?
   * Considerar os juros quando o parcelamento for aplicado
-  * Verificar se bucket existe ou não antes de apagar ou atualizar. Category e Product_variable
   * Permitir apagar imagem do S3 quando apagar product_variable
+  * Quando escolhe o frete, ele faz a soma do TOTAL. Deve ser possível deletar ou alterar e isso refletir no TOTAL
+
 
   
   > ## Melhorias aplicadas
@@ -33,6 +34,7 @@
   * ~~User está retornando paginação com apenas os 10 items estáticos~~
   * ~~User não deve alterar no PUT os valores enviados como undefined~~
   * ~~Product deve pode alterar o category_id~~
+  * ~~Verificar se bucket existe ou não antes de apagar ou atualizar. Category e Product_variable~~
   * ~~Get Product com parametro discount=true deve retornar produtos com pelo menos um product_variable com desconto~~
   * ~~Get Product, retornar paginação, e total de items~~
   * ~~Get Users filtragem por nome e cpf~~

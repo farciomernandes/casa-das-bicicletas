@@ -16,15 +16,16 @@ export class MelhorEnvioAdapter implements IShippingService {
   async calculateShipping(
     order: OrderModelDto,
     to_postal_code: string,
+    from_postal_code: string,
   ): Promise<ShippingOptionDto[]> {
     const payload = {
       from: {
-        postal_code: order.address.zip_code,
+        postal_code: from_postal_code,
       },
       to: {
         postal_code: to_postal_code,
       },
-      products: order.order_items.map((product) => {
+      package: order.order_items.map((product) => {
         return {
           weight: product.product_variables.weight,
           width: product.product_variables.width,

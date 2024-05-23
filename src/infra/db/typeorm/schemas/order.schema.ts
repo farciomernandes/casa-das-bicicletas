@@ -5,6 +5,7 @@ import { User } from '@/core/domain/models/user.entity';
 import { Order } from '@/core/domain/models/order.entity';
 import { OrderItem } from '@/core/domain/models/order_item.entity';
 import { Address } from '@/core/domain/models/address.entity';
+import { Shipping } from '@/core/domain/models/shipping.entity';
 
 export const OrderSchema = new EntitySchema<Order>({
   schema: SchemasEnum.users,
@@ -71,9 +72,9 @@ export const OrderSchema = new EntitySchema<Order>({
         name: 'order_id',
       },
     },
-    shipping: {
-      type: 'many-to-one',
-      target: () => Address,
+    shippings: {
+      type: 'one-to-one',
+      target: () => Shipping,
       joinColumn: {
         name: 'shippings_id',
         referencedColumnName: 'id',

@@ -1,5 +1,5 @@
-import { Shipping } from '@/core/domain/models/shipping.entity';
+import { ShippingModelDto } from '@/presentation/dtos/shipping/shipping-model.dto';
 
 export abstract class IDbListShippingRepository {
-  abstract getAll(): Promise<Shipping[]>;
+  abstract getAll(): Promise<ShippingModelDto[]>;
 }

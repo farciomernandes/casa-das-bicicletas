@@ -51,8 +51,8 @@ export class Order {
   shippings_id: string;
 
   @ManyToOne(() => Shipping)
-  @JoinColumn({ name: 'shipping_id' })
-  shipping: Shipping;
+  @JoinColumn({ name: 'shippings_id' })
+  shippings: Shipping;
 
   @CreateDateColumn()
   created_at: Date;

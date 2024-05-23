@@ -138,10 +138,11 @@ export class OrderModelDto {
     if (payload.address) {
       address = AddressModelDto.toDto(payload.address);
     }
+    console.log();
 
-    let shipping = null;
-    if (payload.shipping) {
-      shipping = ShippingModelDto.toDto(payload.shipping);
+    let shipping = payload.shippings ? payload.shippings : null;
+    if (payload.shippings) {
+      shipping = ShippingModelDto.toDto(payload.shippings);
     }
 
     const user = UserModelDto.toDto(payload.user);
