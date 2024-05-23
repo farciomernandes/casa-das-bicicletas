@@ -26,15 +26,11 @@ export class DbAddUser implements IDbAddUserRepository {
       if (!payload.role_id) {
         const role_id = await this.roleRepository.findByValue('CUSTOMER');
         if (!role_id) {
-          const customer = await this.roleRepository.create({
-            label: 'Usuário cliente ',
-            value: 'CUSTOMER',
-          });
-
-          payload.role_id = customer.id;
-        } else {
-          payload.role_id = role_id.id;
+          throw new InternalServerErrorException(
+            `Does not exists role to CUSTOMER, contact ADMIN the store`,
+          );
         }
+        payload.role_id = role_id.id;
       }
       const alreadyExists = await this.userRepository.findByEmail(
         payload.email,

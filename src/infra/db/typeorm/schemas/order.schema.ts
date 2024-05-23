@@ -18,11 +18,6 @@ export const OrderSchema = new EntitySchema<Order>({
       enum: ['PENDING', 'PAID', 'CANCELED'],
       nullable: true,
     },
-    shipping_status: {
-      type: 'enum',
-      enum: ['PROCESSING', 'SENT', null],
-      nullable: true,
-    },
     total: {
       type: 'numeric',
       nullable: false,
@@ -36,6 +31,10 @@ export const OrderSchema = new EntitySchema<Order>({
       nullable: false,
     },
     address_id: {
+      type: 'uuid',
+      nullable: true,
+    },
+    shippings_id: {
       type: 'uuid',
       nullable: true,
     },
@@ -70,6 +69,14 @@ export const OrderSchema = new EntitySchema<Order>({
       inverseSide: 'order',
       joinColumn: {
         name: 'order_id',
+      },
+    },
+    shipping: {
+      type: 'many-to-one',
+      target: () => Address,
+      joinColumn: {
+        name: 'shippings_id',
+        referencedColumnName: 'id',
       },
     },
     address: {

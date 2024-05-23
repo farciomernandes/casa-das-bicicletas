@@ -9,7 +9,6 @@ import {
   Post,
   Put,
   UploadedFile,
-  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import {
@@ -88,7 +87,7 @@ export class CategoryController {
     type: UpdateCategoryDto,
   })
   @ApiOkResponse({
-    description: 'Delete success.',
+    description: 'Updated success.',
     status: HttpStatus.OK,
     type: CategoryModelDto,
   })

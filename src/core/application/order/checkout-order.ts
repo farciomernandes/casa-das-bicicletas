@@ -13,7 +13,6 @@ import { OrderStatusEnum } from '@/shared/enums/order_status.enum';
 import { AddressRepository } from '@/core/domain/protocols/repositories/address';
 import { AddressModelDto } from '@/presentation/dtos/address/address-model.dto';
 import { CheckoutOrderModelDto } from '@/presentation/dtos/order/checkout-order.dto';
-import { ShippingStatusEnum } from '@/shared/enums/shipping_status.enum';
 
 @Injectable()
 export class CheckoutOrder implements ICheckoutOrder {
@@ -70,7 +69,6 @@ export class CheckoutOrder implements ICheckoutOrder {
           transaction_id,
           status,
           address_id: address.id,
-          shipping_status: ShippingStatusEnum.PROCESSING,
         },
         order.id,
       );

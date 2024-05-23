@@ -1,11 +1,12 @@
-import { IShippingCalculateSent } from '@/core/domain/protocols/shipping/shipping-calculate-sent';
+import { IShippingService } from '@/core/domain/protocols/melhor-envio/melhor-envio-service';
+import { OrderModelDto } from '@/presentation/dtos/order/order-model.dto';
+import { ShippingOptionDto } from '@/presentation/dtos/shipping/shipping-calculate.dto';
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ShippingOption } from 'aws-sdk/clients/snowball';
 import axios from 'axios';
 
 @Injectable()
-export class MelhorEnvioAdapter implements IShippingCalculateSent {
+export class MelhorEnvioAdapter implements IShippingService {
   private url: string;
 
   constructor(private readonly configService: ConfigService) {
@@ -13,29 +14,25 @@ export class MelhorEnvioAdapter implements IShippingCalculateSent {
   }
 
   async calculateShipping(
-    originZipCode: string,
-    destinationZipCode: string,
-    weight: number,
-    length: number,
-    height: number,
-    width: number,
-  ): Promise<ShippingOption[]> {
+    order: OrderModelDto,
+    to_postal_code: string,
+  ): Promise<ShippingOptionDto[]> {
     const payload = {
       from: {
-        postal_code: originZipCode,
+        postal_code: order.address.zip_code,
       },
       to: {
-        postal_code: destinationZipCode,
+        postal_code: to_postal_code,
       },
-      products: [
-        {
-          weight,
-          width,
-          height,
-          length,
+      products: order.order_items.map((product) => {
+        return {
+          weight: product.product_variables.weight,
+          width: product.product_variables.width,
+          height: product.product_variables.height,
+          length: product.product_variables.length,
           insurance_value: 0, // Valor declarado para seguro, opcional
-        },
-      ],
+        };
+      }),
     };
 
     try {
@@ -55,7 +52,7 @@ export class MelhorEnvioAdapter implements IShippingCalculateSent {
           },
         },
       );
-      return response.data as ShippingOption[];
+      return response.data.map((item) => ShippingOptionDto.toDto(item));
     } catch (error) {
       throw new BadRequestException(
         'Error calculating shipping: ' + error.message,

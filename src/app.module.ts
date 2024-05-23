@@ -74,6 +74,13 @@ export class AppModule implements NestModule {
     { path: 'api/v1/users**', method: RequestMethod.DELETE },
   ];
 
+  private readonly shippingEndpoints = [
+    { path: 'api/v1/shippings**', method: RequestMethod.PUT },
+    { path: 'api/v1/shippings**', method: RequestMethod.POST },
+    { path: 'api/v1/shippings**', method: RequestMethod.GET },
+    { path: 'api/v1/shippings**', method: RequestMethod.DELETE },
+  ];
+
   private readonly statesEndpoints = [
     { path: 'api/v1/states**', method: RequestMethod.PUT },
     { path: 'api/v1/states**', method: RequestMethod.DELETE },
@@ -144,6 +151,7 @@ export class AppModule implements NestModule {
         ...this.statesEndpoints,
         ...this.product_variableEndpoints,
         ...this.order_itemEndpoints,
+        ...this.shippingEndpoints,
         { path: 'api/v1/role', method: RequestMethod.ALL },
       );
   }

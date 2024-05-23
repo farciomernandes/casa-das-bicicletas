@@ -35,6 +35,7 @@ export class OrderTypeOrmRepository implements OrderRepository {
       .leftJoinAndSelect('order.address', 'addresses')
       .leftJoinAndSelect('order.order_items', 'order_items')
       .leftJoinAndSelect('order_items.product_variables', 'product_variables')
+      .leftJoinAndSelect('order.shipping', 'shippings')
       .where('order.id = :id', { id })
       .getOne();
 
@@ -56,7 +57,8 @@ export class OrderTypeOrmRepository implements OrderRepository {
       .leftJoinAndSelect('order.order_items', 'order_items')
       .leftJoinAndSelect('order_items.product_variables', 'product_variables')
       .leftJoinAndSelect('product_variables.product', 'product')
-      .leftJoinAndSelect('addresses.city', 'city');
+      .leftJoinAndSelect('addresses.city', 'city')
+      .leftJoinAndSelect('order.shipping', 'shipping');
 
     if (user) {
       queryBuilder = queryBuilder.where('order.user_id = :userId', {
@@ -74,15 +76,6 @@ export class OrderTypeOrmRepository implements OrderRepository {
       queryBuilder = queryBuilder.andWhere('order.status = :status', {
         status: params.status,
       });
-    }
-
-    if (params.shipping_status) {
-      queryBuilder = queryBuilder.andWhere(
-        'order.shipping_status = :shipping_status',
-        {
-          shipping_status: params.shipping_status,
-        },
-      );
     }
 
     if (params.name) {
@@ -108,9 +101,16 @@ export class OrderTypeOrmRepository implements OrderRepository {
   }
 
   async create(payload: AddOrderDto, user_id: string): Promise<OrderModelDto> {
-    const order = this.orderRepository.create({ ...payload, user_id });
-    const orderSaved = await this.orderRepository.save(order);
+    try {
+      const order = this.orderRepository.create({
+        ...payload,
+        user_id,
+      });
+      const orderSaved = await this.orderRepository.save(order);
 
-    return OrderModelDto.toDto(await this.findById(orderSaved.id));
+      return OrderModelDto.toDto(await this.findById(orderSaved.id));
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

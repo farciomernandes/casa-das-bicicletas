@@ -52,7 +52,7 @@ export class DbAddOrder implements IDbAddOrderRepository {
 
   private async createOrder(user: any) {
     const order = await this.orderRepository.create(
-      { total: 0, status: null, order_items: [], shipping_status: null },
+      { total: 0, status: null, order_items: [] },
       user.id,
     );
     return order;
@@ -96,6 +96,7 @@ export class DbAddOrder implements IDbAddOrderRepository {
     const productVariable = await this.productVariablesRepository.findById(
       productVariableId,
     );
+
     if (!productVariable) {
       throw new BadRequestException(
         `Product for variable_id ${productVariableId} not found`,

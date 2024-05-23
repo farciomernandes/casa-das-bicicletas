@@ -176,4 +176,23 @@ export class ShippingOptionDto {
     required: false,
   })
   error?: string;
+
+  static toDto(payload: any): ShippingOptionDto {
+    const shippingOptionDto = new ShippingOptionDto();
+    shippingOptionDto.id = payload.id;
+    shippingOptionDto.name = payload.name;
+    shippingOptionDto.price = payload.price;
+    shippingOptionDto.custom_price = payload.custom_price;
+    shippingOptionDto.discount = payload.discount;
+    shippingOptionDto.currency = payload.currency;
+    shippingOptionDto.delivery_time = payload.delivery_time;
+    shippingOptionDto.delivery_range = payload.delivery_range;
+    shippingOptionDto.custom_delivery_time = payload.custom_delivery_time;
+    shippingOptionDto.custom_delivery_range = payload.custom_delivery_range;
+    shippingOptionDto.packages = payload.packages;
+    shippingOptionDto.additional_services = payload.additional_services;
+    shippingOptionDto.company = payload.company;
+    shippingOptionDto.error = payload.error;
+    return shippingOptionDto;
+  }
 }

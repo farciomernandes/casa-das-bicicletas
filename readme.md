@@ -39,7 +39,6 @@
   * ~~Get Order com paginação, total de items e total de paginas, parametros: name(nome do customer), status(status do order)~~
   * ~~Get Order realizar calculo do total usando price e o discount_price se existir discount_percent~~
   * ~~Tornar possivel status do order igual a null~~
-  * ~~Adiciona status de envio no order chamado "shipping_status" com ENUM('PROCESSING', 'SENT' e null)
   * ~~Puts CATEGORY deve alterar as imagens~~
 
 > ## Design Patterns

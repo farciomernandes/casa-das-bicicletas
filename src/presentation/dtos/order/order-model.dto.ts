@@ -4,6 +4,7 @@ import { IsOptional } from 'class-validator';
 import { AddressModelDto } from '../address/address-model.dto';
 import { UserModelDto } from '../user/user-model.dto';
 import { OrderItemLocally } from './order-item-locally.dto';
+import { ShippingModelDto } from '../shipping/shipping-model.dto';
 
 export class OrderModelDto {
   @ApiProperty({
@@ -22,14 +23,6 @@ export class OrderModelDto {
   })
   @Expose()
   status: string;
-
-  @ApiProperty({
-    type: String,
-    example: 'PROCESSING',
-    enum: ['PROCESSING', 'SENT', null],
-  })
-  @Expose()
-  shipping_status: string;
 
   @ApiProperty({
     type: Number,
@@ -124,6 +117,14 @@ export class OrderModelDto {
   @Expose()
   created_at: Date;
 
+  @ApiProperty({
+    type: ShippingModelDto,
+    required: false,
+  })
+  @Expose()
+  @IsOptional()
+  shipping?: ShippingModelDto;
+
   static toDto(payload: any): OrderModelDto {
     const order = plainToClass(OrderModelDto, payload, {
       excludeExtraneousValues: true,
@@ -138,12 +139,18 @@ export class OrderModelDto {
       address = AddressModelDto.toDto(payload.address);
     }
 
+    let shipping = null;
+    if (payload.shipping) {
+      shipping = ShippingModelDto.toDto(payload.shipping);
+    }
+
     const user = UserModelDto.toDto(payload.user);
 
     return {
       ...order,
       order_items,
       address,
+      shipping,
       user,
     };
   }
@@ -178,13 +185,6 @@ export class OrderParamsDto {
     required: false,
   })
   status?: string;
-
-  @ApiProperty({
-    example: 'PROCESSING',
-    description: 'Status de envio de um pedido',
-    required: false,
-  })
-  shipping_status?: string;
 
   @ApiProperty({
     example: 'John Doe',

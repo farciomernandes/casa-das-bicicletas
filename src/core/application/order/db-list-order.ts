@@ -18,7 +18,6 @@ export class DbListOrder {
   ): Promise<GetAllOrdersDto> {
     try {
       let response: GetAllOrdersDto;
-
       if (user.roles.value !== RolesEnum.ADMIN) {
         response = await this.orderRepository.getAll(params, user);
       } else {
@@ -31,6 +30,7 @@ export class DbListOrder {
         total: response.total,
       };
     } catch (error) {
+      console.log('erro completo => ', error);
       throw new InternalServerErrorException(error.message);
     }
   }

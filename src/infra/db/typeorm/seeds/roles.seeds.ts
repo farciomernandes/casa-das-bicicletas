@@ -15,6 +15,10 @@ export class RoleSeed implements IRoleSeed {
         label: 'Acesso geral ao sistema.',
         value: 'ADMIN',
       },
+      {
+        label: 'Acesso de usuário.',
+        value: 'CUSTOMER',
+      },
     ];
     for (const role of roles) {
       const alreadyExists = await this.roleRepository.findByValue(role.value);

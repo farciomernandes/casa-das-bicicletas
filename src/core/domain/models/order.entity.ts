@@ -4,17 +4,17 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToOne,
   JoinColumn,
-  DeleteDateColumn,
+  ManyToOne,
   OneToMany,
+  DeleteDateColumn,
 } from 'typeorm';
 import { SchemasEnum } from '@/infra/db/schema.enum';
 import { OrderStatusEnum } from '@/shared/enums/order_status.enum';
 import { User } from './user.entity';
 import { OrderItem } from './order_item.entity';
 import { Address } from './address.entity';
-import { ShippingStatusEnum } from '@/shared/enums/shipping_status.enum';
+import { Shipping } from './shipping.entity';
 
 @Entity({ name: 'orders', schema: SchemasEnum.users })
 export class Order {
@@ -23,9 +23,6 @@ export class Order {
 
   @Column({ type: 'enum', enum: OrderStatusEnum })
   status: string;
-
-  @Column({ type: 'enum', enum: ShippingStatusEnum, nullable: true })
-  shipping_status: string;
 
   @Column()
   total: number;
@@ -49,6 +46,13 @@ export class Order {
   @ManyToOne(() => Address)
   @JoinColumn({ name: 'address_id' })
   address: Address;
+
+  @Column()
+  shippings_id: string;
+
+  @ManyToOne(() => Shipping)
+  @JoinColumn({ name: 'shipping_id' })
+  shipping: Shipping;
 
   @CreateDateColumn()
   created_at: Date;
