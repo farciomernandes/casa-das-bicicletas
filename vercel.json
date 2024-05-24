@@ -3,14 +3,14 @@
     "buildCommand": "sh vercel.sh",
     "builds": [
         {
-            "src": "src/main.ts",
+            "src": "dist/main.js",
             "use": "@vercel/node"
         }
     ],
     "routes": [
         {
             "src": "^src/.*",
-            "dest": "src/main.ts"
+            "dest": "dist/main.ts"
         }
     ]
 }
