@@ -36,7 +36,7 @@ export class DbAddShipping implements IDbAddShippingRepository {
         {
           ...orderAlreadyExists,
           shippings_id: shipping.id,
-          total: Number(orderAlreadyExists.total + shipping.price),
+          total: Number(orderAlreadyExists.total) + Number(shipping.price),
         },
         orderAlreadyExists.id,
       );

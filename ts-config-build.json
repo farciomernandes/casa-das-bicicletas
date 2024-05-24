@@ -1,17 +1,7 @@
 {
     "extends": "./tsconfig.json",
-    "compilerOptions": {
-      "outDir": "./dist",
-      "rootDir": "./src",
-      "baseUrl": "./src",
-      "paths": {
-        "@/*": ["*"]
-      },
-      "module": "commonjs",
-      "target": "es6",
-      "sourceMap": true,
-      "declaration": true
-    },
-    "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
-  }
-  
+    "exclude": [
+        "**/*spec.ts",
+        "**/*.test.ts"
+    ]
+} 
