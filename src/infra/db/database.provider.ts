@@ -16,4 +16,9 @@ export const TypeOrmDataSource = new DataSource({
   migrationsTableName: 'migrations',
   migrations: [join(__dirname, 'typeorm/migrations/*.{js,ts}')],
   namingStrategy: new SnakeNamingStrategy(),
+  extra: {
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  },
 });
