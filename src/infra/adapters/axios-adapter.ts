@@ -8,9 +8,11 @@ export class AxiosAdapter {
 
   constructor(private readonly configService: ConfigService) {
     this.api = axios.create({
-      baseURL: configService.get<string>('ASAAS_API_URL'),
+      baseURL: configService.get<string>('CASA_DAS_BICICLETAS_ASAAS_API_URL'),
       headers: {
-        access_token: configService.get<string>('ASAAS_API_ACCESS_TOKEN'),
+        access_token: configService.get<string>(
+          'CASA_DAS_BICICLETAS_ASAAS_API_ACCESS_TOKEN',
+        ),
       },
     });
   }
