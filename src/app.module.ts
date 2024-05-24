@@ -5,11 +5,11 @@ import {
   RequestMethod,
 } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { setEnvironment } from '@/infra/config/enviroments';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './infra/guards/roles.guard';
 import { AuthMiddleware } from './infra/middleware/auth.middleware';
 import { JwtAdapter } from './infra/adapters/jwt-adapter';
+import { setEnvironment } from '@/infra/config/enviroments';
 import { Decrypter } from './core/domain/protocols/cryptography/decrypter';
 import { RoleModule } from './infra/ioc/role/role.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
