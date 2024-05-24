@@ -8,7 +8,7 @@ export class BcryptAdapter implements IHasher, HashComparer {
   private salt: number;
 
   constructor(private readonly configService: ConfigService) {
-    this.salt = Number(configService.get<string>('SALT'));
+    this.salt = Number(configService.get<string>('CASA_DAS_BICICLETAS_SALT'));
   }
 
   async hash(text: string): Promise<string> {
