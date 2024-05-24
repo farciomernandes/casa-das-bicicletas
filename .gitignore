@@ -1,4 +1,5 @@
 # compiled output
+/dist
 /node_modules
 /src/infra/proxy/mercado_pago
 /.docker**

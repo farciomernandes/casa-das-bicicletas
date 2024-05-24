@@ -1,16 +1,17 @@
 {
     "version": 2,
-    "buildCommand": "sh vercel.sh",
     "builds": [
-        {
-            "src": "dist/main.js",
-            "use": "@vercel/node"
-        }
+      {
+        "src": "dist/main.js",
+        "use": "@vercel/node"
+      }
     ],
     "routes": [
-        {
-            "src": "^src/.*",
-            "dest": "dist/main.ts"
-        }
-    ]
-}
+      {
+        "src": "/(.*)",
+        "dest": "/dist/main.js"
+      }
+    ],
+    "buildCommand": "npm run build"
+  }
+  
