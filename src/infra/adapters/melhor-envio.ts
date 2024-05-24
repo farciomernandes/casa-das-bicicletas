@@ -10,7 +10,9 @@ export class MelhorEnvioAdapter implements IShippingService {
   private url: string;
 
   constructor(private readonly configService: ConfigService) {
-    this.url = configService.get<string>('MELHOR_ENVIO_URL');
+    this.url = configService.get<string>(
+      'CASA_DAS_BICICLETAS_MELHOR_ENVIO_URL',
+    );
   }
 
   async calculateShipping(
@@ -43,7 +45,7 @@ export class MelhorEnvioAdapter implements IShippingService {
         {
           headers: {
             Authorization: `Bearer ${this.configService.get<string>(
-              'MELHOR_ENVIO_TOKEN_TOKEN',
+              'CASA_DAS_BICICLETAS_MELHOR_ENVIO_TOKEN_TOKEN',
             )}`,
             'Content-Type': 'application/json',
             'Accept-Encoding': 'gzip, compress, deflate, br',

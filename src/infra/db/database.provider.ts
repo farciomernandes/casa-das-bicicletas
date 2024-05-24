@@ -5,11 +5,11 @@ import { Env } from '../config/enviroments';
 
 export const TypeOrmDataSource = new DataSource({
   type: 'postgres',
-  host: Env.DB_HOST,
-  port: Number(Env.DB_PORT),
-  username: Env.DB_USERNAME,
-  password: Env.DB_PASSWORD,
-  database: Env.DB_NAME,
+  host: Env.CASA_DAS_BICICLETAS_DB_HOST,
+  port: Number(Env.CASA_DAS_BICICLETAS_DB_PORT),
+  username: Env.CASA_DAS_BICICLETAS_DB_USERNAME,
+  password: Env.CASA_DAS_BICICLETAS_DB_PASSWORD,
+  database: Env.CASA_DAS_BICICLETAS_DB_NAME,
   synchronize: false,
   logger: 'advanced-console',
   entities: [join(__dirname, 'typeorm/schemas/*.schema.{js,ts}')],
