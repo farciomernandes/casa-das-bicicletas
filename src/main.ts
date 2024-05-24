@@ -5,11 +5,11 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as basicAuth from 'express-basic-auth';
 import { ConfigService } from '@nestjs/config';
 import { AllExceptionsFilter } from './shared/filter/http-exception.filter';
-import * as cors from 'cors';
 import { LogServerStatus } from './shared/helpers/log-server-status';
+import { NestExpressApplication } from '@nestjs/platform-express';
 async function bootstrap() {
   try {
-    const app = await NestFactory.create(AppModule);
+    const app = await NestFactory.create<NestExpressApplication>(AppModule);
     const configService = app.get(ConfigService);
     const currentEnv = configService.get('NODE_ENV') || 'dev';
     const host = configService.get('CASA_DAS_BICICLETAS_DB_HOST');
@@ -44,7 +44,7 @@ async function bootstrap() {
       const document = SwaggerModule.createDocument(application, config);
       SwaggerModule.setup(swaggerRoute, application, document);
     };
-    app.use(cors());
+    app.enableCors();
     app.useGlobalPipes(new ValidationPipe());
     setupSwagger(app);
 
