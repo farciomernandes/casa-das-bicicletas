@@ -29,10 +29,18 @@ export class AddShippingIdToOrders1716475489380 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey(
-      `${SchemasEnum.users}.orders`,
-      'FK_orders_shippings_id',
+    const table = await queryRunner.getTable(`${SchemasEnum.users}.orders`);
+    const foreignKey = table.foreignKeys.find(
+      (fk) => fk.columnNames.indexOf('shippings_id') !== -1,
     );
+
+    if (foreignKey) {
+      await queryRunner.dropForeignKey(
+        `${SchemasEnum.users}.orders`,
+        foreignKey,
+      );
+    }
+
     await queryRunner.dropColumn(`${SchemasEnum.users}.orders`, 'shippings_id');
   }
 }
