@@ -55,7 +55,7 @@ export class CheckoutOrder implements ICheckoutOrder {
             id: order.id,
             order_items: order.order_items,
             status: order.status,
-            total: order.total,
+            total: Number(order.total),
             user: order.user,
           },
           user,

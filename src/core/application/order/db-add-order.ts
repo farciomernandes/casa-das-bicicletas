@@ -146,9 +146,9 @@ export class DbAddOrder implements IDbAddOrderRepository {
   private calculateTotal(orderItems: any[]) {
     let total = 0;
     for (const item of orderItems) {
-      total += item.sub_total;
+      total += Number(item.sub_total);
     }
-    return total;
+    return Number(total);
   }
 
   private async createDbOrderItem(
