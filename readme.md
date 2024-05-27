@@ -23,7 +23,7 @@
   * Onde adicionar a informação de parcelamento? Qual entidade? Qual fluxo?
   * Considerar os juros quando o parcelamento for aplicado
   * Permitir apagar imagem do S3 quando apagar product_variable
-  * Quando escolhe o frete, ele faz a soma do TOTAL. Deve ser possível deletar ou alterar e isso refletir no TOTAL
+  * Quando escolhe o frete, ele faz a soma do TOTAL. Deve ser possível deletar ou alterar e isso refletir no TOTAL.
 
 
   
