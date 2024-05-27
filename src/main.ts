@@ -12,7 +12,7 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     const configService = app.get(ConfigService);
     const currentEnv = configService.get('NODE_ENV') || 'dev';
-    const host = configService.get('CASA_DAS_BICICLETAS_DB_HOST');
+    const host = configService.get('CASA_DAS_BICICLETAS_DB_HOST') || 3000;
     app.useGlobalFilters(new AllExceptionsFilter());
     LogServerStatus.logEnv({ currentEnv });
 
@@ -49,7 +49,8 @@ async function bootstrap() {
     setupSwagger(app);
 
     const port = configService.get('CASA_DAS_BICICLETAS_PORT') || 3000;
-    await app.listen(port);
+    await app.listen(port, '0.0.0.0');
+
     LogServerStatus.logSuccess({ isProduction: false, port, host });
 
     console.log(`App is running on http://localhost:${port} 🚀`);
