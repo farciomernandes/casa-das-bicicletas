@@ -39,3 +39,4 @@ lerna-debug.log*
 
 tsconfig.build.tsbuildinfo
 .env
+.vercel
