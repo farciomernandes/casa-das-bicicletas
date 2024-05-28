@@ -26,6 +26,7 @@ import { OrderModule } from './infra/ioc/order/order.module';
 import { OrderItemModule } from './infra/ioc/order_item/order_item.module';
 import { AuthModule } from './infra/ioc/auth/auth.module';
 import { ShippingModule } from './infra/ioc/shipping/shipping.module';
+import { HealthModule } from './infra/ioc/health.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { ShippingModule } from './infra/ioc/shipping/shipping.module';
         return dataSource;
       },
     }),
+    HealthModule,
     AuthModule,
     RoleModule,
     StateModule,
