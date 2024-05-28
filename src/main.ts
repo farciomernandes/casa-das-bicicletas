@@ -12,7 +12,7 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     const configService = app.get(ConfigService);
     const currentEnv = configService.get('NODE_ENV') || 'dev';
-    const host = configService.get('CASA_DAS_BICICLETAS_DB_HOST');
+    const host = app.getHttpServer().address()?.address || 'localhost';
     app.useGlobalFilters(new AllExceptionsFilter());
     LogServerStatus.logEnv({ currentEnv });
 
