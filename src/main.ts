@@ -18,19 +18,17 @@ async function bootstrap() {
 
     const setupSwagger = (application: INestApplication) => {
       let swaggerRoute = '/';
-      if (currentEnv !== 'production') {
-        application.use(
-          ['/docs', '/docs-json'],
-          basicAuth({
-            challenge: true,
-            users: {
-              [configService.get('CASA_DAS_BICICLETAS_SWAGGER_USERNAME')]:
-                configService.get('CASA_DAS_BICICLETAS_SWAGGER_PASSWORD'),
-            },
-          }),
-        );
-        swaggerRoute = '/docs';
-      }
+      application.use(
+        ['/docs', '/docs-json'],
+        basicAuth({
+          challenge: true,
+          users: {
+            [configService.get('CASA_DAS_BICICLETAS_SWAGGER_USERNAME')]:
+              configService.get('CASA_DAS_BICICLETAS_SWAGGER_PASSWORD'),
+          },
+        }),
+      );
+      swaggerRoute = '/docs';
 
       const config = new DocumentBuilder()
         .setTitle(configService.get('CASA_DAS_BICICLETAS_SWAGGER_TITLE'))
