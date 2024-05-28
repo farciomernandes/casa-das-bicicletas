@@ -1,6 +1,8 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiTags, ApiOkResponse } from '@nestjs/swagger';
-
+export class HealthStatusDto {
+  status: string;
+}
 @ApiTags('health')
 @Controller('api/v1/health')
 export class HealthController {
@@ -12,8 +14,4 @@ export class HealthController {
   check(): HealthStatusDto {
     return { status: 'OK' };
   }
-}
-
-export class HealthStatusDto {
-  status: string;
 }
