@@ -24,8 +24,8 @@ async function bootstrap() {
           basicAuth({
             challenge: true,
             users: {
-              [configService.get('SWAGGER_USERNAME')]:
-                configService.get('SWAGGER_PASSWORD'),
+              [configService.get('CASA_DAS_BICICLETAS_SWAGGER_USERNAME')]:
+                configService.get('CASA_DAS_BICICLETAS_SWAGGER_PASSWORD'),
             },
           }),
         );
@@ -33,9 +33,11 @@ async function bootstrap() {
       }
 
       const config = new DocumentBuilder()
-        .setTitle(configService.get('SWAGGER_TITLE'))
-        .setDescription(configService.get('SWAGGER_DESCRIPTION'))
-        .setVersion(configService.get('SWAGGER_VERSION'))
+        .setTitle(configService.get('CASA_DAS_BICICLETAS_SWAGGER_TITLE'))
+        .setDescription(
+          configService.get('CASA_DAS_BICICLETAS_SWAGGER_DESCRIPTION'),
+        )
+        .setVersion(configService.get('CASA_DAS_BICICLETAS_SWAGGER_VERSION'))
         .addBearerAuth()
         .build();
 
@@ -46,7 +48,7 @@ async function bootstrap() {
     app.useGlobalPipes(new ValidationPipe());
     setupSwagger(app);
 
-    const port = configService.get('PORT') || 3000;
+    const port = configService.get('CASA_DAS_BICICLETAS_PORT') || 3000;
     await app.listen(port);
     LogServerStatus.logSuccess({ isProduction: false, port, host });
 

@@ -10,6 +10,7 @@
   * npm run migration:create src/infra/db/typeorm/migrations/NOME_DA_MIGRATION
   * Configurar o webhook da asaas apontando para o endpoint POST /api/v1/order/payment-webhook
   * Para rodar as seeds criando a role de administrador e adicionando cidades e estados segundo o IBGE rode npm run seed
+  * Criação da imagem sudo docker run -it <NOME> /bin/bash  && docker run -p 3000:3000 <NOME> 
 
   > ## Erros comuns
   * Apagar tsconfig.build.tsbuildinfo caso o build não esteja sendo feito ao rodar npm run build
@@ -67,7 +68,8 @@
 * NPM
 * PostgreSQL
 * Cadastro no Asaas para credenciais e webhook
-* Cadastro na AWS para credenciais e bucket 
+* Cadastro na AWS para credenciais e bucket
+* Cadastro no MELHOR ENVIO para credenciais 
 
 [![Code Style: Standard](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
 [![License: GPLv3](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
