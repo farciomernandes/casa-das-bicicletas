@@ -49,10 +49,8 @@ async function bootstrap() {
     setupSwagger(app);
 
     const port = configService.get('CASA_DAS_BICICLETAS_PORT') || 3000;
-    await app.listen(port);
+    await app.listen(port, '0.0.0.0');
     LogServerStatus.logSuccess({ isProduction: false, port, host });
-
-    console.log(`App is running on http://localhost:${port} 🚀`);
   } catch (error) {
     LogServerStatus.logError({ error });
     console.error('Error starting the application:', error);
