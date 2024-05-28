@@ -10,9 +10,13 @@ export class S3Storage implements S3Repository {
 
   constructor(private readonly configService: ConfigService) {
     this.client = new AWS.S3({
-      region: configService.get<string>('AWS_REGION'),
-      accessKeyId: configService.get<string>('AWS_ACCESS_KEY_ID'),
-      secretAccessKey: configService.get<string>('AWS_SECRET_KEY'),
+      region: configService.get<string>('CASA_DAS_BICICLETAS_AWS_REGION'),
+      accessKeyId: configService.get<string>(
+        'CASA_DAS_BICICLETAS_AWS_ACCESS_KEY_ID',
+      ),
+      secretAccessKey: configService.get<string>(
+        'CASA_DAS_BICICLETAS_AWS_SECRET_KEY',
+      ),
     });
   }
 
@@ -21,7 +25,9 @@ export class S3Storage implements S3Repository {
       const { filename, mimetype, path } = file;
 
       if (!bucket) {
-        bucket = this.configService.get<string>('AWS_BUCKET');
+        bucket = this.configService.get<string>(
+          'CASA_DAS_BICICLETAS_AWS_BUCKET',
+        );
       }
 
       const fileContent = await fsPromises.readFile(path);
@@ -42,6 +48,7 @@ export class S3Storage implements S3Repository {
 
       return objectUrl;
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException('Erro ao salvar o arquivo no S3');
     }
   }
@@ -52,7 +59,9 @@ export class S3Storage implements S3Repository {
     try {
       await this.client
         .deleteObject({
-          Bucket: this.configService.get<string>('AWS_BUCKET'),
+          Bucket: this.configService.get<string>(
+            'CASA_DAS_BICICLETAS_AWS_BUCKET',
+          ),
           Key: name,
         })
         .promise();

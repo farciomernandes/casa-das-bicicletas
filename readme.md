@@ -20,11 +20,13 @@
 
   * Retornar nome do produto GET /orders
   * Deve verificar status do correio
+  * USAR TRANSACTION NO FLUXO DE ORDER CHECKOUT
   * Get Order, retornar tambem: product (name e id) dentro de product_variables e city em address
   * Onde adicionar a informação de parcelamento? Qual entidade? Qual fluxo?
   * Considerar os juros quando o parcelamento for aplicado
   * Permitir apagar imagem do S3 quando apagar product_variable
   * Quando escolhe o frete, ele faz a soma do TOTAL. Deve ser possível deletar ou alterar e isso refletir no TOTAL
+  * Apagar ORDERS com status NULL que tem 10 dias e não foram pagos
 
 
   
