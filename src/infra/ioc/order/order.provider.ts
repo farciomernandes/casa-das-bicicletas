@@ -212,6 +212,7 @@ export const orderProvider: Provider[] = [
       dbUpdateOrderItem: IDbUpdateOrderRepository,
       paymentService: IPaymentProcess,
       addressRepository: AddressRepository,
+      dataSource: DataSource,
     ): CheckoutOrder => {
       return new CheckoutOrder(
         orderRepository,
@@ -219,6 +220,7 @@ export const orderProvider: Provider[] = [
         dbUpdateOrderItem,
         paymentService,
         addressRepository,
+        dataSource,
       );
     },
     inject: [
@@ -227,6 +229,7 @@ export const orderProvider: Provider[] = [
       DbUpdateOrder,
       AsaasPaymentService,
       AddressTypeOrmRepository,
+      getDataSourceToken(),
     ],
   },
   {

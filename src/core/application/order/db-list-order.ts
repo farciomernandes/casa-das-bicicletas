@@ -29,7 +29,6 @@ export class DbListOrder {
         total: response.total,
       };
     } catch (error) {
-      console.log('erro completo => ', error);
       throw new InternalServerErrorException(error.message);
     }
   }

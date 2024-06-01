@@ -12,6 +12,7 @@ import {
   OrderParamsDto,
 } from '@/presentation/dtos/order/order-model.dto';
 import { Authenticated } from '@/presentation/dtos/auth/authenticated.dto';
+import { EntityManager } from 'typeorm';
 
 @Injectable()
 export abstract class OrderRepository
@@ -33,4 +34,10 @@ export abstract class OrderRepository
   ): Promise<OrderModelDto>;
   abstract delete(id: string): Promise<void>;
   abstract update(payload: UpdateOrderDto, id: string): Promise<OrderModelDto>;
+
+  abstract updateTransactionMode(
+    payload: UpdateOrderDto,
+    id: string,
+    entityManager: EntityManager,
+  ): Promise<OrderModelDto>;
 }

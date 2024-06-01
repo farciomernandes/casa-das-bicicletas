@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { Order } from '@/core/domain/models/order.entity';
 import { OrderRepository } from '@/core/domain/protocols/repositories/order';
 import { UpdateOrderDto } from '@/presentation/dtos/order/update-order.dto';
@@ -13,14 +13,25 @@ import {
 export class OrderTypeOrmRepository implements OrderRepository {
   constructor(private readonly orderRepository: Repository<Order>) {}
 
-  async update(payload: UpdateOrderDto, id: string): Promise<OrderModelDto> {
+  async update(
+    payload: UpdateOrderDto,
+    id: string,
+    entityManager?: EntityManager,
+  ): Promise<OrderModelDto> {
     try {
-      const order = await this.orderRepository.findOneOrFail({
+      const repository = entityManager
+        ? entityManager.getRepository(Order)
+        : this.orderRepository;
+
+      console.log('veio -> ', entityManager);
+      console.log('repository -> ', repository);
+
+      const order = await repository.findOneOrFail({
         where: { id },
       });
 
-      await this.orderRepository.merge(order, payload);
-      await this.orderRepository.save(order);
+      await repository.merge(order, payload);
+      await repository.save(order);
       const response = await this.findById(id);
       return OrderModelDto.toDto(response);
     } catch (error) {
@@ -111,6 +122,27 @@ export class OrderTypeOrmRepository implements OrderRepository {
       return OrderModelDto.toDto(await this.findById(orderSaved.id));
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  async updateTransactionMode(
+    payload: UpdateOrderDto,
+    id: string,
+    entityManager?: EntityManager,
+  ): Promise<OrderModelDto> {
+    try {
+      const repository = entityManager.getRepository(Order);
+
+      const order = await repository.findOneOrFail({
+        where: { id },
+      });
+
+      await repository.merge(order, payload);
+      await repository.save(order);
+      const response = await this.findById(id);
+      return OrderModelDto.toDto(response);
+    } catch (error) {
+      throw new Error('Order not found');
     }
   }
 }

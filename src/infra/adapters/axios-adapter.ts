@@ -8,9 +8,11 @@ export class AxiosAdapter {
 
   constructor(private readonly configService: ConfigService) {
     this.api = axios.create({
-      baseURL: configService.get<string>('ASAAS_API_URL'),
+      baseURL: configService.get<string>('CASA_DAS_BICICLETAS_ASAAS_API_URL'),
       headers: {
-        access_token: configService.get<string>('ASAAS_API_ACCESS_TOKEN'),
+        access_token: configService.get<string>(
+          'CASA_DAS_BICICLETAS_ASAAS_API_ACCESS_TOKEN',
+        ),
       },
     });
   }
@@ -20,6 +22,7 @@ export class AxiosAdapter {
       const response = await this.api.get(url);
       return response.data;
     } catch (error) {
+      console.log('Erro GET ', error);
       console.error('Erro ao fazer a solicitação GET:', error.response.data);
       throw error;
     }
@@ -30,6 +33,7 @@ export class AxiosAdapter {
       const response = await this.api.post(url, data);
       return response.data;
     } catch (error) {
+      console.log('Erro POST ', error);
       console.log('Erro ao fazer a solicitação POST:', error.response.data);
       throw error;
     }

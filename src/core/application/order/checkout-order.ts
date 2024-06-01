@@ -3,6 +3,7 @@ import {
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
+import { DataSource } from 'typeorm';
 import { UserRepository } from '../../domain/protocols/repositories/user';
 import { CheckoutOrderDto } from '@/presentation/dtos/checkout/process-payment.dto';
 import { IDbUpdateOrderRepository } from '@/core/domain/protocols/db/order/update-order-repository';
@@ -22,6 +23,7 @@ export class CheckoutOrder implements ICheckoutOrder {
     private dbUpdateOrder: IDbUpdateOrderRepository,
     private paymentService: IPaymentProcess,
     private addressRepository: AddressRepository,
+    private dataSource: DataSource,
   ) {}
 
   async process(
@@ -29,6 +31,10 @@ export class CheckoutOrder implements ICheckoutOrder {
     user_id: string,
     payment: CheckoutOrderDto,
   ): Promise<CheckoutOrderModelDto> {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
     try {
       const user = await this.userRepository.findById(user_id);
       if (!user) {
@@ -36,7 +42,7 @@ export class CheckoutOrder implements ICheckoutOrder {
       }
       const order = await this.orderRepository.findById(order_id);
       if (!order) {
-        throw new BadRequestException(`Order with id ${user_id} not found`);
+        throw new BadRequestException(`Order with id ${order_id} not found`);
       }
 
       if (order.status == OrderStatusEnum.PAID) {
@@ -63,7 +69,7 @@ export class CheckoutOrder implements ICheckoutOrder {
           AddressModelDto.toDto(address),
         );
 
-      const updated = await this.dbUpdateOrder.update(
+      const updated = await this.orderRepository.updateTransactionMode(
         {
           ...order,
           transaction_id,
@@ -71,17 +77,23 @@ export class CheckoutOrder implements ICheckoutOrder {
           address_id: address.id,
         },
         order.id,
+        queryRunner.manager, // Passar o manager do queryRunner
       );
+
+      await queryRunner.commitTransaction();
 
       return {
         transaction,
         order: updated,
       };
     } catch (error) {
+      await queryRunner.rollbackTransaction();
       if (error instanceof BadRequestException) {
         throw error;
       }
       throw new InternalServerErrorException(error.message);
+    } finally {
+      await queryRunner.release();
     }
   }
 }
