@@ -8,10 +8,11 @@ import { IDbAddOrderRepository } from '@/core/domain/protocols/db/order/add-orde
 import { UserRepository } from '@/core/domain/protocols/repositories/user';
 import { OrderRepository } from '@/core/domain/protocols/repositories/order';
 import { AddOrderDto } from '@/presentation/dtos/order/add-order.dto';
-import { IDbAddOrderItemRepository } from '@/core/domain/protocols/db/order_item/add-order_item-repository';
 import { OrderModelDto } from '@/presentation/dtos/order/order-model.dto';
 import { ProductRepository } from '@/core/domain/protocols/repositories/product';
 import { ProductVariablesRepository } from '@/core/domain/protocols/repositories/product_variable';
+import { DataSource, EntityManager } from 'typeorm';
+import { OrderItemRepository } from '@/core/domain/protocols/repositories/order_item';
 
 @Injectable()
 export class DbAddOrder implements IDbAddOrderRepository {
@@ -20,23 +21,36 @@ export class DbAddOrder implements IDbAddOrderRepository {
   constructor(
     private readonly orderRepository: OrderRepository,
     private readonly userRepository: UserRepository,
-    private readonly dbAddOrderItem: IDbAddOrderItemRepository,
+    private readonly orderItemRepository: OrderItemRepository,
     private readonly productRepository: ProductRepository,
     private readonly productVariablesRepository: ProductVariablesRepository,
+    private dataSource: DataSource,
   ) {}
 
-  async create(payload: AddOrderDto, userId: string): Promise<OrderModelDto> {
+  async create(payload: AddOrderDto, userId: string): Promise<any> {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
     try {
       const user = await this.getUser(userId);
-      const order = await this.createOrder(user);
+      const order = await this.createOrder(user, queryRunner.manager);
+
       const orderItems = await this.createOrderItems(
         payload.order_items,
         order.id,
+        queryRunner.manager,
       );
+
       const total = this.calculateTotal(orderItems);
-      await this.updateOrderTotal(order.id, total);
+
+      await this.updateOrderTotal(order.id, total, queryRunner.manager);
       order.order_items = orderItems;
       order.total = total;
+      order.user = user;
+
+      await queryRunner.commitTransaction();
+
       return OrderModelDto.toDto(order);
     } catch (error) {
       this.handleException(error);
@@ -51,19 +65,25 @@ export class DbAddOrder implements IDbAddOrderRepository {
     return user;
   }
 
-  private async createOrder(user: any) {
+  private async createOrder(user: any, entityManager: EntityManager) {
     try {
-      const order = await this.orderRepository.create(
+      const order = await this.orderRepository.createTransactionMode(
         { total: 0, status: null, order_items: [] },
         user.id,
+        entityManager,
       );
+
       return order;
     } catch (error) {
       return error;
     }
   }
 
-  private async createOrderItems(orderItemsPayload: any[], orderId: string) {
+  private async createOrderItems(
+    orderItemsPayload: any[],
+    orderId: string,
+    entityManager: EntityManager,
+  ) {
     const orderItems: any[] = [];
     for (const item of orderItemsPayload) {
       const productVariable = await this.getProductVariable(
@@ -92,6 +112,7 @@ export class DbAddOrder implements IDbAddOrderRepository {
         productVariable.id,
         item.quantity,
         subTotal,
+        entityManager,
       );
     }
     return orderItems;
@@ -156,20 +177,29 @@ export class DbAddOrder implements IDbAddOrderRepository {
     productVariableId: string,
     quantity: number,
     subTotal: number,
+    entityManager: EntityManager,
   ) {
-    await this.dbAddOrderItem.create({
-      order_id: orderId,
-      product_variables_id: productVariableId,
-      quantity: quantity,
-      sub_total: subTotal,
-    });
+    await this.orderItemRepository.createTransactionMode(
+      {
+        order_id: orderId,
+        product_variables_id: productVariableId,
+        quantity: quantity,
+        sub_total: subTotal,
+      },
+      entityManager,
+    );
   }
 
   private async updateOrderTotal(
     orderId: string,
     total: number,
+    entityManager: EntityManager,
   ): Promise<void> {
-    await this.orderRepository.update({ total, status: null }, orderId);
+    await this.orderRepository.updateTransactionMode(
+      { total, status: null },
+      orderId,
+      entityManager,
+    );
   }
 
   private handleException(error: Error) {

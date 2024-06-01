@@ -77,7 +77,7 @@ export class CheckoutOrder implements ICheckoutOrder {
           address_id: address.id,
         },
         order.id,
-        queryRunner.manager, // Passar o manager do queryRunner
+        queryRunner.manager,
       );
 
       await queryRunner.commitTransaction();

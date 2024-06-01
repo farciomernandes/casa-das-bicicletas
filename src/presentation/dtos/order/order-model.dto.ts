@@ -135,10 +135,9 @@ export class OrderModelDto {
     );
 
     let address = null;
-    if (payload.address) {
+    if (payload?.address) {
       address = AddressModelDto.toDto(payload.address);
     }
-    console.log();
 
     let shipping = payload.shippings ? payload.shippings : null;
     if (payload.shippings) {

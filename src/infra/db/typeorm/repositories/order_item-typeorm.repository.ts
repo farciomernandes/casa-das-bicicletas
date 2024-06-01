@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { OrderItem } from '@/core/domain/models/order_item.entity';
 import { OrderItemRepository } from '@/core/domain/protocols/repositories/order_item';
 import { UpdateOrderItemDto } from '@/presentation/dtos/order_item/update-order_item.dto';
@@ -7,6 +7,18 @@ import { OrderItemDto } from '@/presentation/dtos/order_item/order_item-model.dt
 
 export class OrderItemTypeOrmRepository implements OrderItemRepository {
   constructor(private readonly orderItemRepository: Repository<OrderItem>) {}
+  async createTransactionMode(
+    payload: AddOrderItemDto,
+    entityManager: EntityManager,
+  ): Promise<OrderItemDto> {
+    const repository = entityManager
+      ? entityManager.getRepository(OrderItem)
+      : this.orderItemRepository;
+
+    const orderItem = repository.create(payload);
+    const order = repository.save(orderItem);
+    return OrderItemDto.toDto(order);
+  }
 
   async update(payload: UpdateOrderItemDto, id: string): Promise<OrderItem> {
     try {

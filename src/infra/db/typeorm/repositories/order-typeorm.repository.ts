@@ -9,9 +9,32 @@ import {
   OrderModelDto,
   OrderParamsDto,
 } from '@/presentation/dtos/order/order-model.dto';
+import { InternalServerErrorException } from '@nestjs/common';
 
 export class OrderTypeOrmRepository implements OrderRepository {
   constructor(private readonly orderRepository: Repository<Order>) {}
+  async createTransactionMode(
+    payload: AddOrderDto,
+    user_id: string,
+    entityManager: EntityManager,
+  ) {
+    try {
+      const repository = entityManager
+        ? entityManager.getRepository(Order)
+        : this.orderRepository;
+
+      const order = repository.create({
+        ...payload,
+        user_id,
+      });
+
+      const orderSaved = await repository.save(order);
+
+      return orderSaved;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   async update(
     payload: UpdateOrderDto,
@@ -50,6 +73,26 @@ export class OrderTypeOrmRepository implements OrderRepository {
       .where('order.id = :id', { id })
       .getOne();
 
+    return OrderModelDto.toDto(order);
+  }
+
+  async findByIdToTransaction(id: string): Promise<OrderModelDto | Order> {
+    const order = await this.orderRepository
+      .createQueryBuilder('order')
+      .leftJoinAndSelect('order.user', 'user')
+      .leftJoinAndSelect('order.address', 'addresses')
+      .leftJoinAndSelect('order.order_items', 'order_items')
+      .leftJoinAndSelect('order_items.product_variables', 'product_variables')
+      .leftJoinAndSelect('order.shippings', 'shippings')
+      .where('order.id = :id', { id })
+      .getOne();
+
+    if (!order) {
+      // Retorne null se o pedido não for encontrado
+      return null;
+    }
+
+    // Converta o pedido para o formato DTO
     return OrderModelDto.toDto(order);
   }
 
@@ -129,7 +172,7 @@ export class OrderTypeOrmRepository implements OrderRepository {
     payload: UpdateOrderDto,
     id: string,
     entityManager?: EntityManager,
-  ): Promise<OrderModelDto> {
+  ): Promise<any> {
     try {
       const repository = entityManager.getRepository(Order);
 
@@ -138,11 +181,17 @@ export class OrderTypeOrmRepository implements OrderRepository {
       });
 
       await repository.merge(order, payload);
+
       await repository.save(order);
-      const response = await this.findById(id);
+
+      const response = await this.findByIdToTransaction(id);
+      if (!response) {
+        return order;
+      }
+
       return OrderModelDto.toDto(response);
     } catch (error) {
-      throw new Error('Order not found');
+      throw new InternalServerErrorException('Order not found');
     }
   }
 }

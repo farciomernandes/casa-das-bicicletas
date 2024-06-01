@@ -27,12 +27,22 @@ export abstract class OrderRepository
     params: OrderParamsDto,
     user?: Authenticated,
   ): Promise<GetAllOrdersDto>;
+
   abstract findById(id: string): Promise<OrderModelDto>;
+
   abstract create(
     payload: AddOrderDto,
     user_id: string,
   ): Promise<OrderModelDto>;
+
+  abstract createTransactionMode(
+    payload: AddOrderDto,
+    user_id: string,
+    entityManager: EntityManager,
+  );
+
   abstract delete(id: string): Promise<void>;
+
   abstract update(payload: UpdateOrderDto, id: string): Promise<OrderModelDto>;
 
   abstract updateTransactionMode(

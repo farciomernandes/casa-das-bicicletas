@@ -184,24 +184,27 @@ export const orderProvider: Provider[] = [
     useFactory: (
       orderRepository: OrderRepository,
       userRepository: UserRepository,
-      dbAddOrderItem: IDbAddOrderItemRepository,
+      orderItemRepository: OrderItemRepository,
       productRepository: ProductRepository,
       productVariablesRepository: ProductVariablesRepository,
+      dataSource: DataSource,
     ): DbAddOrder => {
       return new DbAddOrder(
         orderRepository,
         userRepository,
-        dbAddOrderItem,
+        orderItemRepository,
         productRepository,
         productVariablesRepository,
+        dataSource,
       );
     },
     inject: [
       OrderTypeOrmRepository,
       UserTypeOrmRepository,
-      DbAddOrderItem,
+      OrderItemTypeOrmRepository,
       ProductTypeOrmRepository,
       ProductVariablesTypeOrmRepository,
+      getDataSourceToken(),
     ],
   },
   {

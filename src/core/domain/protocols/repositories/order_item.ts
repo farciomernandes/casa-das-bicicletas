@@ -8,6 +8,7 @@ import { IDbDeleteOrderItemRepository } from '../db/order_item/delete-order_item
 import { AddOrderItemDto } from '@/presentation/dtos/order_item/add-order_item.dto';
 import { UpdateOrderItemDto } from '@/presentation/dtos/order_item/update-order_item.dto';
 import { OrderItemDto } from '@/presentation/dtos/order_item/order_item-model.dto';
+import { EntityManager } from 'typeorm';
 
 @Injectable()
 export abstract class OrderItemRepository
@@ -21,6 +22,10 @@ export abstract class OrderItemRepository
   abstract findById(id: string): Promise<OrderItem>;
   abstract getAll(): Promise<OrderItemDto[]>;
   abstract create(payload: AddOrderItemDto): Promise<OrderItemDto>;
+  abstract createTransactionMode(
+    payload: AddOrderItemDto,
+    entityManager: EntityManager,
+  ): Promise<OrderItemDto>;
   abstract delete(id: string): Promise<void>;
   abstract update(payload: UpdateOrderItemDto, id: string): Promise<OrderItem>;
 }
