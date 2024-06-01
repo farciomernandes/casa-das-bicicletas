@@ -4,6 +4,5 @@ export abstract class IShippingCalculate {
   abstract calculateShipping(
     order_id: string,
     to_postal_code: string,
-    from_postal_code: string,
   ): Promise<ShippingOptionDto[]>;
 }

@@ -18,11 +18,10 @@ export class MelhorEnvioAdapter implements IShippingService {
   async calculateShipping(
     order: OrderModelDto,
     to_postal_code: string,
-    from_postal_code: string,
   ): Promise<ShippingOptionDto[]> {
     const payload = {
       from: {
-        postal_code: from_postal_code,
+        postal_code: this.configService.get<string>('CEP_CASA_DAS_BICICLETAS'),
       },
       to: {
         postal_code: to_postal_code,
@@ -57,6 +56,7 @@ export class MelhorEnvioAdapter implements IShippingService {
       );
       return response.data.map((item) => ShippingOptionDto.toDto(item));
     } catch (error) {
+      console.log(error);
       throw new BadRequestException(
         'Error calculating shipping: ' + error.message,
       );

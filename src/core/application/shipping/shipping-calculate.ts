@@ -7,7 +7,6 @@ import { OrderRepository } from '@/core/domain/protocols/repositories/order';
 import { IShippingCalculate } from '@/core/domain/protocols/shipping/IShippingCalculate';
 import { ShippingOptionDto } from '@/presentation/dtos/shipping/shipping-calculate.dto';
 import { IShippingService } from '@/core/domain/protocols/melhor-envio/melhor-envio-service';
-import { Env } from '@/infra/config/enviroments';
 
 @Injectable()
 export class ShippingCalculate implements IShippingCalculate {
@@ -19,7 +18,6 @@ export class ShippingCalculate implements IShippingCalculate {
   async calculateShipping(
     order_id: string,
     to_postal_code: string,
-    from_postal_code: string,
   ): Promise<ShippingOptionDto[]> {
     try {
       const order = await this.orderRepository.findById(order_id);
@@ -33,7 +31,6 @@ export class ShippingCalculate implements IShippingCalculate {
       return await this.shippingService.calculateShipping(
         order,
         to_postal_code,
-        Env.CASA_DAS_BICICLETAS_CEP,
       );
     } catch (error) {
       if (error instanceof BadRequestException) {
