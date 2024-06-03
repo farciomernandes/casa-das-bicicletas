@@ -93,6 +93,10 @@ export class ProductTypeOrmRepository implements ProductRepository {
       });
     }
 
+    if (params.limit) {
+      queryBuilder.take(params.limit);
+    }
+
     queryBuilder.leftJoinAndSelect('product.category', 'category');
     queryBuilder.leftJoinAndSelect(
       'product.product_variables',
