@@ -88,11 +88,9 @@ export class OrderTypeOrmRepository implements OrderRepository {
       .getOne();
 
     if (!order) {
-      // Retorne null se o pedido não for encontrado
       return null;
     }
 
-    // Converta o pedido para o formato DTO
     return OrderModelDto.toDto(order);
   }
 

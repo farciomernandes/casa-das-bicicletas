@@ -3,6 +3,29 @@ import { Expose, plainToInstance } from 'class-transformer';
 import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
 import { ProductModelDto } from '../product/product-model.dto';
 
+export class ProductLocallyModel {
+  @ApiProperty({
+    type: String,
+    example: '65bd52691a0f4c3b57819a4b',
+    required: false,
+  })
+  @Expose()
+  id: string;
+
+  @ApiProperty({
+    type: String,
+    example: 'Mountain Bike',
+    required: false,
+  })
+  @Expose()
+  name: string;
+
+  static toDto(payload: any): ProductLocallyModel {
+    return plainToInstance(ProductLocallyModel, payload, {
+      excludeExtraneousValues: true,
+    });
+  }
+}
 export class ProductVariablesModel {
   @ApiProperty({
     type: String,
@@ -184,8 +207,17 @@ export class ProductVariablesModel {
   product?: Omit<ProductModelDto, 'product_variables'>;
 
   static toDto(payload: any): ProductVariablesModel {
-    return plainToInstance(ProductVariablesModel, payload, {
+    let product = null;
+    if (payload.product) {
+      product = ProductLocallyModel.toDto(payload.product);
+    }
+    const converted = plainToInstance(ProductVariablesModel, payload, {
       excludeExtraneousValues: true,
     });
+
+    return {
+      ...converted,
+      product,
+    };
   }
 }
