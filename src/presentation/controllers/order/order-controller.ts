@@ -82,7 +82,7 @@ export class OrderController {
     status: HttpStatus.OK,
     type: GetAllOrdersDto,
   })
-  @Roles(RolesEnum.ADMIN)
+  @Roles(RolesEnum.ADMIN, RolesEnum.CUSTOMER)
   @UseGuards(RolesGuard)
   @ApiBearerAuth()
   async getAll(
@@ -102,6 +102,8 @@ export class OrderController {
     status: HttpStatus.OK,
     type: OrderModelDto,
   })
+  @Roles(RolesEnum.ADMIN, RolesEnum.CUSTOMER)
+  @UseGuards(RolesGuard)
   @ApiBearerAuth()
   async findById(@Param('id') id: string): Promise<OrderModelDto> {
     try {
@@ -116,7 +118,7 @@ export class OrderController {
     type: UpdateOrderDto,
   })
   @ApiOkResponse({
-    description: 'Delete success.',
+    description: 'Update success.',
     status: HttpStatus.OK,
     type: OrderModelDto,
   })
