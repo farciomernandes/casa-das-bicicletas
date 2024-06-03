@@ -46,9 +46,6 @@ export class OrderTypeOrmRepository implements OrderRepository {
         ? entityManager.getRepository(Order)
         : this.orderRepository;
 
-      console.log('veio -> ', entityManager);
-      console.log('repository -> ', repository);
-
       const order = await repository.findOneOrFail({
         where: { id },
       });

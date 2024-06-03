@@ -122,6 +122,7 @@ export class OrderController {
     status: HttpStatus.OK,
     type: OrderModelDto,
   })
+  @Roles(RolesEnum.ADMIN, RolesEnum.CUSTOMER)
   @ApiBearerAuth()
   async update(
     @Param('id') id: string,
@@ -167,7 +168,7 @@ export class OrderController {
   @ApiCreatedResponse({ type: CheckoutOrderModelDto })
   @Post('checkout/:id')
   @HttpCode(HttpStatus.CREATED)
-  @Roles(RolesEnum.ADMIN)
+  @Roles(RolesEnum.ADMIN, RolesEnum.CUSTOMER)
   @UseGuards(RolesGuard)
   @ApiBearerAuth()
   async checkout(
