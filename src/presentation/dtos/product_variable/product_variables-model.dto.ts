@@ -207,13 +207,13 @@ export class ProductVariablesModel {
   product?: Omit<ProductModelDto, 'product_variables'>;
 
   static toDto(payload: any): ProductVariablesModel {
-    let product = null;
-    if (payload.product) {
-      product = ProductLocallyModel.toDto(payload.product);
-    }
     const converted = plainToInstance(ProductVariablesModel, payload, {
       excludeExtraneousValues: true,
     });
+    let product = null;
+    if (payload?.product) {
+      product = ProductLocallyModel.toDto(payload.product);
+    }
 
     return {
       ...converted,
