@@ -10,7 +10,7 @@ import {
 } from '@/presentation/dtos/product/product-model.dto';
 
 export class ProductTypeOrmRepository implements ProductRepository {
-  constructor(private readonly productRepository: Repository<Product>) {}
+  constructor(private readonly productRepository: Repository<Product>) { }
 
   async findByName(name: string): Promise<Product> {
     return this.productRepository.findOne({ where: { name } });
@@ -93,17 +93,15 @@ export class ProductTypeOrmRepository implements ProductRepository {
       });
     }
 
-    if (params.limit) {
-      queryBuilder.take(params.limit);
-    }
-
     queryBuilder.leftJoinAndSelect('product.category', 'category');
     queryBuilder.leftJoinAndSelect(
       'product.product_variables',
       'product_variables',
     );
 
-    const [products, total] = await queryBuilder.getManyAndCount();
+    const [products, total] = await queryBuilder
+      .take(params.limit)
+      .skip((params.page - 1) * params.limit).getManyAndCount();
 
     const totalPages = Math.ceil(total / params.limit);
 
