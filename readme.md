@@ -18,13 +18,7 @@
 
   > ## Melhorias pendentes
 
-  * Retornar nome do produto GET /orders
   * Deve verificar status do correio
-  * USAR TRANSACTION NO FLUXO DE ORDER CHECKOUT
-  * Get Order, retornar tambem: product (name e id) dentro de product_variables e city em address
-  * Onde adicionar a informação de parcelamento? Qual entidade? Qual fluxo?
-  * Considerar os juros quando o parcelamento for aplicado
-  * Permitir apagar imagem do S3 quando apagar product_variable
   * Quando escolhe o frete, ele faz a soma do TOTAL. Deve ser possível deletar ou alterar e isso refletir no TOTAL
   * Apagar ORDERS com status NULL que tem 10 dias e não foram pagos
 
@@ -33,6 +27,12 @@
   > ## Melhorias aplicadas
   
   * ~~Cria endpoint POST orders/calculate_interest para retornar os juros de um valor da order~~
+  * ~~USAR TRANSACTION NO FLUXO DE ORDER CHECKOUT E ADD ORDER~~
+  * ~~Get Order, retornar tambem: product (name e id) dentro de product_variables e city em address~~
+  * ~~Onde adicionar a informação de parcelamento? Qual entidade? Qual fluxo?~~
+  * ~~Considerar os juros quando o parcelamento for aplicado~~
+  * ~~Permitir apagar imagem do S3 quando apagar product_variable~~
+  * ~~Retornar nome do produto GET /orders~~
   * ~~Deve apgar o objeto anterior do S3 na atualização dos itens~~
   * ~~User está retornando paginação com apenas os 10 items estáticos~~
   * ~~User não deve alterar no PUT os valores enviados como undefined~~
