@@ -118,7 +118,7 @@ export default class AsaasPaymentService
       const baseParams = {
         customer: user_id,
         dueDate: new Date().toISOString(),
-        value: 300,
+        value: Number(order.total),
         description: `Casa das bicicletas - Pedido #${order.id}`,
         externalReference: `${payment.method} - ${order.id}`,
       };
