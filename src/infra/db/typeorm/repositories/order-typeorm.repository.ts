@@ -60,16 +60,19 @@ export class OrderTypeOrmRepository implements OrderRepository {
   }
 
   async findById(id: string): Promise<OrderModelDto> {
-    const order = await this.orderRepository
+    const queryBuilder = await this.orderRepository
       .createQueryBuilder('order')
       .leftJoinAndSelect('order.user', 'user')
       .leftJoinAndSelect('order.address', 'addresses')
       .leftJoinAndSelect('order.order_items', 'order_items')
       .leftJoinAndSelect('order_items.product_variables', 'product_variables')
+      .leftJoinAndSelect('product_variables.product', 'product')
+      .leftJoinAndSelect('addresses.city', 'city')
       .leftJoinAndSelect('order.shippings', 'shippings')
-      .where('order.id = :id', { id })
-      .getOne();
-
+      .andWhere('order.id = :id', {
+        id: id,
+      });
+    const order = await queryBuilder.getOne();
     return OrderModelDto.toDto(order);
   }
 

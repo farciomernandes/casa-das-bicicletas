@@ -130,9 +130,13 @@ export class OrderModelDto {
       excludeExtraneousValues: true,
     });
 
-    const order_items = payload.order_items.map((item) =>
-      OrderItemLocally.toDto(item),
-    );
+    let order_items = [];
+
+    if (payload?.order_items) {
+      order_items = payload.order_items.map((item) =>
+        OrderItemLocally.toDto(item),
+      );
+    }
 
     let address = null;
     if (payload?.address) {
