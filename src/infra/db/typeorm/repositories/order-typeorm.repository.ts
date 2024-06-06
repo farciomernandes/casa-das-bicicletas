@@ -10,6 +10,7 @@ import {
   OrderParamsDto,
 } from '@/presentation/dtos/order/order-model.dto';
 import { InternalServerErrorException } from '@nestjs/common';
+import { addDays } from 'date-fns';
 
 export class OrderTypeOrmRepository implements OrderRepository {
   constructor(private readonly orderRepository: Repository<Order>) {}
@@ -127,6 +128,15 @@ export class OrderTypeOrmRepository implements OrderRepository {
     if (params.status) {
       queryBuilder = queryBuilder.andWhere('order.status = :status', {
         status: params.status,
+      });
+    }
+
+    if (params.start_date && params.end_date) {
+      const adjustedEndDate = addDays(new Date(params.end_date), 1);
+      queryBuilder = queryBuilder.andWhere('order.created_at BETWEEN :start_date AND :end_date', {
+        start_date: new Date(params.start_date),
+        end_date: new Date(adjustedEndDate)
+        ,
       });
     }
 

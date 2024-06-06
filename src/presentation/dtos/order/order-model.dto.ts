@@ -196,6 +196,20 @@ export class OrderParamsDto {
     required: false,
   })
   name?: string;
+
+  @ApiProperty({
+    example: new Date(),
+    description: 'Data inicial',
+    required: false,
+  })
+  start_date?: Date;
+
+  @ApiProperty({
+    example: new Date(),
+    description: 'Data final',
+    required: false,
+  })
+  end_date?: Date;
 }
 
 export class GetAllOrdersDto {
