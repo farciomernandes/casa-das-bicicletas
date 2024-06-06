@@ -133,11 +133,13 @@ export class OrderTypeOrmRepository implements OrderRepository {
 
     if (params.start_date && params.end_date) {
       const adjustedEndDate = addDays(new Date(params.end_date), 1);
-      queryBuilder = queryBuilder.andWhere('order.created_at BETWEEN :start_date AND :end_date', {
-        start_date: new Date(params.start_date),
-        end_date: new Date(adjustedEndDate)
-        ,
-      });
+      queryBuilder = queryBuilder.andWhere(
+        'order.created_at BETWEEN :start_date AND :end_date',
+        {
+          start_date: new Date(params.start_date),
+          end_date: new Date(adjustedEndDate),
+        },
+      );
     }
 
     if (params.name) {
