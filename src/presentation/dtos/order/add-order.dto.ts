@@ -1,3 +1,4 @@
+import { IsNumber, Min } from 'class-validator';
 import { OrderStatusEnum } from '@/shared/enums/order_status.enum';
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, plainToClass } from 'class-transformer';
@@ -9,6 +10,7 @@ export class ProductModelDto {
   @ApiProperty()
   name: string;
 }
+
 export class CheckoutOrderItemDto {
   @ApiProperty()
   description: string;
@@ -40,6 +42,8 @@ export class CheckoutOrderItemDto {
     required: true,
   })
   @Expose()
+  @IsNumber()
+  @Min(1, { message: 'Quantity must be at least 1' })
   quantity: number;
 
   @ApiProperty({
@@ -48,6 +52,8 @@ export class CheckoutOrderItemDto {
     required: true,
   })
   @Expose()
+  @IsNumber()
+  @Min(0.01, { message: 'Sub total must be greater than 0' })
   sub_total: number;
 
   @ApiProperty({
@@ -57,6 +63,7 @@ export class CheckoutOrderItemDto {
   @Expose()
   product_variables_id: string;
 }
+
 export class AddOrderDto {
   @ApiProperty({
     type: String,

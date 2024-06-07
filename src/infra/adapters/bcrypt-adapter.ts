@@ -2,7 +2,7 @@ import { HashComparer } from '@/core/domain/protocols/cryptography/hash-compare'
 import { IHasher } from '@/core/domain/protocols/cryptography/hasher';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import * as bcrypt from 'bcrypt';
+import * as bcryptjs from 'bcryptjs';
 @Injectable()
 export class BcryptAdapter implements IHasher, HashComparer {
   private salt: number;
@@ -12,11 +12,11 @@ export class BcryptAdapter implements IHasher, HashComparer {
   }
 
   async hash(text: string): Promise<string> {
-    const hash = await bcrypt.hash(text, this.salt);
+    const hash = await bcryptjs.hash(text, this.salt);
     return hash;
   }
   async compare(value: string, hash: string): Promise<boolean> {
-    const isValid = await bcrypt.compare(value, hash);
+    const isValid = await bcryptjs.compare(value, hash);
     return isValid;
   }
 }
