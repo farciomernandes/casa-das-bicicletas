@@ -20,10 +20,8 @@
     "migration:create": "npx typeorm migration:create",
     "migration:generate": "npx typeorm migration:generate -d src/infra/db/database.provider.ts",
     "migration:latest": "nest build && npx typeorm migration:run -d dist/infra/db/database.provider.js",
-    "migration:revert": "nest build && npx typeorm migration:revert -d dist/infra/db/database.provider.js",
-    "prepare": "husky install"
+    "migration:revert": "nest build && npx typeorm migration:revert -d dist/infra/db/database.provider.js"
   },
-  "postinstall": "husky install",
   "dependencies": {
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.1.1",
@@ -75,7 +73,6 @@
     "eslint": "^8.0.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "husky": "^9.0.6",
     "lint-staged": "^15.2.0",
     "prettier": "^2.3.2",
     "source-map-support": "^0.5.20",
