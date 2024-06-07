@@ -8,7 +8,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "npx nest build -p ts-config-build.json",
-    "build:digitalocean": "npm install --production=false && npm run build && npm prune --production",
+    "build:digitalocean": "npm install --production=false && npm run build && rm -rf node_modules && npm install --production --frozen-lockfile",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
