@@ -8,8 +8,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "npx nest build -p ts-config-build.json",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "lint-staged-custom": "git diff --name-only HEAD^ HEAD | grep 'commit add' | xargs npx lint-staged",
+    "build:digitalocean": "npm install --production=false && npm run build && npm prune --production",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -83,6 +82,7 @@
     "typescript": "^4.3.5"
   },
   "engines": {
-    "node": "18.x"
+    "node": "18.x",
+    "npm": "10.x"
   }
 }
