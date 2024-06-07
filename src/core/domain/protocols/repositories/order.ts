@@ -13,6 +13,7 @@ import {
 } from '@/presentation/dtos/order/order-model.dto';
 import { Authenticated } from '@/presentation/dtos/auth/authenticated.dto';
 import { EntityManager } from 'typeorm';
+import { IDbFindTrashOrderRepository } from '../db/order/find-trash-orders';
 
 @Injectable()
 export abstract class OrderRepository
@@ -21,8 +22,13 @@ export abstract class OrderRepository
     IDbListOrderRepository,
     IDbUpdateOrderRepository,
     IDbFindOrderByIdRepository,
-    IDbDeleteOrderRepository
+    IDbDeleteOrderRepository,
+    IDbFindTrashOrderRepository
 {
+  abstract findOrdersWithNullStatusAndCreatedBefore(
+    date: Date,
+  ): Promise<OrderModelDto[]>;
+
   abstract getAll(
     params: OrderParamsDto,
     user?: Authenticated,

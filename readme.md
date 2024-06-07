@@ -20,8 +20,6 @@
 
   * Deve verificar status do correio
   * Quando escolhe o frete, ele faz a soma do TOTAL. Deve ser possível deletar ou alterar e isso refletir no TOTAL
-  * Apagar ORDERS com status NULL que tem 10 dias e não foram pagos
-
 
   
   > ## Melhorias aplicadas
@@ -45,6 +43,7 @@
   * ~~Get Order realizar calculo do total usando price e o discount_price se existir discount_percent~~
   * ~~Tornar possivel status do order igual a null~~
   * ~~Puts CATEGORY deve alterar as imagens~~
+  * ~~Apagar ORDERS com status NULL que tem 14 dias e não foram pagos~~
 
 > ## Design Patterns
 

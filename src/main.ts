@@ -7,19 +7,23 @@ import { ConfigService } from '@nestjs/config';
 import { AllExceptionsFilter } from './shared/filter/http-exception.filter';
 import * as cors from 'cors';
 import { LogServerStatus } from './shared/helpers/log-server-status';
+
 async function bootstrap() {
   try {
     const app = await NestFactory.create(AppModule);
     const configService = app.get(ConfigService);
     const currentEnv = configService.get('NODE_ENV') || 'dev';
+    const isProduction = currentEnv === 'production';
     const host = app.getHttpServer().address()?.address || 'localhost';
+    const swaggerBasePath = isProduction ? '/casa-das-bicicletas2' : '';
+
     app.useGlobalFilters(new AllExceptionsFilter());
     LogServerStatus.logEnv({ currentEnv });
 
     const setupSwagger = (application: INestApplication) => {
-      let swaggerRoute = '/';
+      const swaggerRoute = `${swaggerBasePath}/docs`;
       application.use(
-        ['/docs', '/docs-json'],
+        [swaggerRoute, `${swaggerBasePath}/docs-json`],
         basicAuth({
           challenge: true,
           users: {
@@ -28,7 +32,6 @@ async function bootstrap() {
           },
         }),
       );
-      swaggerRoute = '/docs';
 
       const config = new DocumentBuilder()
         .setTitle(configService.get('CASA_DAS_BICICLETAS_SWAGGER_TITLE'))
@@ -42,13 +45,14 @@ async function bootstrap() {
       const document = SwaggerModule.createDocument(application, config);
       SwaggerModule.setup(swaggerRoute, application, document);
     };
+
     app.use(cors());
     app.useGlobalPipes(new ValidationPipe());
     setupSwagger(app);
 
     const port = configService.get('CASA_DAS_BICICLETAS_PORT') || 3000;
     await app.listen(port, '0.0.0.0');
-    LogServerStatus.logSuccess({ isProduction: false, port, host });
+    LogServerStatus.logSuccess({ port, host });
   } catch (error) {
     LogServerStatus.logError({ error });
     console.error('Error starting the application:', error);

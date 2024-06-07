@@ -14,6 +14,25 @@ import { addDays } from 'date-fns';
 
 export class OrderTypeOrmRepository implements OrderRepository {
   constructor(private readonly orderRepository: Repository<Order>) {}
+
+  async findOrdersWithNullStatusAndCreatedBefore(
+    date: Date,
+  ): Promise<OrderModelDto[]> {
+    const orders = await this.orderRepository
+      .createQueryBuilder('order')
+      .leftJoinAndSelect('order.user', 'user')
+      .leftJoinAndSelect('order.address', 'addresses')
+      .leftJoinAndSelect('order.order_items', 'order_items')
+      .leftJoinAndSelect('order_items.product_variables', 'product_variables')
+      .leftJoinAndSelect('product_variables.product', 'product')
+      .leftJoinAndSelect('addresses.city', 'city')
+      .leftJoinAndSelect('order.shippings', 'shippings')
+      .where('order.status IS NULL')
+      .andWhere('order.created_at < :date', { date })
+      .getMany();
+
+    return orders.map((order) => OrderModelDto.toDto(order));
+  }
   async createTransactionMode(
     payload: AddOrderDto,
     user_id: string,

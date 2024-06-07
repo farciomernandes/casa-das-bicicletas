@@ -27,6 +27,8 @@ import { OrderItemModule } from './infra/ioc/order_item/order_item.module';
 import { AuthModule } from './infra/ioc/auth/auth.module';
 import { ShippingModule } from './infra/ioc/shipping/shipping.module';
 import { HealthModule } from './infra/ioc/health.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { JobsModule } from './infra/ioc/jobs/jobs.module';
 
 @Module({
   imports: [
@@ -43,6 +45,8 @@ import { HealthModule } from './infra/ioc/health.module';
         return dataSource;
       },
     }),
+    ScheduleModule.forRoot(),
+    JobsModule,
     HealthModule,
     AuthModule,
     RoleModule,

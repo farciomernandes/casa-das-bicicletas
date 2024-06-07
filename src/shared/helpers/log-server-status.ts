@@ -3,12 +3,10 @@ import { Logger } from '@nestjs/common';
 import { bgBlue, bold } from 'colorette';
 
 export namespace LogServerStatus {
-  type LogSuccessOpts = { isProduction: boolean; port: number; host: string };
-  export const logSuccess = ({ isProduction, port, host }: LogSuccessOpts) => {
+  type LogSuccessOpts = { port: number; host: string };
+  export const logSuccess = ({ port, host }: LogSuccessOpts) => {
     const formattedPort = bold(bgBlue(port.toString()));
-    const productionMessage = `🚀  Server is listening on port ${formattedPort}`;
-    const developmentMessage = `🚀  Server ready at http://${host}:${formattedPort}`;
-    const message = isProduction ? productionMessage : developmentMessage;
+    const message = `🚀  Server ready at http://${host}:${formattedPort}`;
     Logger.log(message, 'Bootstrap', false);
   };
 
