@@ -156,8 +156,9 @@ export class DbAddOrder implements IDbAddOrderRepository {
     price: number,
     discountPercent: number,
   ) {
+    
     let subTotal = quantity * price;
-    if (discountPercent) {
+    if (discountPercent && discountPercent !== 0) {
       const discountAmount = (subTotal * discountPercent) / 100;
       subTotal -= discountAmount;
     }
