@@ -180,9 +180,10 @@ export class OrderController {
   }
 
   @Post('payment-webhook')
+  @HttpCode(200)
   async handleWebhook(
     @Body() body: PaymentConfirmedDto,
-  ): Promise<{ received: boolean }> {
+  ): Promise<{ response: any }> {
     try {
       switch (body.event) {
         case 'PAYMENT_CONFIRMED':
@@ -199,9 +200,11 @@ export class OrderController {
           console.log(`Este evento não é aceito: ${body.event}`);
       }
 
-      return { received: true };
+      return { response: true };
     } catch (error) {
       console.log('Erro no webhook ', error);
+
+      return { response: error };
     }
   }
 }
