@@ -183,21 +183,25 @@ export class OrderController {
   async handleWebhook(
     @Body() body: PaymentConfirmedDto,
   ): Promise<{ received: boolean }> {
-    switch (body.event) {
-      case 'PAYMENT_CONFIRMED':
-        const paymentReceived = body.payment;
-        const id = paymentReceived.externalReference.split(' - ')[1].trim();
-        const payload = {
-          status: OrderStatusEnum.PAID,
-          total: paymentReceived.value,
-          transaction_id: paymentReceived.id,
-        };
-        await this.dbUpdateOrder.update(payload, id);
-        break;
-      default:
-        console.log(`Este evento não é aceito: ${body.event}`);
-    }
+    try {
+      switch (body.event) {
+        case 'PAYMENT_CONFIRMED':
+          const paymentReceived = body.payment;
+          const id = paymentReceived.externalReference.split(' - ')[1].trim();
+          const payload = {
+            status: OrderStatusEnum.PAID,
+            total: paymentReceived.value,
+            transaction_id: paymentReceived.id,
+          };
+          await this.dbUpdateOrder.update(payload, id);
+          break;
+        default:
+          console.log(`Este evento não é aceito: ${body.event}`);
+      }
 
-    return { received: true };
+      return { received: true };
+    } catch (error) {
+      console.log('Erro no webhook ', error);
+    }
   }
 }

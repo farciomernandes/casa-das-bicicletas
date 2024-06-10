@@ -19,8 +19,6 @@
   > ## Melhorias pendentes
 
   * Deve verificar status do correio
-  * Quando escolhe o frete, ele faz a soma do TOTAL. Deve ser possível deletar ou alterar e isso refletir no TOTAL
-
   
   > ## Melhorias aplicadas
   
@@ -61,6 +59,7 @@
 * Server Side
 * Gateway de pagamentos - Asaas
 * Roles e Middlewares
+* Cron Jobs
 
 
 > ## Para todar esse projeto

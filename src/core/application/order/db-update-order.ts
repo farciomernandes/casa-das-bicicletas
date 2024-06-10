@@ -16,6 +16,9 @@ export class DbUpdateOrder implements IDbUpdateOrderRepository {
   async update(payload: UpdateOrderDto, id: string): Promise<OrderModelDto> {
     try {
       const old_order = await this.orderRepository.findById(id);
+      if (!old_order && payload.status === 'PAID' && payload.transaction_id) {
+        return null;
+      }
       const order = await this.orderRepository.update(payload, id);
 
       if (payload.status === 'PAID' && payload.transaction_id) {

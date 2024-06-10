@@ -93,6 +93,10 @@ export class OrderTypeOrmRepository implements OrderRepository {
         id: id,
       });
     const order = await queryBuilder.getOne();
+
+    if (!order) {
+      return null;
+    }
     return OrderModelDto.toDto(order);
   }
 
