@@ -101,7 +101,7 @@ export class ProductTypeOrmRepository implements ProductRepository {
 
     const [products, total] = await queryBuilder
       .take(params.limit)
-      .skip((params.page - 1) * params.limit).getManyAndCount();
+      .skip(((params.page || 1) - 1) * params.limit).getManyAndCount();
 
     const totalPages = Math.ceil(total / params.limit);
 
