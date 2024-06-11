@@ -5,7 +5,6 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as basicAuth from 'express-basic-auth';
 import { ConfigService } from '@nestjs/config';
 import { AllExceptionsFilter } from './shared/filter/http-exception.filter';
-import * as cors from 'cors';
 import { LogServerStatus } from './shared/helpers/log-server-status';
 
 async function bootstrap() {
@@ -46,7 +45,9 @@ async function bootstrap() {
       SwaggerModule.setup(swaggerRoute, application, document);
     };
 
-    app.use(cors());
+    // Configuração do CORS para permitir acesso de todos os domínios
+    app.enableCors();
+
     app.useGlobalPipes(new ValidationPipe());
     setupSwagger(app);
 
