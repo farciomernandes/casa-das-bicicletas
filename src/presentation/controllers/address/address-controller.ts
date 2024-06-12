@@ -27,6 +27,7 @@ import { AddAddressDto } from '@/presentation/dtos/address/add-address.dto';
 import { UploadAddressDto } from '@/presentation/dtos/address/upload-address.dto';
 import { User } from '@/shared/decorators/user.decorator';
 import { Authenticated } from '@/presentation/dtos/auth/authenticated.dto';
+import { IDbListByUserAddressRepository } from '@/core/domain/protocols/db/address/list-by-user-address-respository';
 
 @ApiTags('Address')
 @Controller('api/v1/addresses')
@@ -34,6 +35,7 @@ export class AddressController {
   constructor(
     private readonly dbAddAddress: IDbAddAddressRepository,
     private readonly dbListAddress: IDbListAddressRepository,
+    private readonly dbListByUserAddress: IDbListByUserAddressRepository,
     private readonly dbUpdateAddress: IDbUpdateAddressRepository,
     private readonly dbDeleteAddress: IDbDeleteAddressRepository,
   ) {}
@@ -64,6 +66,24 @@ export class AddressController {
   async getAll(): Promise<AddressModelDto[]> {
     try {
       return await this.dbListAddress.getAll();
+    } catch (error) {
+      throw new HttpException(error.response, error.status);
+    }
+  }
+
+  @Get('byuser/:user_id')
+  @ApiOkResponse({
+    description: 'Returns Addresss.',
+    status: HttpStatus.OK,
+    type: AddressModelDto,
+    isArray: true,
+  })
+  @ApiBearerAuth()
+  async getByUser(
+    @Param('user_id') user_id: string,
+  ): Promise<AddressModelDto[]> {
+    try {
+      return await this.dbListByUserAddress.getByUser(user_id);
     } catch (error) {
       throw new HttpException(error.response, error.status);
     }

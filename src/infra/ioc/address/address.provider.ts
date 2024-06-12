@@ -15,10 +15,13 @@ import { Address } from '@/core/domain/models/address.entity';
 import { AddressTypeOrmRepository } from '@/infra/db/typeorm/repositories/address-typeorm.repository';
 import { AddressRepository } from '@/core/domain/protocols/repositories/address';
 import { CityRepository } from '@/core/domain/protocols/repositories/city';
+import { IDbListByUserAddressRepository } from '@/core/domain/protocols/db/address/list-by-user-address-respository';
+import { DbListByUserAddress } from '@/core/application/address/db-list-by-user-address';
 
 export const addressProvider: Provider[] = [
   DbAddAddress,
   DbListAddress,
+  DbListByUserAddress,
   DbDeleteAddress,
   DbUpdateAddress,
   {
@@ -57,6 +60,13 @@ export const addressProvider: Provider[] = [
     provide: IDbListAddressRepository,
     useFactory: (AddressRepository: AddressRepository): DbListAddress => {
       return new DbListAddress(AddressRepository);
+    },
+    inject: [AddressTypeOrmRepository],
+  },
+  {
+    provide: IDbListByUserAddressRepository,
+    useFactory: (AddressRepository: AddressRepository): DbListByUserAddress => {
+      return new DbListByUserAddress(AddressRepository);
     },
     inject: [AddressTypeOrmRepository],
   },

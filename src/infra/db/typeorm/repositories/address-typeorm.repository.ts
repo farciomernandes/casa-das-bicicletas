@@ -5,7 +5,7 @@ import { UploadAddressDto } from '@/presentation/dtos/address/upload-address.dto
 import { AddAddressDto } from '@/presentation/dtos/address/add-address.dto';
 
 export class AddressTypeOrmRepository implements AddressRepository {
-  constructor(private readonly addressRepository: Repository<Address>) {}
+  constructor(private readonly addressRepository: Repository<Address>) { }
   async update(payload: UploadAddressDto, id: string): Promise<Address> {
     try {
       const address = await this.addressRepository.findOneOrFail({
@@ -29,6 +29,12 @@ export class AddressTypeOrmRepository implements AddressRepository {
 
   async getAll(): Promise<Address[]> {
     return await this.addressRepository.find({
+      relations: ['city'],
+    });
+  }
+  async getByUser(user_id: string): Promise<Address[]> {
+    return await this.addressRepository.find({
+      where: { user_id },
       relations: ['city'],
     });
   }

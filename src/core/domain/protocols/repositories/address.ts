@@ -7,18 +7,21 @@ import { IDbUpdateAddressRepository } from '../db/address/update-address-reposit
 import { IDbFindAddressByIdRepository } from '../db/address/find-address-by-id-repository';
 import { IDbDeleteAddressRepository } from '../db/address/delete-address-repository';
 import { UploadAddressDto } from '@/presentation/dtos/address/upload-address.dto';
+import { IDbListByUserAddressRepository } from '../db/address/list-by-user-address-respository';
 
 @Injectable()
 export abstract class AddressRepository
   implements
     IDbAddAddressRepository,
     IDbListAddressRepository,
+    IDbListByUserAddressRepository,
     IDbUpdateAddressRepository,
     IDbFindAddressByIdRepository,
     IDbDeleteAddressRepository
 {
   abstract findById(id: string): Promise<Address>;
   abstract getAll(): Promise<AddressModelDto[]>;
+  abstract getByUser(user_id:string): Promise<AddressModelDto[]>;
   abstract create(payload: any, user_id: string): Promise<AddressModelDto>;
   abstract delete(id: string): Promise<void>;
   abstract update(payload: UploadAddressDto, id: string): Promise<Address>;

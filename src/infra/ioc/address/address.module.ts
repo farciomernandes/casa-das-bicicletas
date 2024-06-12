@@ -6,6 +6,7 @@ import { IDbDeleteAddressRepository } from '@/core/domain/protocols/db/address/d
 import { IDbUpdateAddressRepository } from '@/core/domain/protocols/db/address/update-address-repository';
 import { AddressController } from '@/presentation/controllers/address/address-controller';
 import { AddressRepository } from '@/core/domain/protocols/repositories/address';
+import { IDbListByUserAddressRepository } from '@/core/domain/protocols/db/address/list-by-user-address-respository';
 
 @Module({
   imports: [],
@@ -14,6 +15,7 @@ import { AddressRepository } from '@/core/domain/protocols/repositories/address'
   exports: [
     IDbAddAddressRepository,
     IDbListAddressRepository,
+    IDbListByUserAddressRepository,
     IDbDeleteAddressRepository,
     IDbUpdateAddressRepository,
     AddressRepository,
