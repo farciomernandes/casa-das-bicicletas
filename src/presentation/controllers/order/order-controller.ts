@@ -184,27 +184,41 @@ export class OrderController {
   async handleWebhook(
     @Body() body: PaymentConfirmedDto,
   ): Promise<{ response: any }> {
+    const { event, payment } = body;
+
+    if (!event || !payment) {
+      console.log('Dados ausentes no webhook:', { event, payment });
+      return { response: 'Dados ausentes no webhook' };
+    }
+
+    const handlePayment = async (status: OrderStatusEnum, paymentData: any) => {
+      const id = paymentData.externalReference.split(' - ')[1].trim();
+      const payload = {
+        status,
+        total: paymentData.value,
+        transaction_id: paymentData.id,
+      };
+      await this.dbUpdateOrder.update(payload, id);
+    };
+
     try {
-      switch (body.event) {
+      console.log('Evento recebido -> ', event);
+
+      switch (event) {
         case 'PAYMENT_CONFIRMED':
-          const paymentReceived = body.payment;
-          const id = paymentReceived.externalReference.split(' - ')[1].trim();
-          const payload = {
-            status: OrderStatusEnum.PAID,
-            total: paymentReceived.value,
-            transaction_id: paymentReceived.id,
-          };
-          await this.dbUpdateOrder.update(payload, id);
+          await handlePayment(OrderStatusEnum.PAID, payment);
+          break;
+        case 'PAYMENT_REFUNDED':
+          await handlePayment(OrderStatusEnum.STORNED, payment);
           break;
         default:
-          console.log(`Este evento não é aceito: ${body.event}`);
+          console.log(`Evento não aceito: ${event}`);
       }
 
       return { response: true };
     } catch (error) {
-      console.log('Erro no webhook ', error);
-
-      return { response: error };
+      console.error('Erro no webhook ', error);
+      return { response: `Erro ${error}` };
     }
   }
 }
