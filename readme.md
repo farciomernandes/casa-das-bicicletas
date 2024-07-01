@@ -42,6 +42,7 @@
   * ~~Tornar possivel status do order igual a null~~
   * ~~Puts CATEGORY deve alterar as imagens~~
   * ~~Apagar ORDERS com status NULL que tem 14 dias e não foram pagos~~
+  * Alterar senha não está colocando o HASH
 
 > ## Design Patterns
 
