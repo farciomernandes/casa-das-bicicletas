@@ -89,10 +89,13 @@ export const userProvider: Provider[] = [
   },
   {
     provide: IDbUpdateUserRepository,
-    useFactory: (userRepository: UserRepository): DbUpdateUser => {
-      return new DbUpdateUser(userRepository);
+    useFactory: (
+      userRepository: UserRepository,
+      hasher: IHasher,
+    ): DbUpdateUser => {
+      return new DbUpdateUser(userRepository, hasher);
     },
-    inject: [UserTypeOrmRepository],
+    inject: [UserTypeOrmRepository, BcryptAdapter],
   },
   {
     provide: IDbDeleteUserRepository,
