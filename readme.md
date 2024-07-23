@@ -42,12 +42,15 @@
   * ~~Tornar possivel status do order igual a null~~
   * ~~Puts CATEGORY deve alterar as imagens~~
   * ~~Apagar ORDERS com status NULL que tem 14 dias e não foram pagos~~
-  * Alterar senha não está colocando o HASH
+  * ~~Alterar senha não está colocando o HASH~~
 
 > ## Design Patterns
 
 * Factory
 * Dependency Injection
+* Single Responsability
+* Inverse Dependency
+* Interface Segregation
 
 
 > ## Metodologias, Tecnologias e Designs
@@ -60,7 +63,7 @@
 * Server Side
 * Gateway de pagamentos - Asaas
 * Roles e Middlewares
-* Cron Jobs
+* Cron Jobs 
 
 
 > ## Para todar esse projeto
